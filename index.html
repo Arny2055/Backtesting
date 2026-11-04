@@ -121,7 +121,7 @@
                 <div class="relative z-10">
                     <span class="text-xs font-mono uppercase tracking-widest text-neonBlue px-3 py-1 rounded-full bg-neonBlue/10 border border-neonBlue/30">Sistema Activo</span>
                     <h2 class="text-2xl sm:text-3xl font-black mt-3 text-white">BETAGS POISSON NEON VIP</h2>
-                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Motor matemático avanzado basado en la distribución de Poisson, análisis de xG, fuerzas ofensivas/defensivas y detección de valor de cuotas de mercado.</p>
+                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Motor matemático avanzado basado en la distribución de Poisson, análisis de xG (70% GF / 30% GA), fuerzas ofensivas/defensivas y detección de valor de cuotas de mercado.</p>
                     <div class="mt-6 flex flex-wrap gap-3">
                         <button onclick="app.switchTab('leagues')" class="px-5 py-2.5 rounded-xl bg-neonBlue text-black font-bold text-xs uppercase tracking-wider hover:bg-neonBlue/90 transition-all shadow-lg shadow-neonBlue/20">Gestionar Ligas</button>
                         <button onclick="app.switchTab('analyzer')" class="px-5 py-2.5 rounded-xl bg-cardBg border border-neonGreen text-neonGreen font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/10 transition-all">Analizar Partido</button>
@@ -166,7 +166,7 @@
                     </div>
                     <div class="p-3 bg-darkBg rounded-lg border border-cardBorder">
                         <span class="font-bold text-neonPurple block mb-1">Paso 3: Analizador Poisson</span>
-                        Selecciona local y visitante para ver xG, matriz de goles, probabilidades 1X2, Over/Under y cuotas de valor.
+                        Selecciona local y visitante para ver xG (ponderado 70% GF / 30% GA), matriz de goles, probabilidades 1X2, Over/Under y cuotas de valor.
                     </div>
                 </div>
             </div>
@@ -293,8 +293,8 @@
         <section id="tab-analyzer" class="tab-content hidden space-y-6">
             <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-5">
                 <div>
-                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Analizador de Partidos & Poisson</h2>
-                    <p class="text-xs text-slate-400">Selecciona los contendientes para calcular fuerzas, xG y probabilidades matemáticas.</p>
+                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Analizador de Partidos & Poisson (70% GF / 30% GA)</h2>
+                    <p class="text-xs text-slate-400">Selecciona los contendientes para calcular xG ponderado, fuerzas y probabilidades matemáticas.</p>
                 </div>
 
                 <!-- Selectors -->
@@ -318,22 +318,22 @@
                     <!-- League Averages & Attack/Defense Strength -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div class="bg-darkBg border border-cardBorder rounded-xl p-4">
-                            <span class="text-xs text-slate-400 uppercase font-mono block">Fuerza Ataque Local</span>
+                            <span class="text-xs text-slate-400 uppercase font-mono block">Fuerza Ataque (GF) Local</span>
                             <span id="resHomeAtt" class="text-xl font-black text-neonGreen font-mono mt-1 block">0.00</span>
                             <span id="resHomeAttDesc" class="text-[10px] text-slate-500 mt-1 block">-</span>
                         </div>
                         <div class="bg-darkBg border border-cardBorder rounded-xl p-4">
-                            <span class="text-xs text-slate-400 uppercase font-mono block">Fuerza Defensa Local</span>
+                            <span class="text-xs text-slate-400 uppercase font-mono block">Fuerza Defensa (GA) Local</span>
                             <span id="resHomeDef" class="text-xl font-black text-neonBlue font-mono mt-1 block">0.00</span>
                             <span id="resHomeDefDesc" class="text-[10px] text-slate-500 mt-1 block">-</span>
                         </div>
                         <div class="bg-darkBg border border-cardBorder rounded-xl p-4">
-                            <span class="text-xs text-slate-400 uppercase font-mono block">Fuerza Ataque Visitante</span>
+                            <span class="text-xs text-slate-400 uppercase font-mono block">Fuerza Ataque (GF) Visitante</span>
                             <span id="resAwayAtt" class="text-xl font-black text-neonPink font-mono mt-1 block">0.00</span>
                             <span id="resAwayAttDesc" class="text-[10px] text-slate-500 mt-1 block">-</span>
                         </div>
                         <div class="bg-darkBg border border-cardBorder rounded-xl p-4">
-                            <span class="text-xs text-slate-400 uppercase font-mono block">Fuerza Defensa Visitante</span>
+                            <span class="text-xs text-slate-400 uppercase font-mono block">Fuerza Defensa (GA) Visitante</span>
                             <span id="resAwayDef" class="text-xl font-black text-neonPurple font-mono mt-1 block">0.00</span>
                             <span id="resAwayDefDesc" class="text-[10px] text-slate-500 mt-1 block">-</span>
                         </div>
@@ -342,7 +342,7 @@
                     <!-- xG Card -->
                     <div class="bg-gradient-to-r from-darkBg via-cardBorder/20 to-darkBg border border-cardBorder rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div class="text-center sm:text-left">
-                            <span class="text-xs font-mono text-slate-400 uppercase tracking-widest">Goles Esperados (xG)</span>
+                            <span class="text-xs font-mono text-slate-400 uppercase tracking-widest">Goles Esperados (xG Ponderado 70% GF / 30% GA)</span>
                             <div class="flex items-center space-x-4 mt-2">
                                 <div>
                                     <span class="text-2xl sm:text-3xl font-black text-neonGreen font-mono" id="resXgHome">0.00</span>
@@ -517,7 +517,7 @@
                         </thead>
                         <tbody id="evTableBody" class="divide-y divide-cardBorder/50">
                             <tr>
-                                <td colspan="6" class="p-6 text-center text-slate-500">Selecciona equipos in el Analizador e introduce cuotas de mercado.</td>
+                                <td colspan="6" class="p-6 text-center text-slate-500">Selecciona equipos en el Analizador e introduce cuotas de mercado.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -561,7 +561,7 @@
                 </div>
 
                 <div class="border-t border-cardBorder pt-4 text-center">
-                    <p class="text-[11px] font-mono text-slate-500">BETAGS POISSON NEON VIP v2.5 — Motor Estadístico de Fútbol Profesional</p>
+                    <p class="text-[11px] font-mono text-slate-500">BETAGS POISSON NEON VIP v2.6 — Motor Estadístico con Ponderación GF/GA</p>
                 </div>
             </div>
         </section>
@@ -1056,7 +1056,7 @@
                 this.showToast("Guardado", `Tabla ${type} guardada en LocalStorage`, "green");
             }
 
-            // --- POISSON & STATISTICAL ENGINE (CORREGIDO Y ESTÁNDAR) ---
+            // --- POISSON & STATISTICAL ENGINE (ACTUALIZADO 70% GF / 30% GA) ---
             populateTeamSelects() {
                 const league = this.getActiveLeague();
                 const homeSelect = document.getElementById('selectHomeTeam');
@@ -1122,45 +1122,52 @@
                     return;
                 }
 
-                // 1. MEDIAS BASE DE LA LIGA (H_bar y A_bar independientes)
-                let totalHomeGF = 0, totalHomeGP = 0;
-                league.homeTable.forEach(t => { totalHomeGF += t.gf; totalHomeGP += t.gp; });
-                let hBar = totalHomeGP > 0 ? totalHomeGF / totalHomeGP : 1.35;
+                // 1. MEDIAS BASE DE LA LIGA (GF y GA)
+                let totalHomeGF = 0, totalHomeGA = 0, totalHomeGP = 0;
+                league.homeTable.forEach(t => { totalHomeGF += t.gf; totalHomeGA += t.ga; totalHomeGP += t.gp; });
+                let hBarGF = totalHomeGP > 0 ? totalHomeGF / totalHomeGP : 1.35;
+                let hBarGA = totalHomeGP > 0 ? totalHomeGA / totalHomeGP : 1.15;
 
-                let totalAwayGF = 0, totalAwayGP = 0;
-                league.awayTable.forEach(t => { totalAwayGF += t.gf; totalAwayGP += t.gp; });
-                let aBar = totalAwayGP > 0 ? totalAwayGF / totalAwayGP : 1.15;
+                let totalAwayGF = 0, totalAwayGA = 0, totalAwayGP = 0;
+                league.awayTable.forEach(t => { totalAwayGF += t.gf; totalAwayGA += t.ga; totalAwayGP += t.gp; });
+                let aBarGF = totalAwayGP > 0 ? totalAwayGF / totalAwayGP : 1.15;
+                let aBarGA = totalAwayGP > 0 ? totalAwayGA / totalAwayGP : 1.35;
 
-                // 2. CÁLCULO DE FUERZAS ESTÁNDAR
-                let homeAtt = (homeStats.gp > 0 ? (homeStats.gf / homeStats.gp) : hBar) / hBar;
-                let homeDef = (homeStats.gp > 0 ? (homeStats.ga / homeStats.gp) : aBar) / aBar;
+                // 2. MODELO POISSON 1: BASADO EN GOLES A FAVOR (GF)
+                let homeAttGF = homeStats.gp > 0 ? (homeStats.gf / homeStats.gp) / hBarGF : 1;
+                let awayAttGF = awayStats.gp > 0 ? (awayStats.gf / awayStats.gp) / aBarGF : 1;
+                let xgHomeGF = hBarGF * homeAttGF;
+                let xgAwayGF = aBarGF * awayAttGF;
 
-                let awayAtt = (awayStats.gp > 0 ? (awayStats.gf / awayStats.gp) : aBar) / aBar;
-                let awayDef = (awayStats.gp > 0 ? (awayStats.ga / awayStats.gp) : hBar) / hBar;
+                // 3. MODELO POISSON 2: BASADO EN GOLES EN CONTRA (GA)
+                let homeDefGA = homeStats.gp > 0 ? (homeStats.ga / homeStats.gp) / hBarGA : 1;
+                let awayDefGA = awayStats.gp > 0 ? (awayStats.ga / awayStats.gp) / aBarGA : 1;
+                let xgHomeGA = hBarGA * awayDefGA;
+                let xgAwayGA = aBarGA * homeDefGA;
 
-                // 3. GOLES ESPERADOS (xG) RIGUROSOS
-                let xgHome = hBar * homeAtt * awayDef;
-                let xgAway = aBar * awayAtt * homeDef;
+                // 4. PONDERACIÓN FINAL (70% GF / 30% GA)
+                let xgHome = (0.70 * xgHomeGF) + (0.30 * xgHomeGA);
+                let xgAway = (0.70 * xgAwayGF) + (0.30 * xgAwayGA);
 
                 if (isNaN(xgHome) || xgHome < 0) xgHome = 1.2;
                 if (isNaN(xgAway) || xgAway < 0) xgAway = 1.0;
                 let xgTotal = xgHome + xgAway;
 
-                document.getElementById('resHomeAtt').innerText = homeAtt.toFixed(2);
-                document.getElementById('resHomeAttDesc').innerText = homeAtt > 1 ? 'Superior al promedio' : 'Inferior al promedio';
-                document.getElementById('resHomeDef').innerText = homeDef.toFixed(2);
-                document.getElementById('resHomeDefDesc').innerText = homeDef > 1 ? 'Concede más que el promedio' : 'Sólido defensivamente';
+                document.getElementById('resHomeAtt').innerText = homeAttGF.toFixed(2);
+                document.getElementById('resHomeAttDesc').innerText = 'Ponderación 70% GF';
+                document.getElementById('resHomeDef').innerText = homeDefGA.toFixed(2);
+                document.getElementById('resHomeDefDesc').innerText = 'Ponderación 30% GA';
 
-                document.getElementById('resAwayAtt').innerText = awayAtt.toFixed(2);
-                document.getElementById('resAwayAttDesc').innerText = awayAtt > 1 ? 'Superior al promedio' : 'Inferior al promedio';
-                document.getElementById('resAwayDef').innerText = awayDef.toFixed(2);
-                document.getElementById('resAwayDefDesc').innerText = awayDef > 1 ? 'Concede más que el promedio' : 'Sólido defensivamente';
+                document.getElementById('resAwayAtt').innerText = awayAttGF.toFixed(2);
+                document.getElementById('resAwayAttDesc').innerText = 'Ponderación 70% GF';
+                document.getElementById('resAwayDef').innerText = awayDefGA.toFixed(2);
+                document.getElementById('resAwayDefDesc').innerText = 'Ponderación 30% GA';
 
                 document.getElementById('resXgHome').innerText = xgHome.toFixed(2);
                 document.getElementById('resXgAway').innerText = xgAway.toFixed(2);
                 document.getElementById('resXgTotal').innerText = xgTotal.toFixed(2);
 
-                // 4. DISTRIBUCIÓN DE POISSON
+                // 5. DISTRIBUCIÓN DE POISSON
                 const maxGoals = 10;
                 const poissonHome = [];
                 const poissonAway = [];
@@ -1170,7 +1177,7 @@
                     poissonAway.push(this.poissonProb(k, xgAway));
                 }
 
-                // 5. MATRIZ DE PROBABILIDAD Y MERCADOS
+                // 6. MATRIZ DE PROBABILIDAD Y MERCADOS
                 let probHomeWin = 0;
                 let probDraw = 0;
                 let probAwayWin = 0;
@@ -1231,7 +1238,7 @@
                 document.getElementById('probBttsNoText').innerText = `${(probBttsNo * 100).toFixed(1)}%`;
                 document.getElementById('probBttsNoOdds').innerText = `Cuota: ${oddsBttsNo.toFixed(2)}`;
 
-                // 6. TOP 3 SCORES
+                // 7. TOP 3 SCORES
                 const allScores = [];
                 for (let i = 0; i <= 6; i++) {
                     for (let j = 0; j <= 6; j++) {
