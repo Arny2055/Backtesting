@@ -142,7 +142,7 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
                         <h2 class="text-lg font-bold text-white uppercase tracking-wider">Tabla Local - Goles por 15 Min (Home)</h2>
-                        <p class="text-xs text-slate-400">Pega la tabla completa tal cual desde la fuente (incluyendo columnas 0-15, 16-30, 31-45, 46-60, 61-75, 76-90, 1st Half, 2nd Half, Avg min. GF/GA).</p>
+                        <p class="text-xs text-slate-400">Pega la tabla completa tal cual desde la fuente.</p>
                     </div>
                     <div class="flex items-center space-x-2">
                         <button onclick="app.clearTableData('home')" class="px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold">Limpiar</button>
@@ -378,11 +378,11 @@
                 const id = 'league_' + Date.now();
                 this.state.leagues[id] = {
                     id: id,
-                    name: 'Brasileirao (Ejemplo 15m)',
+                    name: 'Brasileirao 2026 (Ejemplo)',
                     updatedAt: new Date().toISOString(),
                     homeTable: [
-                        { name: "Athletico PR", gp: 16, i0_15: "2-5", i16_30: "4-2", i31_45: "5-1", i46_60: "2-2", i61_75: "8-3", i76_90: "12-9", h1: "12-9", h2: "15-6", avgGF: 50, avgGA: 43 },
-                        { name: "Flamengo", gp: 16, i0_15: "2-0", i16_30: "3-2", i31_45: "6-3", i46_60: "6-1", i61_75: "8-5", i76_90: "12-3", h1: "12-3", h2: "20-9", avgGF: 52, avgGA: 63 }
+                        { name: "Athletico PR", gp: 16, i0_15: "6-2", i16_30: "2-5", i31_45: "4-2", i46_60: "5-1", i61_75: "2-2", i76_90: "8-3", h1: "12-9", h2: "15-6", avgGF: 50, avgGA: 43 },
+                        { name: "Flamengo", gp: 16, i0_15: "7-1", i16_30: "2-0", i31_45: "3-2", i46_60: "6-3", i61_75: "6-1", i76_90: "8-5", h1: "12-3", h2: "20-9", avgGF: 52, avgGA: 63 }
                     ],
                     awayTable: [
                         { name: "Athletico PR", gp: 17, i0_15: "7-5", i16_30: "4-3", i31_45: "3-6", i46_60: "3-1", i61_75: "2-2", i76_90: "4-8", h1: "14-14", h2: "9-11", avgGF: 40, avgGA: 50 },
@@ -497,7 +497,7 @@
                 document.getElementById('activeLeagueBadge').innerText = l ? l.name : 'Sin Liga';
             }
 
-            // --- PARSER ROBUSTO DE TABLAS DE INTERVALOS (15 MIN) ---
+            // --- PARSER ADAPTADO EXACTO AL FORMATO DE 12 COLUMNAS ---
             parsePastedIntervalTable(type) {
                 const inputId = type === 'home' ? 'pasteHomeInput' : 'pasteAwayInput';
                 const text = document.getElementById(inputId).value.trim();
@@ -507,19 +507,24 @@
                 const rows = [];
 
                 for (let line of lines) {
+                    // Dividir por tabulaciones o múltiples espacios
                     const cols = line.split(/\t+|\s{2,}/).map(c => c.trim()).filter(c => c.length > 0);
                     if (cols.length >= 10) {
-                        // Omitir cabecera si se copió completa
-                        if (cols[0].toLowerCase().includes('home') || cols[0].toLowerCase().includes('away')) continue;
+                        // Omitir cabecera si se pegó completa
+                        if (cols[0].toLowerCase().includes('home') || cols[0].toLowerCase().includes('away') || cols[0].toLowerCase().includes('goals')) continue;
 
-                        // Buscar el índice donde empiezan los números (GP)
-                        let numIdx = cols.findIndex(c => !isNaN(c) && parseFloat(c) >= 0);
+                        // Buscar el índice del primer número puro (GP)
+                        let numIdx = cols.findIndex(c => /^\d+$/.test(c));
                         if (numIdx < 1) continue;
 
                         let teamName = cols.slice(0, numIdx).join(' ');
                         let data = cols.slice(numIdx);
 
                         if (data.length >= 9) {
+                            // Limpiar sufijos como " min." en los promedios finales
+                            let avgGfStr = data[9] ? data[9].replace(/[^0-9]/g, '') : "50";
+                            let avgGaStr = data[10] ? data[10].replace(/[^0-9]/g, '') : "50";
+
                             rows.push({
                                 name: teamName,
                                 gp: parseInt(data[0]) || 0,
@@ -531,15 +536,15 @@
                                 i76_90: data[6] || "0-0",
                                 h1: data[7] || "0-0",
                                 h2: data[8] || "0-0",
-                                avgGF: parseInt(data[9]) || 50,
-                                avgGA: parseInt(data[10]) || 50
+                                avgGF: parseInt(avgGfStr) || 50,
+                                avgGA: parseInt(avgGaStr) || 50
                             });
                         }
                     }
                 }
 
                 if (rows.length === 0) {
-                    this.showToast("Error", "No se pudieron reconocer equipos. Verifica el formato.", "red");
+                    this.showToast("Error", "No se reconocieron equipos. Verifica el formato.", "red");
                     return;
                 }
 
@@ -549,7 +554,7 @@
                 this.saveToLocalStorage();
                 this.renderTableViewer(type);
                 document.getElementById(inputId).value = '';
-                this.showToast("Éxito", `${rows.length} equipos de intervalos procesados`, "green");
+                this.showToast("Éxito", `${rows.length} equipos cargados correctamente`, "green");
             }
 
             renderTableViewer(type) {
@@ -677,7 +682,7 @@
                     combinedIntervals.push({
                         interval: key,
                         hVal: `${hGF}GF / ${hGA}GA`,
-                        aVal: `${aGF}GA / ${aGF}GF`,
+                        aVal: `${aGF}GA / ${aGA}GF`,
                         xg: xgFranja.toFixed(2),
                         prob: probFranja.toFixed(1)
                     });
