@@ -97,7 +97,7 @@
                 <div class="relative z-10">
                     <span class="text-xs font-mono uppercase tracking-widest text-neonBlue px-3 py-1 rounded-full bg-neonBlue/10 border border-neonBlue/30">Motor de Intervalos 15-Min</span>
                     <h2 class="text-2xl sm:text-3xl font-black mt-3 text-white">Análisis Dinámico de Goles HT & Minutos Clave</h2>
-                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Lectura avanzada de tablas por intervalos de 15 minutos, cálculo de Poisson HT, tramos 0-30 / 16-45 e Índice de Presión en Vivo.</p>
+                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Lectura avanzada de tablas por intervalos de 15 minutos, cálculo de Poisson bivariante HT y probabilidades de marcador exacto al descanso.</p>
                     <div class="mt-6 flex flex-wrap gap-3">
                         <button onclick="app.switchTab('leagues')" class="px-5 py-2.5 rounded-xl bg-neonBlue text-black font-bold text-xs uppercase tracking-wider hover:bg-neonBlue/90 transition-all shadow-lg shadow-neonBlue/20">Gestionar Ligas</button>
                         <button onclick="app.switchTab('analyzer')" class="px-5 py-2.5 rounded-xl bg-cardBg border border-neonGreen text-neonGreen font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/10 transition-all">Analizar Tramos</button>
@@ -215,12 +215,12 @@
             </div>
         </section>
 
-        <!-- ================= 5. ANALIZADOR POISSON & ÍNDICE DE PRESIÓN HT ================= -->
+        <!-- ================= 5. ANALIZADOR POISSON BIVARIANTE HT ================= -->
         <section id="tab-analyzer" class="tab-content hidden space-y-6">
             <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-5">
                 <div>
-                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Analizador Avanzado HT & Live Pressure Index</h2>
-                    <p class="text-xs text-slate-400">Cálculo de Poisson (70% GF / 30% GA), probabilidad de 0-0 HT y métrica de agresividad en vivo para detección de valor.</p>
+                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Analizador Poisson Bivariante HT (Home vs Away)</h2>
+                    <p class="text-xs text-slate-400">Invocación independiente de xG HT para Local y Visitante, estimando probabilidades de goles exactos al descanso.</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
@@ -238,61 +238,38 @@
                 </div>
 
                 <div id="analysisResultsContainer" class="space-y-6 hidden">
-                    <!-- Tarjetas de Resumen (HT, 0-30 y 16-45) -->
+                    <!-- Tarjetas de xG Separados HT (Local y Visitante) -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <!-- Over 0.5 HT -->
-                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonGreen/40 rounded-xl p-5 neon-glow-green">
-                            <span class="text-xs font-mono text-neonGreen uppercase block font-bold">Over 0.5 HT (0-45')</span>
-                            <div class="flex items-baseline space-x-2 mt-2">
-                                <span id="resHtProb" class="text-2xl sm:text-3xl font-black text-white font-mono">0.0%</span>
-                                <span id="resHtFairOdds" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
-                            </div>
-                            <p class="text-[11px] text-slate-300 mt-2">xG HT: <span id="resHtXg" class="font-bold text-white">0.00</span></p>
+                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonGreen/40 rounded-xl p-4">
+                            <span class="text-[11px] font-mono text-neonGreen uppercase block font-bold">xG Local (HT 0-45')</span>
+                            <span id="resHomeHtXg" class="text-2xl font-black text-white font-mono mt-1 block">0.00</span>
+                            <p class="text-[10px] text-slate-400 mt-1">Expectativa de gol 1ª parte</p>
                         </div>
-                        <!-- Over 0.5 Tramo 0-30 -->
-                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonBlue/40 rounded-xl p-5 neon-glow-blue">
-                            <span class="text-xs font-mono text-neonBlue uppercase block font-bold">Over 0.5 Tramo (0-30')</span>
-                            <div class="flex items-baseline space-x-2 mt-2">
-                                <span id="res030Prob" class="text-2xl sm:text-3xl font-black text-white font-mono">0.0%</span>
-                                <span id="res030FairOdds" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
-                            </div>
-                            <p class="text-[11px] text-slate-300 mt-2">xG 0-30: <span id="res030Xg" class="font-bold text-white">0.00</span></p>
+                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonPink/40 rounded-xl p-4">
+                            <span class="text-[11px] font-mono text-neonPink uppercase block font-bold">xG Visitante (HT 0-45')</span>
+                            <span id="resAwayHtXg" class="text-2xl font-black text-white font-mono mt-1 block">0.00</span>
+                            <p class="text-[10px] text-slate-400 mt-1">Expectativa de gol 1ª parte</p>
                         </div>
-                        <!-- Over 0.5 Tramo 16-45 -->
-                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonPurple/40 rounded-xl p-5 neon-glow-purple">
-                            <span class="text-xs font-mono text-neonPurple uppercase block font-bold">Over 0.5 Tramo (16-45')</span>
-                            <div class="flex items-baseline space-x-2 mt-2">
-                                <span id="res1645Prob" class="text-2xl sm:text-3xl font-black text-white font-mono">0.0%</span>
-                                <span id="res1645FairOdds" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
+                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonBlue/40 rounded-xl p-4">
+                            <span class="text-[11px] font-mono text-neonBlue uppercase block font-bold">Over 0.5 HT (Bivariante)</span>
+                            <div class="flex items-baseline space-x-2 mt-1">
+                                <span id="resBivarOver05" class="text-2xl font-black text-white font-mono">0.0%</span>
+                                <span id="resBivarOdds" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
                             </div>
-                            <p class="text-[11px] text-slate-300 mt-2">xG 16-45: <span id="res1645Xg" class="font-bold text-white">0.00</span></p>
+                            <p class="text-[10px] text-slate-400 mt-1">1 - P(0-0 al Descanso)</p>
                         </div>
                     </div>
 
-                    <!-- MEJORA AÑADIDA: ÍNDICE DE PRESIÓN HT & PROBABILIDAD DE 0-0 -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-2">
-                            <span class="text-xs font-mono text-neonBlue uppercase font-bold block">Probabilidad Exacta 0-0 al Descanso</span>
-                            <div class="flex items-baseline space-x-3">
-                                <span id="resZeroZeroProb" class="text-2xl font-black text-amber-400 font-mono">0.0%</span>
-                                <span class="text-[11px] text-slate-400">Riesgo de partido cerrado en la 1ª mitad</span>
-                            </div>
-                            <p class="text-[11px] text-slate-300 pt-2 border-t border-cardBorder/50">Calculado mediante la distribución de Poisson para 0 goles combinados.</p>
-                        </div>
-                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-2">
-                            <span class="text-xs font-mono text-neonGreen uppercase font-bold block">Live Pressure Index (Índice de Agresividad HT)</span>
-                            <div class="flex items-baseline space-x-3">
-                                <span id="resPressureIndex" class="text-2xl font-black text-white font-mono">-- / 10</span>
-                                <span id="resPressureBadge" class="text-[10px] px-2 py-0.5 rounded font-bold uppercase bg-neonGreen/10 text-neonGreen border border-neonGreen/30">Neutral</span>
-                            </div>
-                            <p class="text-[11px] text-slate-300 pt-2 border-t border-cardBorder/50">Mide la concentración de goles en los primeros 30 minutos frente al cierre.</p>
-                        </div>
+                    <!-- Marcadores Exactos Más Probables HT -->
+                    <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
+                        <span class="text-xs font-mono uppercase text-neonPurple block font-bold">Top Marcadores Exactos al Descanso (HT Correct Scores)</span>
+                        <div id="correctScoresContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
                     </div>
 
-                    <!-- Recomendación de Entrada -->
+                    <!-- Recomendación Táctica -->
                     <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-2">
-                        <span class="text-xs font-mono text-amber-400 uppercase font-bold block">Análisis de Entrada & Minuto Clave</span>
-                        <p id="resHtRecommendation" class="text-xs text-slate-300">Calculando recomendación táctica...</p>
+                        <span class="text-xs font-mono text-amber-400 uppercase font-bold block">Dictamen del Modelo Bivariante</span>
+                        <p id="resBivarRecommendation" class="text-xs text-slate-300">Calculando recomendación táctica...</p>
                     </div>
 
                     <!-- Interval Breakdown Table -->
@@ -316,7 +293,7 @@
                 </div>
 
                 <div id="analysisEmptyState" class="text-center py-12 text-slate-500 font-mono text-xs">
-                    Selecciona ambos equipos para ejecutar el motor de intervalos dinámicos.
+                    Selecciona ambos equipos para ejecutar el motor de intervalos bivariantes.
                 </div>
             </div>
         </section>
@@ -671,7 +648,7 @@
                 if (curH && curA) this.runAnalysis();
             }
 
-            // --- MOTOR DE POISSON AVANZADO CON LIVE PRESSURE INDEX Y 0-0 HT ---
+            // --- MOTOR DE POISSON BIVARIANTE HT & CORREC SCORES ---
             runAnalysis() {
                 const homeName = document.getElementById('selectHomeTeam').value;
                 const awayName = document.getElementById('selectAwayTeam').value;
@@ -680,6 +657,7 @@
 
                 if (!homeName || !awayName || homeName === awayName) {
                     container.classList.add('hidden');
+                    emptyState.classList.add('hidden'); // Ocultar o mostrar empty
                     emptyState.classList.remove('hidden');
                     return;
                 }
@@ -698,7 +676,8 @@
 
                 const intervalsKeys = ['0-15', '16-30', '31-45'];
                 let combinedIntervals = [];
-                let xgByInterval = {};
+                let lambdaHomeHT = 0;
+                let lambdaAwayHT = 0;
                 let totalHtXg = 0;
 
                 intervalsKeys.forEach((key, idx) => {
@@ -707,12 +686,14 @@
                     const [hGF, hGA] = parsePair(hStats[propKey]);
                     const [aGF, aGA] = parsePair(aStats[propKey]);
 
-                    // Ponderación 70% GF / 30% GA por franja
+                    // Ponderación 70% GF / 30% GA por franja para local y visitante por separado
                     const hWeighted = (0.70 * (hGF / (hStats.gp || 1))) + (0.30 * (hGA / (hStats.gp || 1)));
                     const aWeighted = (0.70 * (aGF / (aStats.gp || 1))) + (0.30 * (aGA / (aStats.gp || 1)));
 
+                    lambdaHomeHT += hWeighted;
+                    lambdaAwayHT += aWeighted;
+
                     const xgFranja = hWeighted + aWeighted;
-                    xgByInterval[key] = xgFranja;
                     totalHtXg += xgFranja;
 
                     const probFranja = (1 - Math.exp(-xgFranja)) * 100;
@@ -726,69 +707,60 @@
                     });
                 });
 
-                // 1. Probabilidades estándar HT
-                const probOver05HT = (1 - Math.exp(-totalHtXg)) * 100;
-                const fairOddsHT = probOver05HT > 0 ? (100 / probOver05HT) : 99;
+                // Función auxiliar de Poisson P(k; lambda)
+                const poissonProb = (k, lambda) => {
+                    let fact = 1;
+                    for (let i = 2; i <= k; i++) fact *= i;
+                    return (Math.pow(lambda, k) * Math.exp(-lambda)) / fact;
+                };
 
-                // 2. Probabilidad Exacta 0-0 al Descanso (Poisson P(0) = e^(-lambda))
-                const probZeroZeroHT = Math.exp(-totalHtXg) * 100;
+                // Probabilidad de 0-0 al descanso (P_home(0) * P_away(0))
+                const pHome0 = poissonProb(0, lambdaHomeHT);
+                const pAway0 = poissonProb(0, lambdaAwayHT);
+                const probZeroZeroHT = (pHome0 * pAway0) * 100;
+                const bivarOver05 = 100 - probZeroZeroHT;
+                const bivarOdds = bivarOver05 > 0 ? (100 / bivarOver05) : 99;
 
-                // 3. Live Pressure Index (Mide si la presión de goles se concentra al inicio 0-30 vs tarde 31-45)
-                const xgEarly = (xgByInterval['0-15'] || 0) + (xgByInterval['16-30'] || 0);
-                const xgLate = xgByInterval['31-45'] || 0;
-                let pressureScore = totalHtXg > 0 ? Math.min(10, Math.max(1, ((xgEarly * 1.5 + xgLate) / totalHtXg) * 5)).toFixed(1) : "5.0";
-                
-                let pressureBadgeText = "Neutral";
-                let pressureBadgeClass = "bg-neonBlue/10 text-neonBlue border-neonBlue/30";
-                if (parseFloat(pressureScore) >= 7.0) {
-                    pressureBadgeText = "Alta Agresividad";
-                    pressureBadgeClass = "bg-neonGreen/10 text-neonGreen border-neonGreen/30";
-                } else if (parseFloat(pressureScore) <= 4.0) {
-                    pressureBadgeText = "Lento / Conservador";
-                    pressureBadgeClass = "bg-red-500/10 text-red-400 border-red-500/30";
+                // Calcular matriz de marcadores exactos HT (0 a 3 goles cada uno)
+                let scoreProbs = [];
+                for (let h = 0; h <= 3; h++) {
+                    for (let a = 0; a <= 3; a++) {
+                        const p = poissonProb(h, lambdaHomeHT) * poissonProb(a, lambdaAwayHT) * 100;
+                        scoreProbs.push({ score: `${h} - ${a}`, prob: p });
+                    }
                 }
+                scoreProbs.sort((a, b) => b.prob - a.prob);
 
-                // Tramos 0-30 y 16-45
-                const xg0_30 = xgEarly;
-                const prob0_30 = (1 - Math.exp(-xg0_30)) * 100;
-                const fairOdds0_30 = prob0_30 > 0 ? (100 / prob0_30) : 99;
+                // Renderizar Top Marcadores Correctos HT
+                const scoresContainer = document.getElementById('correctScoresContainer');
+                scoresContainer.innerHTML = '';
+                scoreProbs.slice(0, 4).forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-darkBg border border-cardBorder rounded-lg p-2.5 text-center';
+                    card.innerHTML = `
+                        <span class="text-[10px] text-slate-400 font-mono block">Resultado HT</span>
+                        <span class="text-base font-black text-white font-mono my-0.5 block">${item.score}</span>
+                        <span class="text-[11px] font-bold text-neonGreen font-mono">${item.prob.toFixed(1)}%</span>
+                    `;
+                    scoresContainer.appendChild(card);
+                });
 
-                const xg16_45 = (xgByInterval['16-30'] || 0) + (xgByInterval['31-45'] || 0);
-                const prob16_45 = (1 - Math.exp(-xg16_45)) * 100;
-                const fairOdds16_45 = prob16_45 > 0 ? (100 / prob16_45) : 99;
-
-                // Recomendación táctica inteligente
-                const avgMinEntry = Math.round((hStats.avgGF + aStats.avgGF) / 2);
-                let recommendation = `Promedio combinado de anotación: ${avgMinEntry} min. `;
-                if (probZeroZeroHT > 35) {
-                    recommendation += `Alerta: Alta probabilidad de 0-0 al descanso (${probZeroZeroHT.toFixed(1)}%). Evita entrar de inicio y espera a que la cuota del Over 0.5 HT supere 2.00 pasada la media hora de juego.`;
-                } else if (prob0_30 >= 65) {
-                    recommendation += `Fuerte tendencia de presión inicial (Tramo 0-30 al ${prob0_30.toFixed(1)}%). Excelente escenario para buscar entrada en directo si hay remates tempranos.`;
+                // Recomendación táctica bivariante
+                let recommendation = `xG Local HT: ${lambdaHomeHT.toFixed(2)} | xG Visitante HT: ${lambdaAwayHT.toFixed(2)}. `;
+                if (bivarOver05 >= 75) {
+                    recommendation += `Excelente proyección ofensiva en la primera mitad (${bivarOver05.toFixed(1)}% Over 0.5 HT). Alta probabilidad de goles tempranos.`;
+                } else if (probZeroZeroHT >= 35) {
+                    recommendation += `Alerta de partido cerrado al descanso (Probabilidad de 0-0 del ${probZeroZeroHT.toFixed(1)}% ). Precaución en apuestas tempranas.`;
                 } else {
-                    recommendation += `Comportamiento estable en la primera parte. Índice de presión en nivel ${pressureScore}/10.`;
+                    recommendation += `Escenario equilibrado según la distribución bivariante de Poisson.`;
                 }
 
                 // Renderizar en UI
-                document.getElementById('resHtProb').innerText = `${probOver05HT.toFixed(1)}%`;
-                document.getElementById('resHtFairOdds').innerText = `Cuota: ${fairOddsHT.toFixed(2)}`;
-                document.getElementById('resHtXg').innerText = totalHtXg.toFixed(2);
-
-                document.getElementById('res030Prob').innerText = `${prob0_30.toFixed(1)}%`;
-                document.getElementById('res030FairOdds').innerText = `Cuota: ${fairOdds0_30.toFixed(2)}`;
-                document.getElementById('res030Xg').innerText = xg0_30.toFixed(2);
-
-                document.getElementById('res1645Prob').innerText = `${prob16_45.toFixed(1)}%`;
-                document.getElementById('res1645FairOdds').innerText = `Cuota: ${fairOdds16_45.toFixed(2)}`;
-                document.getElementById('res1645Xg').innerText = xg16_45.toFixed(2);
-
-                document.getElementById('resZeroZeroProb').innerText = `${probZeroZeroHT.toFixed(1)}%`;
-                document.getElementById('resPressureIndex').innerText = `${pressureScore} / 10`;
-                
-                const badgeEl = document.getElementById('resPressureBadge');
-                badgeEl.innerText = pressureBadgeText;
-                badgeEl.className = `text-[10px] px-2 py-0.5 rounded font-bold uppercase border ${pressureBadgeClass}`;
-
-                document.getElementById('resHtRecommendation').innerText = recommendation;
+                document.getElementById('resHomeHtXg').innerText = lambdaHomeHT.toFixed(2);
+                document.getElementById('resAwayHtXg').innerText = lambdaAwayHT.toFixed(2);
+                document.getElementById('resBivarOver05').innerText = `${bivarOver05.toFixed(1)}%`;
+                document.getElementById('resBivarOdds').innerText = `Cuota: ${bivarOdds.toFixed(2)}`;
+                document.getElementById('resBivarRecommendation').innerText = recommendation;
 
                 // Renderizar tabla de intervalos
                 const tbody = document.getElementById('intervalsTableBody');
