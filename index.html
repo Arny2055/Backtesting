@@ -34,12 +34,20 @@
                     <p class="text-xs text-slate-400">Modelo Poisson (10 Goles) & Cuotas Justas</p>
                 </div>
             </div>
-            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+            
+            <!-- Controles del Header -->
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-end flex-wrap">
                 <div class="relative flex-grow sm:flex-grow-0">
-                    <select id="leagueSelect" class="w-full sm:w-60 bg-[#111827] border border-slate-700/80 text-xs rounded-xl px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-200 cursor-pointer shadow-inner">
+                    <select id="leagueSelect" class="w-full sm:w-56 bg-[#111827] border border-slate-700/80 text-xs rounded-xl px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-200 cursor-pointer shadow-inner">
                         <!-- Dinámico -->
                     </select>
                 </div>
+                
+                <!-- Botón para abrir el Módulo de Historial en nueva pestaña -->
+                <a href="simulation_worker.html" target="_blank" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-teal-400 text-xs font-semibold px-3.5 py-2.5 rounded-xl transition shadow-md flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-clock-rotate-left"></i> <span class="hidden sm:inline">Historial</span>
+                </a>
+
                 <button onclick="openLeagueModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition shadow-md shadow-emerald-900/30 flex items-center gap-2 shrink-0">
                     <i class="fa-solid fa-gear"></i> <span class="hidden sm:inline">Gestionar Ligas</span>
                 </button>
@@ -739,13 +747,10 @@
                 topScore: `${top3[0].h}-${top3[0].a}`
             };
 
-            // 1. Guardar en localStorage para persistencia compartida
             localStorage.setItem("last_simulation", JSON.stringify(simulationPayload));
-
-            // 2. Emitir CustomEvent para pestañas o iframes abiertos en tiempo real
             window.dispatchEvent(new CustomEvent("poissonSimulationCalculated", { detail: simulationPayload }));
 
-            showToast("¡Simulación completada y sincronizada con el módulo externo!");
+            showToast("¡Simulación completada y sincronizada con el módulo!");
         }
 
         // --- GESTIÓN DE LIGAS Y MODAL ---
