@@ -43,6 +43,9 @@
         .neon-glow-blue {
             box-shadow: 0 0 15px rgba(0, 240, 255, 0.25), inset 0 0 15px rgba(0, 240, 255, 0.1);
         }
+        .neon-glow-purple {
+            box-shadow: 0 0 15px rgba(176, 0, 255, 0.25), inset 0 0 15px rgba(176, 0, 255, 0.1);
+        }
         .neon-border-green {
             border-color: #00ff66;
             box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
@@ -94,10 +97,10 @@
                 <div class="relative z-10">
                     <span class="text-xs font-mono uppercase tracking-widest text-neonBlue px-3 py-1 rounded-full bg-neonBlue/10 border border-neonBlue/30">Motor de Intervalos 15-Min</span>
                     <h2 class="text-2xl sm:text-3xl font-black mt-3 text-white">Análisis Dinámico de Goles HT & Minutos Clave</h2>
-                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Lectura avanzada de tablas por intervalos de 15 minutos, cálculo de Poisson HT (Over 0.5) y recomendación del minuto exacto de entrada.</p>
+                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Lectura avanzada de tablas por intervalos de 15 minutos, cálculo de Poisson HT (Over 0.5) y rangos especiales 0-30 y 16-45.</p>
                     <div class="mt-6 flex flex-wrap gap-3">
                         <button onclick="app.switchTab('leagues')" class="px-5 py-2.5 rounded-xl bg-neonBlue text-black font-bold text-xs uppercase tracking-wider hover:bg-neonBlue/90 transition-all shadow-lg shadow-neonBlue/20">Gestionar Ligas</button>
-                        <button onclick="app.switchTab('analyzer')" class="px-5 py-2.5 rounded-xl bg-cardBg border border-neonGreen text-neonGreen font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/10 transition-all">Analizar Minuto HT</button>
+                        <button onclick="app.switchTab('analyzer')" class="px-5 py-2.5 rounded-xl bg-cardBg border border-neonGreen text-neonGreen font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/10 transition-all">Analizar Tramos</button>
                     </div>
                 </div>
             </div>
@@ -212,12 +215,12 @@
             </div>
         </section>
 
-        <!-- ================= 5. ANALIZADOR POISSON DINÁMICO & GOL HT ================= -->
+        <!-- ================= 5. ANALIZADOR POISSON DINÁMICO & TRAMOS ESPECIALES ================= -->
         <section id="tab-analyzer" class="tab-content hidden space-y-6">
             <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-5">
                 <div>
-                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Analizador Dinámico de Gol HT & Minuto Clave</h2>
-                    <p class="text-xs text-slate-400">Combina los intervalos de 15 minutos (70% GF / 30% GA) para estimar la probabilidad de Over 0.5 HT y el minuto ideal para buscar la entrada.</p>
+                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Analizador Poisson: HT, 0-30 y 16-45</h2>
+                    <p class="text-xs text-slate-400">Cálculo de probabilidad acumulada mediante Poisson (ponderación 70% GF / 30% GA) para franjas estándar y parciales.</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
@@ -235,28 +238,46 @@
                 </div>
 
                 <div id="analysisResultsContainer" class="space-y-6 hidden">
-                    <!-- HT Probability & Key Minute Card -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Tarjetas de Resumen (HT, 0-30 y 16-45) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- Over 0.5 HT -->
                         <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonGreen/40 rounded-xl p-5 neon-glow-green">
-                            <span class="text-xs font-mono text-neonGreen uppercase block font-bold">Probabilidad Over 0.5 Goles HT (1ra Mitad)</span>
-                            <div class="flex items-baseline space-x-3 mt-2">
-                                <span id="resHtProb" class="text-3xl font-black text-white font-mono">0.0%</span>
-                                <span id="resHtFairOdds" class="text-xs text-slate-400 font-mono">Cuota Justa: 0.00</span>
+                            <span class="text-xs font-mono text-neonGreen uppercase block font-bold">Over 0.5 HT (0-45')</span>
+                            <div class="flex items-baseline space-x-2 mt-2">
+                                <span id="resHtProb" class="text-2xl sm:text-3xl font-black text-white font-mono">0.0%</span>
+                                <span id="resHtFairOdds" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
                             </div>
-                            <p id="resHtRecommendation" class="text-xs text-slate-300 mt-3 pt-3 border-t border-cardBorder">Calculando tendencia...</p>
+                            <p class="text-[11px] text-slate-300 mt-2">xG HT: <span id="resHtXg" class="font-bold text-white">0.00</span></p>
                         </div>
+                        <!-- Over 0.5 Tramo 0-30 -->
                         <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonBlue/40 rounded-xl p-5 neon-glow-blue">
-                            <span class="text-xs font-mono text-neonBlue uppercase block font-bold">Minuto Óptimo de Entrada (Live Entry)</span>
-                            <div class="flex items-baseline space-x-3 mt-2">
-                                <span id="resKeyMinute" class="text-2xl sm:text-3xl font-black text-white font-mono">Min. -- : --</span>
+                            <span class="text-xs font-mono text-neonBlue uppercase block font-bold">Over 0.5 Tramo (0-30')</span>
+                            <div class="flex items-baseline space-x-2 mt-2">
+                                <span id="res030Prob" class="text-2xl sm:text-3xl font-black text-white font-mono">0.0%</span>
+                                <span id="res030FairOdds" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
                             </div>
-                            <p id="resMinuteReason" class="text-xs text-slate-300 mt-3 pt-3 border-t border-cardBorder">Basado en el promedio de minutos de anotación (Avg min GF).</p>
+                            <p class="text-[11px] text-slate-300 mt-2">xG 0-30: <span id="res030Xg" class="font-bold text-white">0.00</span></p>
                         </div>
+                        <!-- Over 0.5 Tramo 16-45 -->
+                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonPurple/40 rounded-xl p-5 neon-glow-purple">
+                            <span class="text-xs font-mono text-neonPurple uppercase block font-bold">Over 0.5 Tramo (16-45')</span>
+                            <div class="flex items-baseline space-x-2 mt-2">
+                                <span id="res1645Prob" class="text-2xl sm:text-3xl font-black text-white font-mono">0.0%</span>
+                                <span id="res1645FairOdds" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mt-2">xG 16-45: <span id="res1645Xg" class="font-bold text-white">0.00</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Recomendación de Entrada -->
+                    <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-2">
+                        <span class="text-xs font-mono text-amber-400 uppercase font-bold block">Análisis de Entrada & Minuto Clave</span>
+                        <p id="resHtRecommendation" class="text-xs text-slate-300">Calculando recomendación táctica...</p>
                     </div>
 
                     <!-- Interval Breakdown Table -->
                     <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
-                        <span class="text-xs font-mono uppercase text-slate-400 block font-bold">Distribución de Goles Esperados por Franja de 15 Minutos (1er Tiempo)</span>
+                        <span class="text-xs font-mono uppercase text-slate-400 block font-bold">Desglose de Goles por Franja de 15 Minutos (1er Tiempo)</span>
                         <div class="overflow-x-auto">
                             <table class="w-full text-xs font-mono text-center border-collapse">
                                 <thead>
@@ -264,8 +285,8 @@
                                         <th class="p-2 text-left">Franja</th>
                                         <th class="p-2">Local GF (70%) / GA (30%)</th>
                                         <th class="p-2">Visitante GF (70%) / GA (30%)</th>
-                                        <th class="p-2">xG Franja Combinado</th>
-                                        <th class="p-2">Prob. Gol en Franja</th>
+                                        <th class="p-2">xG Franja</th>
+                                        <th class="p-2">Prob. Gol Franja</th>
                                     </tr>
                                 </thead>
                                 <tbody id="intervalsTableBody" class="divide-y divide-cardBorder/50"></tbody>
@@ -497,7 +518,6 @@
                 document.getElementById('activeLeagueBadge').innerText = l ? l.name : 'Sin Liga';
             }
 
-            // --- PARSER ADAPTADO EXACTO AL FORMATO DE 12 COLUMNAS ---
             parsePastedIntervalTable(type) {
                 const inputId = type === 'home' ? 'pasteHomeInput' : 'pasteAwayInput';
                 const text = document.getElementById(inputId).value.trim();
@@ -507,13 +527,10 @@
                 const rows = [];
 
                 for (let line of lines) {
-                    // Dividir por tabulaciones o múltiples espacios
                     const cols = line.split(/\t+|\s{2,}/).map(c => c.trim()).filter(c => c.length > 0);
                     if (cols.length >= 10) {
-                        // Omitir cabecera si se pegó completa
                         if (cols[0].toLowerCase().includes('home') || cols[0].toLowerCase().includes('away') || cols[0].toLowerCase().includes('goals')) continue;
 
-                        // Buscar el índice del primer número puro (GP)
                         let numIdx = cols.findIndex(c => /^\d+$/.test(c));
                         if (numIdx < 1) continue;
 
@@ -521,7 +538,6 @@
                         let data = cols.slice(numIdx);
 
                         if (data.length >= 9) {
-                            // Limpiar sufijos como " min." en los promedios finales
                             let avgGfStr = data[9] ? data[9].replace(/[^0-9]/g, '') : "50";
                             let avgGaStr = data[10] ? data[10].replace(/[^0-9]/g, '') : "50";
 
@@ -635,7 +651,7 @@
                 if (curH && curA) this.runAnalysis();
             }
 
-            // --- MOTOR DE POISSON DINÁMICO & INTERVALOS HT (70% GF / 30% GA) ---
+            // --- MOTOR DE POISSON DINÁMICO (HT, 0-30 Y 16-45) ---
             runAnalysis() {
                 const homeName = document.getElementById('selectHomeTeam').value;
                 const awayName = document.getElementById('selectAwayTeam').value;
@@ -660,11 +676,12 @@
                     return [parts[0], parts[1]];
                 };
 
-                const intervals = ['0-15', '16-30', '31-45'];
+                const intervalsKeys = ['0-15', '16-30', '31-45'];
                 let combinedIntervals = [];
+                let xgByInterval = {};
                 let totalHtXg = 0;
 
-                intervals.forEach((key, idx) => {
+                intervalsKeys.forEach((key, idx) => {
                     const propKey = idx === 0 ? 'i0_15' : idx === 1 ? 'i16_30' : 'i31_45';
                     
                     const [hGF, hGA] = parsePair(hStats[propKey]);
@@ -675,6 +692,7 @@
                     const aWeighted = (0.70 * (aGF / (aStats.gp || 1))) + (0.30 * (aGA / (aStats.gp || 1)));
 
                     const xgFranja = hWeighted + aWeighted;
+                    xgByInterval[key] = xgFranja;
                     totalHtXg += xgFranja;
 
                     const probFranja = (1 - Math.exp(-xgFranja)) * 100;
@@ -688,31 +706,47 @@
                     });
                 });
 
+                // Cálculo para HT (0-45)
                 const probOver05HT = (1 - Math.exp(-totalHtXg)) * 100;
                 const fairOddsHT = probOver05HT > 0 ? (100 / probOver05HT) : 99;
 
-                const avgMinEntry = Math.round((hStats.avgGF + aStats.avgGF) / 2);
-                let entryRecommendation = "";
-                let minuteRangeText = "";
+                // Cálculo para Tramo 0-30 (0-15 + 16-30)
+                const xg0_30 = (xgByInterval['0-15'] || 0) + (xgByInterval['16-30'] || 0);
+                const prob0_30 = (1 - Math.exp(-xg0_30)) * 100;
+                const fairOdds0_30 = prob0_30 > 0 ? (100 / prob0_30) : 99;
 
-                if (avgMinEntry <= 32) {
-                    minuteRangeText = `Minuto 20' - 32'`;
-                    entryRecommendation = `Alta tendencia madrugadora. Promedio combinado de anotación: ${avgMinEntry} min. Ideal para buscar Over 0.5 HT si la cuota supera 1.65 hacia el minuto 20.`;
-                } else if (avgMinEntry <= 45) {
-                    minuteRangeText = `Minuto 30' - 42'`;
-                    entryRecommendation = `Tendencia de final de primera parte. Los goles suelen concentrarse antes del descanso (Promedio combinado: ${avgMinEntry} min). Espera una cuota atractiva (>1.80) pasada la media hora de juego.`;
+                // Cálculo para Tramo 16-45 (16-30 + 31-45)
+                const xg16_45 = (xgByInterval['16-30'] || 0) + (xgByInterval['31-45'] || 0);
+                const prob16_45 = (1 - Math.exp(-xg16_45)) * 100;
+                const fairOdds16_45 = prob16_45 > 0 ? (100 / prob16_45) : 99;
+
+                // Recomendación de entrada
+                const avgMinEntry = Math.round((hStats.avgGF + aStats.avgGF) / 2);
+                let recommendation = `Promedio combinado de anotación: ${avgMinEntry} min. `;
+                if (prob0_30 >= 65) {
+                    recommendation += `Alta presión inicial detectada (Tramo 0-30 al ${prob0_30.toFixed(1)}%). Ideal para buscar entradas tempranas o Over 0.5 antes del minuto 30.`;
+                } else if (prob16_45 >= 70) {
+                    recommendation += `Fuerte tendencia de goles hacia el cierre de la primera parte (Tramo 16-45 al ${prob16_45.toFixed(1)}%). Recomendable esperar cuotas altas superado el minuto 20.`;
                 } else {
-                    minuteRangeText = `Precaución / Live tardío`;
-                    entryRecommendation = `Ritmo lento en la primera mitad (${avgMinEntry} min promedio). Se recomienda precaución o esperar al arranque del segundo tiempo.`;
+                    recommendation += `Partido equilibrado en la primera mitad. Monitorear en vivo según el desarrollo táctico inicial.`;
                 }
 
+                // Renderizar resultados en pantalla
                 document.getElementById('resHtProb').innerText = `${probOver05HT.toFixed(1)}%`;
-                document.getElementById('resHtFairOdds').innerText = `Cuota Justa: ${fairOddsHT.toFixed(2)}`;
-                document.getElementById('resHtRecommendation').innerText = entryRecommendation;
+                document.getElementById('resHtFairOdds').innerText = `Cuota: ${fairOddsHT.toFixed(2)}`;
+                document.getElementById('resHtXg').innerText = totalHtXg.toFixed(2);
 
-                document.getElementById('resKeyMinute').innerText = minuteRangeText;
-                document.getElementById('resMinuteReason').innerText = `Avg min GF Local: ${hStats.avgGF}' | Avg min GF Visitante: ${aStats.avgGF}'`;
+                document.getElementById('res030Prob').innerText = `${prob0_30.toFixed(1)}%`;
+                document.getElementById('res030FairOdds').innerText = `Cuota: ${fairOdds0_30.toFixed(2)}`;
+                document.getElementById('res030Xg').innerText = xg0_30.toFixed(2);
 
+                document.getElementById('res1645Prob').innerText = `${prob16_45.toFixed(1)}%`;
+                document.getElementById('res1645FairOdds').innerText = `Cuota: ${fairOdds16_45.toFixed(2)}`;
+                document.getElementById('res1645Xg').innerText = xg16_45.toFixed(2);
+
+                document.getElementById('resHtRecommendation').innerText = recommendation;
+
+                // Renderizar tabla de intervalos 15m
                 const tbody = document.getElementById('intervalsTableBody');
                 tbody.innerHTML = '';
                 combinedIntervals.forEach(item => {
