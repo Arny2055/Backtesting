@@ -1107,7 +1107,7 @@
                 if (homeTeamName === awayTeamName) {
                     this.showToast("Error", "El equipo local y visitante no pueden ser el mismo", "red");
                     container.classList.add('hidden');
-                    emptyState.classList.remove('hidden');
+                    emptyState.classList.add('hidden');
                     return;
                 }
 
@@ -1122,7 +1122,7 @@
                     return;
                 }
 
-                // 1. LEAGUE AVERAGES (CORREGIDO: Medias independientes y precisas para Local y Visitante)
+                // 1. LEAGUE AVERAGES
                 let totalHomeGF = 0, totalHomeGP = 0;
                 league.homeTable.forEach(t => { totalHomeGF += t.gf; totalHomeGP += t.gp; });
                 let leagueAvgHomeGF = totalHomeGP > 0 ? totalHomeGF / totalHomeGP : 1.35;
@@ -1131,18 +1131,18 @@
                 league.awayTable.forEach(t => { totalAwayGF += t.gf; totalAwayGP += t.gp; });
                 let leagueAvgAwayGF = totalAwayGP > 0 ? totalAwayGF / totalAwayGP : 1.15;
 
-                // 2. STRENGTH CALCULATIONS (CORREGIDO: Normalización matemática exacta con medias de su respectiva condición)
+                // 2. STRENGTH CALCULATIONS (CORREGIDO: Defensa local normalizada con la media visitante correcta)
                 let homeTeamGPG_Home = homeStats.gp > 0 ? homeStats.gf / homeStats.gp : 0;
                 let homeAttackStrength = leagueAvgHomeGF > 0 ? homeTeamGPG_Home / leagueAvgHomeGF : 1.0;
 
                 let homeTeamGAPG_Home = homeStats.gp > 0 ? homeStats.ga / homeStats.gp : 0;
-                let homeDefenseStrength = leagueAvgHomeGF > 0 ? homeTeamGAPG_Home / leagueAvgHomeGF : 1.0;
+                let homeDefenseStrength = leagueAvgAwayGF > 0 ? homeTeamGAPG_Home / leagueAvgAwayGF : 1.0;
 
                 let awayTeamGPG_Away = awayStats.gp > 0 ? awayStats.gf / awayStats.gp : 0;
                 let awayAttackStrength = leagueAvgAwayGF > 0 ? awayTeamGPG_Away / leagueAvgAwayGF : 1.0;
 
                 let awayTeamGAPG_Away = awayStats.gp > 0 ? awayStats.ga / awayStats.gp : 0;
-                let awayDefenseStrength = leagueAvgAwayGF > 0 ? awayTeamGAPG_Away / leagueAvgAwayGF : 1.0;
+                let awayDefenseStrength = leagueAvgHomeGF > 0 ? awayTeamGAPG_Away / leagueAvgHomeGF : 1.0;
 
                 // 3. EXPECTED GOALS (xG)
                 let xgHome = leagueAvgHomeGF * homeAttackStrength * awayDefenseStrength;
