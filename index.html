@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Poisson de Fútbol</title>
+    <title>Calculadora Poisson de Fútbol - Pro Analytics</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
-        /* Scrollbar personalizado fino */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -32,7 +31,7 @@
                     <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
                         PoissonFootball <span class="text-xs bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-semibold">Pro Analytics</span>
                     </h1>
-                    <p class="text-xs text-slate-400">Modelo estadístico y cálculo de cuotas justas por Poisson</p>
+                    <p class="text-xs text-slate-400">Modelo estadístico avanzado con 10 Goles de Matriz & Cuotas Justas</p>
                 </div>
             </div>
             <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
@@ -42,7 +41,7 @@
                     </select>
                 </div>
                 <button onclick="openLeagueModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition shadow-lg shadow-emerald-900/20 flex items-center gap-2 shrink-0">
-                    <i class="fa-solid fa-gear"></i> <span class="hidden sm:inline">Gestionar Ligas</span>
+                    <i class="fa-solid fa-gear"></i> <span class="hidden sm:inline">Gestionar Ligas y Tablas</span>
                 </button>
             </div>
         </div>
@@ -51,11 +50,11 @@
     <!-- Main Content Grid -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- Left Column: Match Selection, xG & Standings (5 Cols) -->
-        <div class="lg:col-span-5 space-y-6">
+        <!-- Left Column: Match Selection & xG (4 Cols) -->
+        <div class="lg:col-span-4 space-y-6">
             
             <!-- Match Selector Card -->
-            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-7 shadow-2xl relative overflow-hidden">
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
                 <div class="absolute -top-12 -right-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
                 
                 <h2 class="text-base font-bold uppercase tracking-wider text-slate-300 mb-5 flex items-center gap-2.5">
@@ -114,42 +113,10 @@
                 </div>
             </div>
 
-            <!-- Standings Table Accordion / Box -->
-            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
-                            <i class="fa-solid fa-table"></i>
-                        </div>
-                        Tabla de Posiciones
-                    </h3>
-                </div>
-                <div class="flex gap-2 p-1 bg-slate-950/60 border border-slate-800 rounded-2xl mb-4">
-                    <button onclick="switchStandingsTab('home')" id="tabHomeBtn" class="flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-600 text-white transition shadow">Local</button>
-                    <button onclick="switchStandingsTab('away')" id="tabAwayBtn" class="flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition">Visitante</button>
-                </div>
-                <div class="overflow-x-auto max-h-72 pr-1">
-                    <table id="standingsTable" class="w-full text-left text-xs text-slate-300">
-                        <thead class="bg-slate-800/90 text-slate-400 uppercase font-bold text-[10px] sticky top-0 z-10">
-                            <tr>
-                                <th class="p-2.5 rounded-l-xl">Equipo</th>
-                                <th class="p-2.5 text-center">PJ</th>
-                                <th class="p-2.5 text-center">GF</th>
-                                <th class="p-2.5 text-center">GC</th>
-                                <th class="p-2.5 text-center rounded-r-xl">Pts</th>
-                            </tr>
-                        </thead>
-                        <tbody id="standingsTableBody" class="divide-y divide-slate-800/60">
-                            <!-- Dinámico -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
         </div>
 
-        <!-- Right Column: Results & Matrix (7 Cols) -->
-        <div class="lg:col-span-7 space-y-6">
+        <!-- Right Column: Results & Markets (8 Cols) -->
+        <div class="lg:col-span-8 space-y-6">
             
             <!-- Initial State / Placeholder -->
             <div id="initialState" class="bg-slate-900/90 border border-slate-800 rounded-3xl p-12 text-center flex flex-col items-center justify-center min-h-[480px] shadow-2xl relative overflow-hidden">
@@ -158,120 +125,180 @@
                     <i class="fa-solid fa-chart-pie"></i>
                 </div>
                 <h3 class="text-xl font-bold text-white mb-2">Esperando datos de simulación</h3>
-                <p class="text-sm text-slate-400 max-w-md leading-relaxed">Selecciona los equipos local y visitante en el panel izquierdo y haz clic en <strong class="text-slate-200">"Calcular Probabilidades"</strong> para generar el análisis Poisson completo.</p>
+                <p class="text-sm text-slate-400 max-w-md leading-relaxed">Selecciona los equipos local y visitante en el panel izquierdo y haz clic en <strong class="text-slate-200">"Calcular Probabilidades"</strong> para generar el pronóstico matemático.</p>
             </div>
 
             <!-- Results Container (Hidden initially) -->
             <div id="resultsContainer" class="space-y-6 hidden">
                 
                 <!-- 1X2 Probabilities & Odds Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <!-- Home Win -->
-                    <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 shadow-2xl relative overflow-hidden flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Victoria Local (1)</span>
-                                <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs">
-                                    <i class="fa-solid fa-house"></i>
-                                </div>
-                            </div>
-                            <div class="text-3xl font-black text-white tracking-tight" id="probHome">0%</div>
-                        </div>
-                        <div class="mt-5 pt-3 border-t border-slate-800/80 flex justify-between items-center">
-                            <span class="text-xs text-slate-400 font-medium">Cuota Justa</span>
-                            <span class="text-sm font-extrabold text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-xl border border-emerald-800/50" id="oddsHome">0.00</span>
-                        </div>
-                    </div>
-
-                    <!-- Draw -->
-                    <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 shadow-2xl relative overflow-hidden flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Empate (X)</span>
-                                <div class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center text-xs">
-                                    <i class="fa-solid fa-handshake"></i>
-                                </div>
-                            </div>
-                            <div class="text-3xl font-black text-white tracking-tight" id="probDraw">0%</div>
-                        </div>
-                        <div class="mt-5 pt-3 border-t border-slate-800/80 flex justify-between items-center">
-                            <span class="text-xs text-slate-400 font-medium">Cuota Justa</span>
-                            <span class="text-sm font-extrabold text-amber-400 bg-amber-950/60 px-3 py-1 rounded-xl border border-amber-800/50" id="oddsDraw">0.00</span>
-                        </div>
-                    </div>
-
-                    <!-- Away Win -->
-                    <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 shadow-2xl relative overflow-hidden flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Victoria Visita (2)</span>
-                                <div class="w-7 h-7 rounded-lg bg-teal-500/10 text-teal-400 flex items-center justify-center text-xs">
-                                    <i class="fa-solid fa-plane"></i>
-                                </div>
-                            </div>
-                            <div class="text-3xl font-black text-white tracking-tight" id="probAway">0%</div>
-                        </div>
-                        <div class="mt-5 pt-3 border-t border-slate-800/80 flex justify-between items-center">
-                            <span class="text-xs text-slate-400 font-medium">Cuota Justa</span>
-                            <span class="text-sm font-extrabold text-teal-400 bg-teal-950/60 px-3 py-1 rounded-xl border border-teal-800/50" id="oddsAway">0.00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Secondary Markets & Most Likely Score -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Most Likely Score -->
-                    <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl flex items-center justify-between">
-                        <div>
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">Marcador Más Probable</span>
-                            <span id="mostLikelyScore" class="text-3xl font-black text-white tracking-tight">0 - 0</span>
-                        </div>
-                        <div class="text-right bg-slate-800/50 border border-slate-700/50 px-4 py-3 rounded-2xl">
-                            <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-semibold">Probabilidad</span>
-                            <span id="mostLikelyProb" class="text-xl font-extrabold text-emerald-400">0%</span>
-                        </div>
-                    </div>
-
-                    <!-- Over / Under 2.5 -->
-                    <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl flex items-center justify-around text-center">
-                        <div>
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">+2.5 Goles</span>
-                            <span id="over25Prob" class="text-xl font-extrabold text-white">0%</span>
-                            <span id="over25Odds" class="text-xs font-semibold text-emerald-400 block mt-1 bg-emerald-950/40 px-2 py-0.5 rounded-lg border border-emerald-800/30">Cuota: 0.00</span>
-                        </div>
-                        <div class="h-12 w-px bg-slate-800"></div>
-                        <div>
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">-2.5 Goles</span>
-                            <span id="under25Prob" class="text-xl font-extrabold text-white">0%</span>
-                            <span id="under25Odds" class="text-xs font-semibold text-teal-400 block mt-1 bg-teal-950/40 px-2 py-0.5 rounded-lg border border-teal-800/30">Cuota: 0.00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Score Matrix (0-5) -->
-                <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-7 shadow-2xl">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-5 flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
-                            <i class="fa-solid fa-table-cells"></i>
-                        </div>
-                        Matriz de Probabilidad de Marcadores Exactos (%)
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-trophy text-emerald-500"></i> Mercado 1X2 (Resultado Final)
                     </h3>
-                    <div class="overflow-x-auto pb-2">
-                        <table class="w-full text-center text-xs border-collapse">
-                            <thead>
-                                <tr id="matrixHeader" class="bg-slate-800/90 text-slate-400 font-bold">
-                                    <th class="p-2.5 border border-slate-700/60 rounded-tl-xl">L \ V</th>
-                                    <!-- Dinámico 0 a 5 -->
-                                </tr>
-                            </thead>
-                            <tbody id="matrixBody" class="divide-y divide-slate-800/50">
-                                <!-- Dinámico -->
-                            </tbody>
-                        </table>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- Home Win -->
+                        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 shadow-2xl flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-slate-400 uppercase">Victoria Local (1)</span>
+                                    <i class="fa-solid fa-house text-emerald-500 text-sm"></i>
+                                </div>
+                                <div class="text-3xl font-black text-white" id="probHome">0%</div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-800/80 flex justify-between items-center">
+                                <span class="text-xs text-slate-400">Cuota Justa</span>
+                                <span class="text-sm font-extrabold text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded-xl border border-emerald-800/50" id="oddsHome">0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Draw -->
+                        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 shadow-2xl flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-slate-400 uppercase">Empate (X)</span>
+                                    <i class="fa-solid fa-handshake text-amber-500 text-sm"></i>
+                                </div>
+                                <div class="text-3xl font-black text-white" id="probDraw">0%</div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-800/80 flex justify-between items-center">
+                                <span class="text-xs text-slate-400">Cuota Justa</span>
+                                <span class="text-sm font-extrabold text-amber-400 bg-amber-950/60 px-2.5 py-1 rounded-xl border border-amber-800/50" id="oddsDraw">0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Away Win -->
+                        <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 shadow-2xl flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-bold text-slate-400 uppercase">Victoria Visita (2)</span>
+                                    <i class="fa-solid fa-plane text-teal-500 text-sm"></i>
+                                </div>
+                                <div class="text-3xl font-black text-white" id="probAway">0%</div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-800/80 flex justify-between items-center">
+                                <span class="text-xs text-slate-400">Cuota Justa</span>
+                                <span class="text-sm font-extrabold text-teal-400 bg-teal-950/60 px-2.5 py-1 rounded-xl border border-teal-800/50" id="oddsAway">0.00</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mt-4 flex items-center justify-between text-xs text-slate-400 px-1 font-medium">
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-arrow-down text-emerald-400"></i> Fila = Goles Local</span>
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-arrow-right text-emerald-400"></i> Columna = Goles Visitante</span>
+                </div>
+
+                <!-- Double Chance & BTTS Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Double Chance -->
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-emerald-500"></i> Doble Oportunidad
+                        </h3>
+                        <div class="grid grid-cols-3 gap-2 text-center">
+                            <div class="bg-slate-800/60 border border-slate-700/60 p-3 rounded-2xl">
+                                <span class="block text-[10px] text-slate-400 uppercase font-bold">1X</span>
+                                <span id="dc1xProb" class="text-base font-extrabold text-white block mt-1">0%</span>
+                                <span id="dc1xOdds" class="text-[11px] font-semibold text-emerald-400 block mt-0.5">0.00</span>
+                            </div>
+                            <div class="bg-slate-800/60 border border-slate-700/60 p-3 rounded-2xl">
+                                <span class="block text-[10px] text-slate-400 uppercase font-bold">12</span>
+                                <span id="dc12Prob" class="text-base font-extrabold text-white block mt-1">0%</span>
+                                <span id="dc12Odds" class="text-[11px] font-semibold text-amber-400 block mt-0.5">0.00</span>
+                            </div>
+                            <div class="bg-slate-800/60 border border-slate-700/60 p-3 rounded-2xl">
+                                <span class="block text-[10px] text-slate-400 uppercase font-bold">X2</span>
+                                <span id="dcX2Prob" class="text-base font-extrabold text-white block mt-1">0%</span>
+                                <span id="dcX2Odds" class="text-[11px] font-semibold text-teal-400 block mt-0.5">0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BTTS (Both Teams to Score) -->
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-arrows-split-up-and-left text-emerald-500"></i> Ambos Equipos Anotan (BTTS)
+                        </h3>
+                        <div class="grid grid-cols-2 gap-3 text-center">
+                            <div class="bg-slate-800/60 border border-slate-700/60 p-3.5 rounded-2xl">
+                                <span class="block text-[10px] text-slate-400 uppercase font-bold">Sí (BTTS)</span>
+                                <span id="bttsYesProb" class="text-lg font-extrabold text-emerald-400 block mt-1">0%</span>
+                                <span id="bttsYesOdds" class="text-xs font-semibold text-slate-300 block mt-0.5">Cuota: 0.00</span>
+                            </div>
+                            <div class="bg-slate-800/60 border border-slate-700/60 p-3.5 rounded-2xl">
+                                <span class="block text-[10px] text-slate-400 uppercase font-bold">No (BTTS)</span>
+                                <span id="bttsNoProb" class="text-lg font-extrabold text-teal-400 block mt-1">0%</span>
+                                <span id="bttsNoOdds" class="text-xs font-semibold text-slate-300 block mt-0.5">Cuota: 0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Over / Under Markets (1.5, 2.5, 3.5) -->
+                <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-bar text-emerald-500"></i> Goles Totales (Over / Under)
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                        <!-- 1.5 -->
+                        <div class="bg-slate-800/50 border border-slate-700/60 p-4 rounded-2xl flex flex-col justify-between">
+                            <span class="text-xs font-bold text-slate-300 uppercase block mb-2">Línea 1.5 Goles</span>
+                            <div class="flex justify-around items-center">
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">+1.5</span>
+                                    <span id="over15Prob" class="text-sm font-bold text-white">0%</span>
+                                    <span id="over15Odds" class="text-[10px] text-emerald-400 block">0.00</span>
+                                </div>
+                                <div class="h-6 w-px bg-slate-700"></div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">-1.5</span>
+                                    <span id="under15Prob" class="text-sm font-bold text-white">0%</span>
+                                    <span id="under15Odds" class="text-[10px] text-teal-400 block">0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2.5 -->
+                        <div class="bg-slate-800/50 border border-slate-700/60 p-4 rounded-2xl flex flex-col justify-between">
+                            <span class="text-xs font-bold text-slate-300 uppercase block mb-2">Línea 2.5 Goles</span>
+                            <div class="flex justify-around items-center">
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">+2.5</span>
+                                    <span id="over25Prob" class="text-sm font-bold text-white">0%</span>
+                                    <span id="over25Odds" class="text-[10px] text-emerald-400 block">0.00</span>
+                                </div>
+                                <div class="h-6 w-px bg-slate-700"></div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">-2.5</span>
+                                    <span id="under25Prob" class="text-sm font-bold text-white">0%</span>
+                                    <span id="under25Odds" class="text-[10px] text-teal-400 block">0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3.5 -->
+                        <div class="bg-slate-800/50 border border-slate-700/60 p-4 rounded-2xl flex flex-col justify-between">
+                            <span class="text-xs font-bold text-slate-300 uppercase block mb-2">Línea 3.5 Goles</span>
+                            <div class="flex justify-around items-center">
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">+3.5</span>
+                                    <span id="over35Prob" class="text-sm font-bold text-white">0%</span>
+                                    <span id="over35Odds" class="text-[10px] text-emerald-400 block">0.00</span>
+                                </div>
+                                <div class="h-6 w-px bg-slate-700"></div>
+                                <div>
+                                    <span class="text-[10px] text-slate-400 block">-3.5</span>
+                                    <span id="under35Prob" class="text-sm font-bold text-white">0%</span>
+                                    <span id="under35Odds" class="text-[10px] text-teal-400 block">0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top 3 Most Likely Correct Scores -->
+                <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-medal text-emerald-500"></i> Top 3 Marcadores Correctos Más Probables
+                    </h3>
+                    <div id="topScoresContainer" class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                        <!-- Dinámico -->
                     </div>
                 </div>
 
@@ -281,16 +308,16 @@
 
     </main>
 
-    <!-- Modal for League Management -->
+    <!-- Modal for League & Standings Management -->
     <div id="leagueModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
             <!-- Modal Header -->
             <div class="px-6 py-5 border-b border-slate-800 flex justify-between items-center bg-slate-900/90">
                 <h3 class="text-base font-bold text-white flex items-center gap-2.5">
                     <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm">
                         <i class="fa-solid fa-trophy"></i>
                     </div>
-                    Gestión de Ligas y Tablas
+                    Gestión de Ligas y Tablas de Posiciones
                 </h3>
                 <button onclick="closeLeagueModal()" class="text-slate-400 hover:text-white transition w-8 h-8 rounded-xl bg-slate-800 flex items-center justify-center">
                     <i class="fa-solid fa-xmark text-base"></i>
@@ -346,7 +373,7 @@
                     </div>
 
                     <!-- Tabla editable en vivo -->
-                    <div class="border border-slate-800 rounded-2xl overflow-x-auto max-h-60 shadow-inner">
+                    <div class="border border-slate-800 rounded-2xl overflow-x-auto max-h-72 shadow-inner">
                         <table class="w-full text-left text-xs text-slate-300">
                             <thead class="bg-slate-800/90 text-slate-400 uppercase font-bold text-[10px] sticky top-0 z-10">
                                 <tr>
@@ -382,7 +409,7 @@
         </div>
     </div>
 
-    <!-- Notification Toast / Custom Alert Box -->
+    <!-- Notification Toast -->
     <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 border border-slate-700 text-white px-5 py-3.5 rounded-2xl shadow-2xl z-50 transform translate-y-24 opacity-0 transition-all duration-300 flex items-center gap-3 border-l-4 border-l-emerald-500">
         <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
         <span id="toastMessage" class="text-sm font-semibold">Operación exitosa</span>
@@ -390,7 +417,6 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Datos iniciales por defecto (Premier League provista en el prompt)
         const defaultLeagueData = {
             id: "premier_default",
             name: "Premier League (Datos Base)",
@@ -442,11 +468,9 @@
 
         let leagues = [];
         let currentLeagueId = "";
-        let currentStandingsTab = "home";
         let modalTableTab = "home";
         let activeModalLeague = null;
 
-        // Inicialización
         window.onload = function() {
             loadLeaguesFromStorage();
             initUI();
@@ -455,18 +479,12 @@
         function loadLeaguesFromStorage() {
             const stored = localStorage.getItem("poisson_leagues");
             if (stored) {
-                try {
-                    leagues = JSON.parse(stored);
-                } catch(e) {
-                    leagues = [defaultLeagueData];
-                }
+                try { leagues = JSON.parse(stored); } catch(e) { leagues = [defaultLeagueData]; }
             } else {
                 leagues = [defaultLeagueData];
                 saveLeaguesToStorage();
             }
-            if (leagues.length > 0) {
-                currentLeagueId = leagues[0].id;
-            }
+            if (leagues.length > 0) currentLeagueId = leagues[0].id;
         }
 
         function saveLeaguesToStorage() {
@@ -480,7 +498,6 @@
         function initUI() {
             updateLeagueSelects();
             populateTeamSelects();
-            renderStandingsTable();
         }
 
         function updateLeagueSelects() {
@@ -497,7 +514,6 @@
             select.onchange = (e) => {
                 currentLeagueId = e.target.value;
                 populateTeamSelects();
-                renderStandingsTable();
                 document.getElementById("resultsContainer").classList.add("hidden");
                 document.getElementById("initialState").classList.remove("hidden");
                 document.getElementById("statsCard").classList.add("hidden");
@@ -526,49 +542,10 @@
                 awaySelect.appendChild(opt2);
             });
 
-            if (teams.length > 1) {
-                awaySelect.value = teams[1];
-            }
+            if (teams.length > 1) awaySelect.value = teams[1];
         }
 
-        function switchStandingsTab(tab) {
-            currentStandingsTab = tab;
-            if (tab === 'home') {
-                document.getElementById("tabHomeBtn").className = "flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-600 text-white transition shadow";
-                document.getElementById("tabAwayBtn").className = "flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition";
-            } else {
-                document.getElementById("tabHomeBtn").className = "flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition";
-                document.getElementById("tabAwayBtn").className = "flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-600 text-white transition shadow";
-            }
-            renderStandingsTable();
-        }
-
-        function renderStandingsTable() {
-            const league = getActiveLeague();
-            const tbody = document.getElementById("standingsTableBody");
-            tbody.innerHTML = "";
-
-            const data = currentStandingsTab === 'home' ? league.home : league.away;
-            const sorted = [...data].sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
-
-            sorted.forEach((item, index) => {
-                const tr = document.createElement("tr");
-                tr.className = "hover:bg-slate-800/40 transition";
-                tr.innerHTML = `
-                    <td class="p-2.5 font-medium flex items-center gap-2.5">
-                        <span class="text-[10px] text-slate-500 font-bold w-4">${index + 1}</span>
-                        <span class="text-white truncate font-semibold">${item.team}</span>
-                    </td>
-                    <td class="p-2.5 text-center text-slate-400 font-medium">${item.gp}</td>
-                    <td class="p-2.5 text-center text-emerald-400 font-semibold">${item.gf}</td>
-                    <td class="p-2.5 text-center text-rose-400 font-semibold">${item.ga}</td>
-                    <td class="p-2.5 text-center font-black text-white">${item.pts}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        // --- CÁLCULO POISSON ---
+        // --- CÁLCULO POISSON (10 GOLES) ---
         function factorial(n) {
             if (n === 0 || n === 1) return 1;
             let acc = 1;
@@ -629,12 +606,10 @@
             document.getElementById("statAwayXG").textContent = lambdaAway.toFixed(2);
             document.getElementById("statsCard").classList.remove("hidden");
 
-            const maxGoals = 5;
-            let probHomeWin = 0;
-            let probDraw = 0;
-            let probAwayWin = 0;
-            let maxScoreProb = -1;
-            let mostLikelyScoreStr = "0 - 0";
+            // MATRICES Y MERCADOS HASTA 10 GOLES
+            const maxGoals = 10;
+            let probHomeWin = 0, probDraw = 0, probAwayWin = 0;
+            let allScores = [];
 
             let matrixProbs = Array(maxGoals + 1).fill(0).map(() => Array(maxGoals + 1).fill(0));
 
@@ -647,30 +622,17 @@
                     else if (h === a) probDraw += p;
                     else probAwayWin += p;
 
-                    if (p > maxScoreProb) {
-                        maxScoreProb = p;
-                        mostLikelyScoreStr = `${h} - ${a}`;
-                    }
+                    allScores.push({ h, a, p });
                 }
             }
 
+            // Normalizar 1X2
             const total1X2 = probHomeWin + probDraw + probAwayWin;
             probHomeWin /= total1X2;
             probDraw /= total1X2;
             probAwayWin /= total1X2;
 
-            let probOver25 = 0;
-            let probUnder25 = 0;
-            for (let h = 0; h <= maxGoals; h++) {
-                for (let a = 0; a <= maxGoals; a++) {
-                    if ((h + a) > 2.5) probOver25 += matrixProbs[h][a];
-                    else probUnder25 += matrixProbs[h][a];
-                }
-            }
-            const totalOverUnder = probOver25 + probUnder25;
-            probOver25 /= totalOverUnder;
-            probUnder25 /= totalOverUnder;
-
+            // Render 1X2
             document.getElementById("probHome").textContent = (probHomeWin * 100).toFixed(1) + "%";
             document.getElementById("oddsHome").textContent = probHomeWin > 0 ? (1 / probHomeWin).toFixed(2) : "99.00";
 
@@ -680,48 +642,86 @@
             document.getElementById("probAway").textContent = (probAwayWin * 100).toFixed(1) + "%";
             document.getElementById("oddsAway").textContent = probAwayWin > 0 ? (1 / probAwayWin).toFixed(2) : "99.00";
 
-            document.getElementById("mostLikelyScore").textContent = mostLikelyScoreStr;
-            document.getElementById("mostLikelyProb").textContent = (maxScoreProb * 100).toFixed(1) + "%";
+            // Doble Oportunidad
+            const prob1X = probHomeWin + probDraw;
+            const prob12 = probHomeWin + probAwayWin;
+            const probX2 = probDraw + probAwayWin;
 
-            document.getElementById("over25Prob").textContent = (probOver25 * 100).toFixed(1) + "%";
-            document.getElementById("over25Odds").textContent = "Cuota: " + (probOver25 > 0 ? (1 / probOver25).toFixed(2) : "99.00");
-            document.getElementById("under25Prob").textContent = (probUnder25 * 100).toFixed(1) + "%";
-            document.getElementById("under25Odds").textContent = "Cuota: " + (probUnder25 > 0 ? (1 / probUnder25).toFixed(2) : "99.00");
+            document.getElementById("dc1xProb").textContent = (prob1X * 100).toFixed(1) + "%";
+            document.getElementById("dc1xOdds").textContent = prob1X > 0 ? (1 / prob1X).toFixed(2) : "99.00";
 
-            renderMatrixTable(matrixProbs, maxGoals);
+            document.getElementById("dc12Prob").textContent = (prob12 * 100).toFixed(1) + "%";
+            document.getElementById("dc12Odds").textContent = prob12 > 0 ? (1 / prob12).toFixed(2) : "99.00";
+
+            document.getElementById("dcX2Prob").textContent = (probX2 * 100).toFixed(1) + "%";
+            document.getElementById("dcX2Odds").textContent = probX2 > 0 ? (1 / probX2).toFixed(2) : "99.00";
+
+            // BTTS (Ambos Marcan)
+            let probBttsYes = 0;
+            for (let h = 1; h <= maxGoals; h++) {
+                for (let a = 1; a <= maxGoals; a++) {
+                    probBttsYes += matrixProbs[h][a];
+                }
+            }
+            const probBttsNo = 1 - probBttsYes;
+
+            document.getElementById("bttsYesProb").textContent = (probBttsYes * 100).toFixed(1) + "%";
+            document.getElementById("bttsYesOdds").textContent = "Cuota: " + (probBttsYes > 0 ? (1 / probBttsYes).toFixed(2) : "99.00");
+            document.getElementById("bttsNoProb").textContent = (probBttsNo * 100).toFixed(1) + "%";
+            document.getElementById("bttsNoOdds").textContent = "Cuota: " + (probBttsNo > 0 ? (1 / probBttsNo).toFixed(2) : "99.00");
+
+            // Over / Under (1.5, 2.5, 3.5)
+            let o15 = 0, o25 = 0, o35 = 0;
+            for (let h = 0; h <= maxGoals; h++) {
+                for (let a = 0; a <= maxGoals; a++) {
+                    const sum = h + a;
+                    const p = matrixProbs[h][a];
+                    if (sum > 1.5) o15 += p;
+                    if (sum > 2.5) o25 += p;
+                    if (sum > 3.5) o35 += p;
+                }
+            }
+            const u15 = 1 - o15, u25 = 1 - o25, u35 = 1 - o35;
+
+            // Render Over/Under
+            document.getElementById("over15Prob").textContent = (o15 * 100).toFixed(1) + "%";
+            document.getElementById("over15Odds").textContent = (o15 > 0 ? (1 / o15).toFixed(2) : "99.00");
+            document.getElementById("under15Prob").textContent = (u15 * 100).toFixed(1) + "%";
+            document.getElementById("under15Odds").textContent = (u15 > 0 ? (1 / u15).toFixed(2) : "99.00");
+
+            document.getElementById("over25Prob").textContent = (o25 * 100).toFixed(1) + "%";
+            document.getElementById("over25Odds").textContent = (o25 > 0 ? (1 / o25).toFixed(2) : "99.00");
+            document.getElementById("under25Prob").textContent = (u25 * 100).toFixed(1) + "%";
+            document.getElementById("under25Odds").textContent = (u25 > 0 ? (1 / u25).toFixed(2) : "99.00");
+
+            document.getElementById("over35Prob").textContent = (o35 * 100).toFixed(1) + "%";
+            document.getElementById("over35Odds").textContent = (o35 > 0 ? (1 / o35).toFixed(2) : "99.00");
+            document.getElementById("under35Prob").textContent = (u35 * 100).toFixed(1) + "%";
+            document.getElementById("under35Odds").textContent = (u35 > 0 ? (1 / u35).toFixed(2) : "99.00");
+
+            // Top 3 Marcadores Correctos Más Probables
+            allScores.sort((x, y) => y.p - x.p);
+            const top3 = allScores.slice(0, 3);
+            const topScoresContainer = document.getElementById("topScoresContainer");
+            topScoresContainer.innerHTML = "";
+
+            top3.forEach((score, idx) => {
+                const div = document.createElement("div");
+                div.className = "bg-slate-800/60 border border-slate-700/60 p-4 rounded-2xl flex flex-col items-center justify-between";
+                div.innerHTML = `
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">#${idx + 1} Más Probable</span>
+                    <span class="text-2xl font-black text-white my-1">${score.h} - ${score.a}</span>
+                    <div class="w-full mt-2 pt-2 border-t border-slate-700/60 flex justify-between items-center text-xs">
+                        <span class="text-emerald-400 font-bold">${(score.p * 100).toFixed(1)}%</span>
+                        <span class="text-slate-300 font-semibold">Cuota: ${score.p > 0 ? (1 / score.p).toFixed(2) : "99.00"}</span>
+                    </div>
+                `;
+                topScoresContainer.appendChild(div);
+            });
 
             document.getElementById("initialState").classList.add("hidden");
             document.getElementById("resultsContainer").classList.remove("hidden");
-            showToast("¡Cálculo Poisson completado con éxito!");
-        }
-
-        function renderMatrixTable(matrix, maxGoals) {
-            const header = document.getElementById("matrixHeader");
-            const body = document.getElementById("matrixBody");
-
-            let headerHtml = `<th class="p-2.5 border border-slate-700/60 bg-slate-800">L \\ V</th>`;
-            for (let a = 0; a <= maxGoals; a++) {
-                headerHtml += `<th class="p-2.5 border border-slate-700/60">${a}</th>`;
-            }
-            header.innerHTML = headerHtml;
-
-            let bodyHtml = "";
-            for (let h = 0; h <= maxGoals; h++) {
-                bodyHtml += `<tr>`;
-                bodyHtml += `<td class="p-2.5 border border-slate-700/60 font-bold bg-slate-800/80 text-slate-300">${h}</td>`;
-                for (let a = 0; a <= maxGoals; a++) {
-                    const val = matrix[h][a] * 100;
-                    let bgClass = "bg-slate-900";
-                    if (val > 15) bgClass = "bg-emerald-950/80 text-emerald-300 font-bold shadow-inner";
-                    else if (val > 8) bgClass = "bg-emerald-900/40 text-emerald-400 font-semibold";
-                    else if (val > 3) bgClass = "bg-slate-800/60 text-slate-300";
-                    else bgClass = "bg-slate-900 text-slate-500";
-
-                    bodyHtml += `<td class="p-2.5 border border-slate-700/60 ${bgClass}">${val.toFixed(1)}%</td>`;
-                }
-                bodyHtml += `</tr>`;
-            }
-            body.innerHTML = bodyHtml;
+            showToast("¡Cálculo Poisson (10 Goles) completado!");
         }
 
         // --- GESTIÓN DE LIGAS Y MODAL ---
