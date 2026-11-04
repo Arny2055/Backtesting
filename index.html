@@ -142,7 +142,7 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
                         <h2 class="text-lg font-bold text-white uppercase tracking-wider">Tabla Local - Goles por 15 Min (Home)</h2>
-                        <p class="text-xs text-slate-400">Pega la tabla completa tal cual desde la fuente (incluyendo columnas 0-15, 16-30, 31-45, 1st Half, Avg min. GF/GA).</p>
+                        <p class="text-xs text-slate-400">Pega la tabla completa tal cual desde la fuente (incluyendo columnas 0-15, 16-30, 31-45, 46-60, 61-75, 76-90, 1st Half, 2nd Half, Avg min. GF/GA).</p>
                     </div>
                     <div class="flex items-center space-x-2">
                         <button onclick="app.clearTableData('home')" class="px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold">Limpiar</button>
@@ -150,7 +150,7 @@
                     </div>
                 </div>
                 <div class="space-y-2">
-                    <textarea id="pasteHomeInput" rows="5" placeholder="Pega aquí la tabla completa de Local..." class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-xs font-mono text-slate-200 focus:outline-none focus:border-neonBlue"></textarea>
+                    <textarea id="pasteHomeInput" rows="6" placeholder="Pega aquí la tabla completa de Local..." class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-xs font-mono text-slate-200 focus:outline-none focus:border-neonBlue"></textarea>
                     <button onclick="app.parsePastedIntervalTable('home')" class="w-full py-2.5 rounded-xl bg-cardBorder border border-neonBlue/40 text-neonBlue text-xs font-bold uppercase tracking-wider hover:bg-neonBlue/10 transition-all">Procesar Tabla Local de Intervalos</button>
                 </div>
                 <div class="overflow-x-auto rounded-xl border border-cardBorder">
@@ -188,7 +188,7 @@
                     </div>
                 </div>
                 <div class="space-y-2">
-                    <textarea id="pasteAwayInput" rows="5" placeholder="Pega aquí la tabla completa de Visitante..." class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-xs font-mono text-slate-200 focus:outline-none focus:border-neonPurple"></textarea>
+                    <textarea id="pasteAwayInput" rows="6" placeholder="Pega aquí la tabla completa de Visitante..." class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-xs font-mono text-slate-200 focus:outline-none focus:border-neonPurple"></textarea>
                     <button onclick="app.parsePastedIntervalTable('away')" class="w-full py-2.5 rounded-xl bg-cardBorder border border-neonPurple/40 text-neonPurple text-xs font-bold uppercase tracking-wider hover:bg-neonPurple/10 transition-all">Procesar Tabla Visitante de Intervalos</button>
                 </div>
                 <div class="overflow-x-auto rounded-xl border border-cardBorder">
@@ -381,12 +381,12 @@
                     name: 'Brasileirao (Ejemplo 15m)',
                     updatedAt: new Date().toISOString(),
                     homeTable: [
-                        { name: "Athletico PR", gp: 16, i0_15: "2-5", i16_30: "4-2", i31_45: "5-1", h1: "12-9", avgGF: 50, avgGA: 43 },
-                        { name: "Flamengo", gp: 16, i0_15: "2-0", i16_30: "3-2", i31_45: "6-3", h1: "12-3", avgGF: 52, avgGA: 63 }
+                        { name: "Athletico PR", gp: 16, i0_15: "2-5", i16_30: "4-2", i31_45: "5-1", i46_60: "2-2", i61_75: "8-3", i76_90: "12-9", h1: "12-9", h2: "15-6", avgGF: 50, avgGA: 43 },
+                        { name: "Flamengo", gp: 16, i0_15: "2-0", i16_30: "3-2", i31_45: "6-3", i46_60: "6-1", i61_75: "8-5", i76_90: "12-3", h1: "12-3", h2: "20-9", avgGF: 52, avgGA: 63 }
                     ],
                     awayTable: [
-                        { name: "Athletico PR", gp: 17, i0_15: "4-3", i16_30: "3-6", i31_45: "3-1", h1: "14-14", avgGF: 40, avgGA: 50 },
-                        { name: "Flamengo", gp: 17, i0_15: "3-3", i16_30: "8-1", i31_45: "7-3", h1: "17-6", avgGF: 48, avgGA: 52 }
+                        { name: "Athletico PR", gp: 17, i0_15: "7-5", i16_30: "4-3", i31_45: "3-6", i46_60: "3-1", i61_75: "2-2", i76_90: "4-8", h1: "14-14", h2: "9-11", avgGF: 40, avgGA: 50 },
+                        { name: "Flamengo", gp: 17, i0_15: "6-2", i16_30: "3-3", i31_45: "8-1", i46_60: "7-3", i61_75: "6-2", i76_90: "6-5", h1: "17-6", h2: "19-10", avgGF: 48, avgGA: 52 }
                     ]
                 };
                 this.state.activeLeagueId = id;
@@ -497,7 +497,7 @@
                 document.getElementById('activeLeagueBadge').innerText = l ? l.name : 'Sin Liga';
             }
 
-            // --- PARSER DE TABLAS DE INTERVALOS (15 MIN) ---
+            // --- PARSER ROBUSTO DE TABLAS DE INTERVALOS (15 MIN) ---
             parsePastedIntervalTable(type) {
                 const inputId = type === 'home' ? 'pasteHomeInput' : 'pasteAwayInput';
                 const text = document.getElementById(inputId).value.trim();
@@ -509,9 +509,13 @@
                 for (let line of lines) {
                     const cols = line.split(/\t+|\s{2,}/).map(c => c.trim()).filter(c => c.length > 0);
                     if (cols.length >= 10) {
-                        // Detectar nombre del equipo (todo hasta el primer número GP)
+                        // Omitir cabecera si se copió completa
+                        if (cols[0].toLowerCase().includes('home') || cols[0].toLowerCase().includes('away')) continue;
+
+                        // Buscar el índice donde empiezan los números (GP)
                         let numIdx = cols.findIndex(c => !isNaN(c) && parseFloat(c) >= 0);
                         if (numIdx < 1) continue;
+
                         let teamName = cols.slice(0, numIdx).join(' ');
                         let data = cols.slice(numIdx);
 
@@ -532,6 +536,11 @@
                             });
                         }
                     }
+                }
+
+                if (rows.length === 0) {
+                    this.showToast("Error", "No se pudieron reconocer equipos. Verifica el formato.", "red");
+                    return;
                 }
 
                 const league = this.getActiveLeague();
@@ -640,17 +649,14 @@
 
                 if (!hStats || !aStats) return;
 
-                // Función auxiliar para extraer Goles a Favor (GF) y en Contra (GA) de un string tipo "2-5" (GF-GA)
                 const parsePair = (str) => {
                     if (!str || !str.includes('-')) return [0, 0];
                     const parts = str.split('-').map(n => parseInt(n) || 0);
                     return [parts[0], parts[1]];
                 };
 
-                // Franjas del 1er tiempo: 0-15, 16-30, 31-45
                 const intervals = ['0-15', '16-30', '31-45'];
                 let combinedIntervals = [];
-
                 let totalHtXg = 0;
 
                 intervals.forEach((key, idx) => {
@@ -659,37 +665,34 @@
                     const [hGF, hGA] = parsePair(hStats[propKey]);
                     const [aGF, aGA] = parsePair(aStats[propKey]);
 
-                    // Ponderación 70% GF / 30% GA por franja para local y visitante
+                    // Ponderación 70% GF / 30% GA por franja
                     const hWeighted = (0.70 * (hGF / (hStats.gp || 1))) + (0.30 * (hGA / (hStats.gp || 1)));
                     const aWeighted = (0.70 * (aGF / (aStats.gp || 1))) + (0.30 * (aGA / (aStats.gp || 1)));
 
                     const xgFranja = hWeighted + aWeighted;
                     totalHtXg += xgFranja;
 
-                    // Probabilidad de gol en esta franja individual (Poisson P(X >= 1) = 1 - e^-lambda)
                     const probFranja = (1 - Math.exp(-xgFranja)) * 100;
 
                     combinedIntervals.push({
                         interval: key,
                         hVal: `${hGF}GF / ${hGA}GA`,
-                        aVal: `${aGF}GA / ${aGA}GF`,
+                        aVal: `${aGF}GA / ${aGF}GF`,
                         xg: xgFranja.toFixed(2),
                         prob: probFranja.toFixed(1)
                     });
                 });
 
-                // Probabilidad Over 0.5 HT global utilizando el xG acumulado del 1er tiempo
                 const probOver05HT = (1 - Math.exp(-totalHtXg)) * 100;
                 const fairOddsHT = probOver05HT > 0 ? (100 / probOver05HT) : 99;
 
-                // Minuto clave de entrada basado en los promedios de Avg min. GF
                 const avgMinEntry = Math.round((hStats.avgGF + aStats.avgGF) / 2);
                 let entryRecommendation = "";
                 let minuteRangeText = "";
 
                 if (avgMinEntry <= 32) {
                     minuteRangeText = `Minuto 20' - 32'`;
-                    entryRecommendation = `Alta tendencia madrugadora. Ambos equipos muestran promedios de anotación tempraneros (Promedio combinado: ${avgMinEntry} min). Ideal para buscar Over 0.5 HT si la cuota supera 1.65 hacia el minuto 20.`;
+                    entryRecommendation = `Alta tendencia madrugadora. Promedio combinado de anotación: ${avgMinEntry} min. Ideal para buscar Over 0.5 HT si la cuota supera 1.65 hacia el minuto 20.`;
                 } else if (avgMinEntry <= 45) {
                     minuteRangeText = `Minuto 30' - 42'`;
                     entryRecommendation = `Tendencia de final de primera parte. Los goles suelen concentrarse antes del descanso (Promedio combinado: ${avgMinEntry} min). Espera una cuota atractiva (>1.80) pasada la media hora de juego.`;
@@ -698,7 +701,6 @@
                     entryRecommendation = `Ritmo lento en la primera mitad (${avgMinEntry} min promedio). Se recomienda precaución o esperar al arranque del segundo tiempo.`;
                 }
 
-                // Renderizar resultados
                 document.getElementById('resHtProb').innerText = `${probOver05HT.toFixed(1)}%`;
                 document.getElementById('resHtFairOdds').innerText = `Cuota Justa: ${fairOddsHT.toFixed(2)}`;
                 document.getElementById('resHtRecommendation').innerText = entryRecommendation;
@@ -706,7 +708,6 @@
                 document.getElementById('resKeyMinute').innerText = minuteRangeText;
                 document.getElementById('resMinuteReason').innerText = `Avg min GF Local: ${hStats.avgGF}' | Avg min GF Visitante: ${aStats.avgGF}'`;
 
-                // Renderizar tabla de intervalos
                 const tbody = document.getElementById('intervalsTableBody');
                 tbody.innerHTML = '';
                 combinedIntervals.forEach(item => {
