@@ -517,7 +517,7 @@
                         </thead>
                         <tbody id="evTableBody" class="divide-y divide-cardBorder/50">
                             <tr>
-                                <td colspan="6" class="p-6 text-center text-slate-500">Selecciona equipos en el Analizador e introduce cuotas de mercado.</td>
+                                <td colspan="6" class="p-6 text-center text-slate-500">Selecciona equipos in el Analizador e introduce cuotas de mercado.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1056,7 +1056,7 @@
                 this.showToast("Guardado", `Tabla ${type} guardada en LocalStorage`, "green");
             }
 
-            // --- POISSON & STATISTICAL ENGINE ---
+            // --- POISSON & STATISTICAL ENGINE (CORREGIDO Y ESTÁNDAR) ---
             populateTeamSelects() {
                 const league = this.getActiveLeague();
                 const homeSelect = document.getElementById('selectHomeTeam');
@@ -1122,51 +1122,45 @@
                     return;
                 }
 
-                // 1. LEAGUE AVERAGES
+                // 1. MEDIAS BASE DE LA LIGA (H_bar y A_bar independientes)
                 let totalHomeGF = 0, totalHomeGP = 0;
                 league.homeTable.forEach(t => { totalHomeGF += t.gf; totalHomeGP += t.gp; });
-                let leagueAvgHomeGF = totalHomeGP > 0 ? totalHomeGF / totalHomeGP : 1.35;
+                let hBar = totalHomeGP > 0 ? totalHomeGF / totalHomeGP : 1.35;
 
                 let totalAwayGF = 0, totalAwayGP = 0;
                 league.awayTable.forEach(t => { totalAwayGF += t.gf; totalAwayGP += t.gp; });
-                let leagueAvgAwayGF = totalAwayGP > 0 ? totalAwayGF / totalAwayGP : 1.15;
+                let aBar = totalAwayGP > 0 ? totalAwayGF / totalAwayGP : 1.15;
 
-                // 2. STRENGTH CALCULATIONS (CORREGIDO: Defensa local normalizada con la media visitante correcta)
-                let homeTeamGPG_Home = homeStats.gp > 0 ? homeStats.gf / homeStats.gp : 0;
-                let homeAttackStrength = leagueAvgHomeGF > 0 ? homeTeamGPG_Home / leagueAvgHomeGF : 1.0;
+                // 2. CÁLCULO DE FUERZAS ESTÁNDAR
+                let homeAtt = (homeStats.gp > 0 ? (homeStats.gf / homeStats.gp) : hBar) / hBar;
+                let homeDef = (homeStats.gp > 0 ? (homeStats.ga / homeStats.gp) : aBar) / aBar;
 
-                let homeTeamGAPG_Home = homeStats.gp > 0 ? homeStats.ga / homeStats.gp : 0;
-                let homeDefenseStrength = leagueAvgAwayGF > 0 ? homeTeamGAPG_Home / leagueAvgAwayGF : 1.0;
+                let awayAtt = (awayStats.gp > 0 ? (awayStats.gf / awayStats.gp) : aBar) / aBar;
+                let awayDef = (awayStats.gp > 0 ? (awayStats.ga / awayStats.gp) : hBar) / hBar;
 
-                let awayTeamGPG_Away = awayStats.gp > 0 ? awayStats.gf / awayStats.gp : 0;
-                let awayAttackStrength = leagueAvgAwayGF > 0 ? awayTeamGPG_Away / leagueAvgAwayGF : 1.0;
-
-                let awayTeamGAPG_Away = awayStats.gp > 0 ? awayStats.ga / awayStats.gp : 0;
-                let awayDefenseStrength = leagueAvgHomeGF > 0 ? awayTeamGAPG_Away / leagueAvgHomeGF : 1.0;
-
-                // 3. EXPECTED GOALS (xG)
-                let xgHome = leagueAvgHomeGF * homeAttackStrength * awayDefenseStrength;
-                let xgAway = leagueAvgAwayGF * awayAttackStrength * homeDefenseStrength;
+                // 3. GOLES ESPERADOS (xG) RIGUROSOS
+                let xgHome = hBar * homeAtt * awayDef;
+                let xgAway = aBar * awayAtt * homeDef;
 
                 if (isNaN(xgHome) || xgHome < 0) xgHome = 1.2;
                 if (isNaN(xgAway) || xgAway < 0) xgAway = 1.0;
                 let xgTotal = xgHome + xgAway;
 
-                document.getElementById('resHomeAtt').innerText = homeAttackStrength.toFixed(2);
-                document.getElementById('resHomeAttDesc').innerText = homeAttackStrength > 1 ? 'Superior al promedio' : 'Inferior al promedio';
-                document.getElementById('resHomeDef').innerText = homeDefenseStrength.toFixed(2);
-                document.getElementById('resHomeDefDesc').innerText = homeDefenseStrength > 1 ? 'Concede más que el promedio' : 'Sólido defensivamente';
+                document.getElementById('resHomeAtt').innerText = homeAtt.toFixed(2);
+                document.getElementById('resHomeAttDesc').innerText = homeAtt > 1 ? 'Superior al promedio' : 'Inferior al promedio';
+                document.getElementById('resHomeDef').innerText = homeDef.toFixed(2);
+                document.getElementById('resHomeDefDesc').innerText = homeDef > 1 ? 'Concede más que el promedio' : 'Sólido defensivamente';
 
-                document.getElementById('resAwayAtt').innerText = awayAttackStrength.toFixed(2);
-                document.getElementById('resAwayAttDesc').innerText = awayAttackStrength > 1 ? 'Superior al promedio' : 'Inferior al promedio';
-                document.getElementById('resAwayDef').innerText = awayDefenseStrength.toFixed(2);
-                document.getElementById('resAwayDefDesc').innerText = awayDefenseStrength > 1 ? 'Concede más que el promedio' : 'Sólido defensivamente';
+                document.getElementById('resAwayAtt').innerText = awayAtt.toFixed(2);
+                document.getElementById('resAwayAttDesc').innerText = awayAtt > 1 ? 'Superior al promedio' : 'Inferior al promedio';
+                document.getElementById('resAwayDef').innerText = awayDef.toFixed(2);
+                document.getElementById('resAwayDefDesc').innerText = awayDef > 1 ? 'Concede más que el promedio' : 'Sólido defensivamente';
 
                 document.getElementById('resXgHome').innerText = xgHome.toFixed(2);
                 document.getElementById('resXgAway').innerText = xgAway.toFixed(2);
                 document.getElementById('resXgTotal').innerText = xgTotal.toFixed(2);
 
-                // 4. POISSON DISTRIBUTION ENGINE
+                // 4. DISTRIBUCIÓN DE POISSON
                 const maxGoals = 10;
                 const poissonHome = [];
                 const poissonAway = [];
@@ -1176,7 +1170,7 @@
                     poissonAway.push(this.poissonProb(k, xgAway));
                 }
 
-                // 5. PROBABILITY MATRIX & 1X2 & MARKETS
+                // 5. MATRIZ DE PROBABILIDAD Y MERCADOS
                 let probHomeWin = 0;
                 let probDraw = 0;
                 let probAwayWin = 0;
