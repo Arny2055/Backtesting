@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>BETAGS POISSON NEON VIP – Interval & HT Relativistic Analyzer</title>
+    <title>BETAGS EINSTEIN RELATIVISTIC VIP – Over 0.5 & 1.5 HT</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -45,6 +45,9 @@
         }
         .neon-glow-purple {
             box-shadow: 0 0 15px rgba(176, 0, 255, 0.25), inset 0 0 15px rgba(176, 0, 255, 0.1);
+        }
+        .neon-glow-pink {
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.25), inset 0 0 15px rgba(255, 0, 127, 0.1);
         }
         .neon-border-green {
             border-color: #00ff66;
@@ -95,9 +98,9 @@
             <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-cardBg via-cardBorder/30 to-cardBg border border-cardBorder p-6 neon-glow-blue">
                 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-neonBlue/10 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="relative z-10">
-                    <span class="text-xs font-mono uppercase tracking-widest text-neonBlue px-3 py-1 rounded-full bg-neonBlue/10 border border-neonBlue/30">Motor Relativista ETGR-0.5</span>
-                    <h2 class="text-2xl sm:text-3xl font-black mt-3 text-white">Análisis Termodinámico HT & Curvatura de Goles</h2>
-                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Ecuación extendida combinando Poisson bivariante, tensores de agresividad temprana ($\kappa$) y dilatación temporal del gol ($\tau$).</p>
+                    <span class="text-xs font-mono uppercase tracking-widest text-neonBlue px-3 py-1 rounded-full bg-neonBlue/10 border border-neonBlue/30">Motor Relativista ETGR-0.5 & 1.5</span>
+                    <h2 class="text-2xl sm:text-3xl font-black mt-3 text-white">Análisis Termodinámico HT & Mercados Over</h2>
+                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Campo unificado extendido para cálculo de Over 0.5 HT y Over 1.5 HT con tensores de curvatura temporal.</p>
                     <div class="mt-6 flex flex-wrap gap-3">
                         <button onclick="app.switchTab('leagues')" class="px-5 py-2.5 rounded-xl bg-neonBlue text-black font-bold text-xs uppercase tracking-wider hover:bg-neonBlue/90 transition-all shadow-lg shadow-neonBlue/20">Gestionar Ligas</button>
                         <button onclick="app.switchTab('analyzer')" class="px-5 py-2.5 rounded-xl bg-cardBg border border-neonGreen text-neonGreen font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/10 transition-all">Analizar Ecuación</button>
@@ -215,12 +218,12 @@
             </div>
         </section>
 
-        <!-- ================= 5. ANALIZADOR RELATIVISTA ETGR-0.5 ================= -->
+        <!-- ================= 5. ANALIZADOR RELATIVISTA ETGR-0.5 & 1.5 ================= -->
         <section id="tab-analyzer" class="tab-content hidden space-y-6">
             <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-5">
                 <div>
-                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Analizador Relativista ETGR-0.5 HT</h2>
-                    <p class="text-xs text-slate-400">Cálculo avanzado integrando Poisson + Tensores de Agresividad Temporal y Marcadores Exactos al Descanso.</p>
+                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Analizador Relativista Over 0.5 & 1.5 HT</h2>
+                    <p class="text-xs text-slate-400">Cálculo termodinámico avanzado para mercados de 1ª mitad con corrección de tensores relativistas.</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
@@ -238,25 +241,35 @@
                 </div>
 
                 <div id="analysisResultsContainer" class="space-y-6 hidden">
-                    <!-- Tarjetas de Resultados Relativistas -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonGreen/40 rounded-xl p-4">
-                            <span class="text-[11px] font-mono text-neonGreen uppercase block font-bold">Tensor Agresividad ($\kappa$)</span>
-                            <span id="resKappaTensor" class="text-2xl font-black text-white font-mono mt-1 block">0.00</span>
-                            <p class="text-[10px] text-slate-400 mt-1">Presión tramo 0-30 vs 31-45</p>
-                        </div>
-                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonPink/40 rounded-xl p-4">
-                            <span class="text-[11px] font-mono text-neonPink uppercase block font-bold">Dilatación Temporal ($\tau$)</span>
-                            <span id="resTauTempo" class="text-2xl font-black text-white font-mono mt-1 block">0.00</span>
-                            <p class="text-[10px] text-slate-400 mt-1">Factor min. promedio histórico</p>
-                        </div>
-                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonBlue/40 rounded-xl p-4">
-                            <span class="text-[11px] font-mono text-neonBlue uppercase block font-bold">Over 0.5 HT Relativista</span>
-                            <div class="flex items-baseline space-x-2 mt-1">
-                                <span id="resRelativisticOver05" class="text-2xl font-black text-white font-mono">0.0%</span>
-                                <span id="resRelativisticOdds" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
+                    <!-- Tarjetas de Resultados Relativistas Over 0.5 y Over 1.5 HT -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonBlue/40 rounded-xl p-5 neon-glow-blue">
+                            <span class="text-xs font-mono text-neonBlue uppercase block font-bold">Over 0.5 HT (Relativista)</span>
+                            <div class="flex items-baseline space-x-3 mt-2">
+                                <span id="resRelativisticOver05" class="text-3xl font-black text-white font-mono">0.0%</span>
+                                <span id="resRelativisticOdds05" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
                             </div>
-                            <p class="text-[10px] text-slate-400 mt-1">Ecuación ETGR-0.5</p>
+                            <p class="text-[11px] text-slate-300 mt-2">1 - P(0 goles al descanso)</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonPink/40 rounded-xl p-5 neon-glow-pink">
+                            <span class="text-xs font-mono text-neonPink uppercase block font-bold">Over 1.5 HT (Relativista)</span>
+                            <div class="flex items-baseline space-x-3 mt-2">
+                                <span id="resRelativisticOver15" class="text-3xl font-black text-white font-mono">0.0%</span>
+                                <span id="resRelativisticOdds15" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mt-2">1 - [P(0) + P(1) gol al descanso]</p>
+                        </div>
+                    </div>
+
+                    <!-- Métricas de Tensores -->
+                    <div class="grid grid-cols-2 sm:grid-cols-2 gap-4">
+                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4">
+                            <span class="text-[11px] font-mono text-neonGreen uppercase block font-bold">Tensor Agresividad ($\kappa$)</span>
+                            <span id="resKappaTensor" class="text-xl font-black text-white font-mono mt-1 block">0.00</span>
+                        </div>
+                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4">
+                            <span class="text-[11px] font-mono text-neonPurple uppercase block font-bold">Dilatación Temporal ($\tau$)</span>
+                            <span id="resTauTempo" class="text-xl font-black text-white font-mono mt-1 block">0.00</span>
                         </div>
                     </div>
 
@@ -337,7 +350,7 @@
             <span class="text-[9px] font-mono uppercase tracking-wider">Visita (15m)</span>
         </button>
         <button onclick="app.switchTab('analyzer')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="analyzer">
-            <span class="text-[9px] font-mono uppercase tracking-wider">ETGR-0.5</span>
+            <span class="text-[9px] font-mono uppercase tracking-wider">ETGR-0.5/1.5</span>
         </button>
         <button onclick="app.switchTab('config')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="config">
             <span class="text-[9px] font-mono uppercase tracking-wider">Config</span>
@@ -648,7 +661,7 @@
                 if (curH && curA) this.runAnalysis();
             }
 
-            // --- MOTOR RELATIVISTA ETGR-0.5 DE EINSTEIN ---
+            // --- MOTOR RELATIVISTA ETGR-0.5 & 1.5 DE EINSTEIN ---
             runAnalysis() {
                 const homeName = document.getElementById('selectHomeTeam').value;
                 const awayName = document.getElementById('selectAwayTeam').value;
@@ -710,16 +723,24 @@
                     });
                 });
 
-                // --- APLICACIÓN DE LOS TENSORES DE EINSTEIN ---
-                const kappaEarly = xgEarlySum / (xgLateSum + 0.05); // Tensor de Agresividad Temprana
-                const tauTempo = Math.max(0.5, ((hStats.avgGF + aStats.avgGF) / 2) / 90); // Dilatación Temporal
+                // --- TENSORES DE EINSTEIN ---
+                const kappaEarly = xgEarlySum / (xgLateSum + 0.05); 
+                const tauTempo = Math.max(0.5, ((hStats.avgGF + aStats.avgGF) / 2) / 90); 
 
-                // Ecuación ETGR-0.5 Modificada
+                // Lambda Efectiva Relativista total HT
                 const lambdaEffective = (lambdaHomeHT + lambdaAwayHT) * (1 + (kappaEarly / (tauTempo * 10)));
-                const relativisticOver05 = (1 - Math.exp(-lambdaEffective)) * 100;
-                const relativisticOdds = relativisticOver05 > 0 ? (100 / relativisticOver05) : 99;
+                
+                // 1. Over 0.5 HT Relativista: 1 - P(0)
+                const p0 = Math.exp(-lambdaEffective);
+                const relativisticOver05 = (1 - p0) * 100;
+                const relativisticOdds05 = relativisticOver05 > 0 ? (100 / relativisticOver05) : 99;
 
-                // Poisson auxiliar para marcadores exactos corregidos
+                // 2. Over 1.5 HT Relativista: 1 - [P(0) + P(1)]
+                const p1 = lambdaEffective * Math.exp(-lambdaEffective);
+                const relativisticOver15 = (1 - (p0 + p1)) * 100;
+                const relativisticOdds15 = relativisticOver15 > 0 ? (100 / relativisticOver15) : 99;
+
+                // Poisson auxiliar para marcadores exactos
                 const poissonProb = (k, lambda) => {
                     let fact = 1;
                     for (let i = 2; i <= k; i++) fact *= i;
@@ -749,19 +770,24 @@
                 });
 
                 let recommendation = `Tensor $\\kappa$: ${kappaEarly.toFixed(2)} | Dilatación $\\tau$: ${tauTempo.toFixed(2)}. `;
-                if (relativisticOver05 >= 75) {
-                    recommendation += `Campo unificado favorable: Alta curvatura de goles en la primera mitad (${relativisticOver05.toFixed(1)}% Over 0.5 HT). ¡Apuesta altamente probable!`;
-                } else if (relativisticOver05 <= 45) {
-                    recommendation += `Inercia gravitacional baja al descanso. El espacio-tiempo balístico tiende al 0-0. Activar protocolo de precaución.`;
+                if (relativisticOver15 >= 40) {
+                    recommendation += `¡Alta densidad energética! El mercado Over 1.5 HT muestra una probabilidad del ${relativisticOver15.toFixed(1)}%, excelente valor para búsqueda de goles múltiples en la primera mitad.`;
+                } else if (relativisticOver05 >= 70) {
+                    recommendation += `Escenario propicio para Over 0.5 HT (${relativisticOver05.toFixed(1)}%), pero precaución con el segundo gol antes del descanso.`;
                 } else {
-                    recommendation += `Fluctuación normal en el continuo del primer tiempo. Mantener vigilancia en directo.`;
+                    recommendation += `Curvatura de baja energía. Partido con tendencia al estudio y pocos goles tempranos.`;
                 }
 
                 // Renderizar en UI
                 document.getElementById('resKappaTensor').innerText = kappaEarly.toFixed(2);
                 document.getElementById('resTauTempo').innerText = tauTempo.toFixed(2);
+                
                 document.getElementById('resRelativisticOver05').innerText = `${relativisticOver05.toFixed(1)}%`;
-                document.getElementById('resRelativisticOdds').innerText = `Cuota: ${relativisticOdds.toFixed(2)}`;
+                document.getElementById('resRelativisticOdds05').innerText = `Cuota: ${relativisticOdds05.toFixed(2)}`;
+
+                document.getElementById('resRelativisticOver15').innerText = `${relativisticOver15.toFixed(1)}%`;
+                document.getElementById('resRelativisticOdds15').innerText = `Cuota: ${relativisticOdds15.toFixed(2)}`;
+
                 document.getElementById('resRelativisticRecommendation').innerText = recommendation;
 
                 const tbody = document.getElementById('intervalsTableBody');
