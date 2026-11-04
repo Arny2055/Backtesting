@@ -1219,6 +1219,7 @@
                 const oddsBttsNo = probBttsNo > 0 ? 1 / probBttsNo : 99;
 
                 document.getElementById('probHomeText').innerText = `${(probHomeWin * 100).toFixed(1)}% (${oddsHome.toFixed(2)})`;
+                // CORRECCIÓN APLICADA AQUÍ: Acceso correcto al estilo del DOM
                 document.getElementById('barHome').style.width = `${(probHomeWin * 100).toFixed(1)}%`;
 
                 document.getElementById('probDrawText').innerText = `${(probDraw * 100).toFixed(1)}% (${oddsDraw.toFixed(2)})`;
