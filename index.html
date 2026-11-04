@@ -15,7 +15,7 @@
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #090d16; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
     </style>
 </head>
 <body class="bg-[#070b14] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
@@ -715,7 +715,37 @@
 
             document.getElementById("initialState").classList.add("hidden");
             document.getElementById("resultsContainer").classList.remove("hidden");
-            showToast("¡Simulación completada con éxito!");
+
+            // --- INTERPOLACIÓN: ENVÍO DE DATOS AL MÓDULO EXTERNO DE SIMULACIÓN ---
+            const simulationPayload = {
+                timestamp: new Date().toISOString(),
+                league: league.name,
+                homeTeam: homeTeamName,
+                awayTeam: awayTeamName,
+                xGHome: lambdaHome.toFixed(2),
+                xGAway: lambdaAway.toFixed(2),
+                probabilities: {
+                    homeWin: (probHomeWin * 100).toFixed(1),
+                    draw: (probDraw * 100).toFixed(1),
+                    awayWin: (probAwayWin * 100).toFixed(1),
+                    bttsYes: (probBttsYes * 100).toFixed(1),
+                    over25: (o25 * 100).toFixed(1)
+                },
+                odds: {
+                    home: (1 / probHomeWin).toFixed(2),
+                    draw: (1 / probDraw).toFixed(2),
+                    away: (1 / probAwayWin).toFixed(2)
+                },
+                topScore: `${top3[0].h}-${top3[0].a}`
+            };
+
+            // 1. Guardar en localStorage para persistencia compartida
+            localStorage.setItem("last_simulation", JSON.stringify(simulationPayload));
+
+            // 2. Emitir CustomEvent para pestañas o iframes abiertos en tiempo real
+            window.dispatchEvent(new CustomEvent("poissonSimulationCalculated", { detail: simulationPayload }));
+
+            showToast("¡Simulación completada y sincronizada con el módulo externo!");
         }
 
         // --- GESTIÓN DE LIGAS Y MODAL ---
