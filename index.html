@@ -31,7 +31,7 @@
             font-family: 'Inter', sans-serif;
             background-color: #05050a;
             color: #e2e8f0;
-            padding-env: env(safe-area-inset-top);
+            padding-top: env(safe-area-inset-top);
             padding-bottom: env(safe-area-inset-bottom);
         }
         .font-mono {
@@ -88,7 +88,7 @@
     <header class="sticky top-0 z-50 bg-darkBg/95 backdrop-blur-md border-b border-cardBorder px-4 py-3 flex items-center justify-between">
         <div class="flex items-center space-x-2">
             <div class="w-3 h-3 rounded-full bg-neonGreen animate-pulse neon-glow-green"></div>
-            <h1 class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-neonGreen via-neonBlue to-neonPurple text-base sm:text-xl tracking-wider">
+            <h1 class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-neonGreen via-neonBlue to-neonPurple text-sm sm:text-lg tracking-wider">
                 BETAGS POISSON VIP
             </h1>
         </div>
@@ -120,7 +120,7 @@
                 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-neonBlue/10 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="relative z-10">
                     <span class="text-xs font-mono uppercase tracking-widest text-neonBlue px-3 py-1 rounded-full bg-neonBlue/10 border border-neonBlue/30">Sistema Activo</span>
-                    <h2 class="text-2xl sm:text-3xl font-black mt-3 text-white">BIENVENIDO A BETAGS POISSON VIP</h2>
+                    <h2 class="text-2xl sm:text-3xl font-black mt-3 text-white">BETAGS POISSON NEON VIP</h2>
                     <p class="text-slate-400 text-sm mt-2 max-w-xl">Motor matemático avanzado basado en la distribución de Poisson, análisis de xG, fuerzas ofensivas/defensivas y detección de valor de cuotas de mercado.</p>
                     <div class="mt-6 flex flex-wrap gap-3">
                         <button onclick="app.switchTab('leagues')" class="px-5 py-2.5 rounded-xl bg-neonBlue text-black font-bold text-xs uppercase tracking-wider hover:bg-neonBlue/90 transition-all shadow-lg shadow-neonBlue/20">Gestionar Ligas</button>
@@ -570,37 +570,37 @@
 
     <!-- BOTTOM NAVIGATION BAR -->
     <nav class="fixed bottom-0 left-0 right-0 z-40 bg-darkBg/95 backdrop-blur-md border-t border-cardBorder px-2 py-2 flex items-center justify-around overflow-x-auto no-scrollbar">
-        <button onclick="app.switchTab('dashboard')" class="nav-btn flex flex-col items-center space-y-1 px-2.5 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="dashboard">
+        <button onclick="app.switchTab('dashboard')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="dashboard">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-            <span class="text-[9px] font-mono uppercase tracking-wider">Dash</span>
+            <span class="text-[8px] font-mono uppercase tracking-wider">Dash</span>
         </button>
-        <button onclick="app.switchTab('leagues')" class="nav-btn flex flex-col items-center space-y-1 px-2.5 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="leagues">
+        <button onclick="app.switchTab('leagues')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="leagues">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-            <span class="text-[9px] font-mono uppercase tracking-wider">Ligas</span>
+            <span class="text-[8px] font-mono uppercase tracking-wider">Ligas</span>
         </button>
-        <button onclick="app.switchTab('home-table')" class="nav-btn flex flex-col items-center space-y-1 px-2.5 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="home-table">
+        <button onclick="app.switchTab('home-table')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="home-table">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-            <span class="text-[9px] font-mono uppercase tracking-wider">Local</span>
+            <span class="text-[8px] font-mono uppercase tracking-wider">Local</span>
         </button>
-        <button onclick="app.switchTab('away-table')" class="nav-btn flex flex-col items-center space-y-1 px-2.5 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="away-table">
+        <button onclick="app.switchTab('away-table')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="away-table">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-            <span class="text-[9px] font-mono uppercase tracking-wider">Visita</span>
+            <span class="text-[8px] font-mono uppercase tracking-wider">Visita</span>
         </button>
-        <button onclick="app.switchTab('analyzer')" class="nav-btn flex flex-col items-center space-y-1 px-2.5 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="analyzer">
+        <button onclick="app.switchTab('analyzer')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="analyzer">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-            <span class="text-[9px] font-mono uppercase tracking-wider">Poisson</span>
+            <span class="text-[8px] font-mono uppercase tracking-wider">Poisson</span>
         </button>
-        <button onclick="app.switchTab('matrix')" class="nav-btn flex flex-col items-center space-y-1 px-2.5 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="matrix">
+        <button onclick="app.switchTab('matrix')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="matrix">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
-            <span class="text-[9px] font-mono uppercase tracking-wider">Matriz</span>
+            <span class="text-[8px] font-mono uppercase tracking-wider">Matriz</span>
         </button>
-        <button onclick="app.switchTab('odds')" class="nav-btn flex flex-col items-center space-y-1 px-2.5 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="odds">
+        <button onclick="app.switchTab('odds')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="odds">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            <span class="text-[9px] font-mono uppercase tracking-wider">Cuotas</span>
+            <span class="text-[8px] font-mono uppercase tracking-wider">Cuotas</span>
         </button>
-        <button onclick="app.switchTab('config')" class="nav-btn flex flex-col items-center space-y-1 px-2.5 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="config">
+        <button onclick="app.switchTab('config')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="config">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-            <span class="text-[9px] font-mono uppercase tracking-wider">Config</span>
+            <span class="text-[8px] font-mono uppercase tracking-wider">Config</span>
         </button>
     </nav>
 
@@ -654,7 +654,6 @@
                         return;
                     }
                     const data = JSON.parse(raw);
-                    // Migration check
                     if (!data.version || data.version < this.STORAGE_VERSION) {
                         this.migrateData(data);
                     } else {
@@ -679,7 +678,6 @@
             }
 
             migrateData(oldData) {
-                // Future-proof migration wrapper
                 this.state = {
                     version: this.STORAGE_VERSION,
                     activeLeagueId: oldData.activeLeagueId || null,
@@ -918,20 +916,15 @@
                 const parsedRows = [];
 
                 for (let line of lines) {
-                    // Split by tabs or multiple spaces
                     const cols = line.split(/\t+|\s{2,}/).map(c => c.trim()).filter(c => c.length > 0);
                     if (cols.length >= 9) {
-                        // Attempt to extract team name and numerical stats
-                        // Format expected: Team | GP | W | D | L | GF | GA | GD | PTS | PPG
                         let teamName = "";
                         let numStartIndex = 1;
 
-                        // If first column is purely numeric, maybe team name is split or missing, handle robustly
                         if (!isNaN(cols[0]) && isNaN(cols[1])) {
                             teamName = cols[1];
                             numStartIndex = 2;
                         } else {
-                            // Find where numbers begin
                             let nameParts = [];
                             for (let i = 0; i < cols.length; i++) {
                                 if (!isNaN(cols[i]) && i >= 1) {
@@ -1027,7 +1020,6 @@
                     tableData[index].name = value.trim();
                 } else {
                     tableData[index][field] = parseFloat(value) || 0;
-                    // Recalculate derived
                     tableData[index].gd = tableData[index].gf - tableData[index].ga;
                     tableData[index].pts = (tableData[index].w * 3) + tableData[index].d;
                     tableData[index].ppg = tableData[index].gp > 0 ? Number((tableData[index].pts / tableData[index].gp).toFixed(2)) : 0;
@@ -1076,7 +1068,6 @@
                 homeSelect.innerHTML = '<option value="">-- Seleccionar Local --</option>';
                 awaySelect.innerHTML = '<option value="">-- Seleccionar Visitante --</option>';
 
-                // Get unique team names from both tables
                 const homeTeams = league.homeTable.map(t => t.name);
                 const awayTeams = league.awayTable.map(t => t.name);
 
@@ -1132,44 +1123,35 @@
                 }
 
                 // 1. LEAGUE AVERAGES
-                // Total home goals scored by all home teams / total home games played
                 let totalHomeGF = 0, totalHomeGP = 0;
                 league.homeTable.forEach(t => { totalHomeGF += t.gf; totalHomeGP += t.gp; });
                 let leagueAvgHomeGF = totalHomeGP > 0 ? totalHomeGF / totalHomeGP : 1.35;
 
-                // Total away goals scored by all away teams / total away games played
                 let totalAwayGF = 0, totalAwayGP = 0;
                 league.awayTable.forEach(t => { totalAwayGF += t.gf; totalAwayGP += t.gp; });
                 let leagueAvgAwayGF = totalAwayGP > 0 ? totalAwayGF / totalAwayGP : 1.15;
 
                 // 2. STRENGTH CALCULATIONS
-                // Home attack strength = (Home team GF / Home team GP) / League Avg Home GF
                 let homeTeamGPG_Home = homeStats.gp > 0 ? homeStats.gf / homeStats.gp : 0;
                 let homeAttackStrength = leagueAvgHomeGF > 0 ? homeTeamGPG_Home / leagueAvgHomeGF : 1.0;
 
-                // Home defense strength = (Home team GA / Home team GP) / League Avg Away GF
                 let homeTeamGAPG_Home = homeStats.gp > 0 ? homeStats.ga / homeStats.gp : 0;
                 let homeDefenseStrength = leagueAvgAwayGF > 0 ? homeTeamGAPG_Home / leagueAvgAwayGF : 1.0;
 
-                // Away attack strength = (Away team GF / Away team GP) / League Avg Away GF
                 let awayTeamGPG_Away = awayStats.gp > 0 ? awayStats.gf / awayStats.gp : 0;
                 let awayAttackStrength = leagueAvgAwayGF > 0 ? awayTeamGPG_Away / leagueAvgAwayGF : 1.0;
 
-                // Away defense strength = (Away team GA / Away team GP) / League Avg Home GF
                 let awayTeamGAPG_Away = awayStats.gp > 0 ? awayStats.ga / awayStats.gp : 0;
                 let awayDefenseStrength = leagueAvgHomeGF > 0 ? awayTeamGAPG_Away / leagueAvgHomeGF : 1.0;
 
                 // 3. EXPECTED GOALS (xG)
-                // xG Local = League Avg Home GF * Home Attack Strength * Away Defense Strength
                 let xgHome = leagueAvgHomeGF * homeAttackStrength * awayDefenseStrength;
-                // xG Away = League Avg Away GF * Away Attack Strength * Home Defense Strength
                 let xgAway = leagueAvgAwayGF * awayAttackStrength * homeDefenseStrength;
 
                 if (isNaN(xgHome) || xgHome < 0) xgHome = 1.2;
                 if (isNaN(xgAway) || xgAway < 0) xgAway = 1.0;
                 let xgTotal = xgHome + xgAway;
 
-                // Display Strengths & xG
                 document.getElementById('resHomeAtt').innerText = homeAttackStrength.toFixed(2);
                 document.getElementById('resHomeAttDesc').innerText = homeAttackStrength > 1 ? 'Superior al promedio' : 'Inferior al promedio';
                 document.getElementById('resHomeDef').innerText = homeDefenseStrength.toFixed(2);
@@ -1218,7 +1200,6 @@
                     }
                 }
 
-                // Normalize probabilities due to truncation at 10
                 const sum1x2 = probHomeWin + probDraw + probAwayWin;
                 if (sum1x2 > 0) {
                     probHomeWin /= sum1x2;
@@ -1229,7 +1210,6 @@
                 const probUnder25 = 1 - probOver25;
                 const probBttsNo = 1 - probBttsYes;
 
-                // Fair odds
                 const oddsHome = probHomeWin > 0 ? 1 / probHomeWin : 99;
                 const oddsDraw = probDraw > 0 ? 1 / probDraw : 99;
                 const oddsAway = probAwayWin > 0 ? 1 / probAwayWin : 99;
@@ -1238,9 +1218,7 @@
                 const oddsBttsYes = probBttsYes > 0 ? 1 / probBttsYes : 99;
                 const oddsBttsNo = probBttsNo > 0 ? 1 / probBttsNo : 99;
 
-                // Render 1X2 UI
                 document.getElementById('probHomeText').innerText = `${(probHomeWin * 100).toFixed(1)}% (${oddsHome.toFixed(2)})`;
-                document.getElementById('barHome.style.width') = `${(probHomeWin * 100).toFixed(1)}%`;
                 document.getElementById('barHome').style.width = `${(probHomeWin * 100).toFixed(1)}%`;
 
                 document.getElementById('probDrawText').innerText = `${(probDraw * 100).toFixed(1)}% (${oddsDraw.toFixed(2)})`;
@@ -1249,13 +1227,11 @@
                 document.getElementById('probAwayText').innerText = `${(probAwayWin * 100).toFixed(1)}% (${oddsAway.toFixed(2)})`;
                 document.getElementById('barAway').style.width = `${(probAwayWin * 100).toFixed(1)}%`;
 
-                // Render Over/Under UI
                 document.getElementById('probOverText').innerText = `${(probOver25 * 100).toFixed(1)}%`;
                 document.getElementById('probOverOdds').innerText = `Cuota: ${oddsOver25.toFixed(2)}`;
                 document.getElementById('probUnderText').innerText = `${(probUnder25 * 100).toFixed(1)}%`;
                 document.getElementById('probUnderOdds').innerText = `Cuota: ${oddsUnder25.toFixed(2)}`;
 
-                // Render BTTS UI
                 document.getElementById('probBttsYesText').innerText = `${(probBttsYes * 100).toFixed(1)}%`;
                 document.getElementById('probBttsYesOdds').innerText = `Cuota: ${oddsBttsYes.toFixed(2)}`;
                 document.getElementById('probBttsNoText').innerText = `${(probBttsNo * 100).toFixed(1)}%`;
@@ -1289,7 +1265,6 @@
                     topScoresContainer.appendChild(div);
                 });
 
-                // Store analysis object for EV & Matrix
                 this.lastAnalysis = {
                     homeTeam: homeTeamName,
                     awayTeam: awayTeamName,
@@ -1308,7 +1283,6 @@
             }
 
             poissonProb(k, lambda) {
-                // P(X=k) = (e^-lambda * lambda^k) / k!
                 return (Math.exp(-lambda) * Math.pow(lambda, k)) / this.factorial(k);
             }
 
@@ -1319,7 +1293,6 @@
                 return res;
             }
 
-            // --- MATRIX TAB RENDER ---
             renderMatrixTable(matrix, top3) {
                 const wrapper = document.getElementById('matrixTableContent');
                 wrapper.innerHTML = '';
@@ -1327,7 +1300,6 @@
                 const table = document.createElement('table');
                 table.className = 'w-full text-xs font-mono border-collapse';
 
-                // Header
                 let thead = '<thead><tr class="border-b border-cardBorder"><th class="p-2 text-slate-500">L \\ V</th>';
                 for (let j = 0; j <= 8; j++) {
                     thead += `<th class="p-2 text-neonPink">${j}</th>`;
@@ -1356,7 +1328,6 @@
                 wrapper.appendChild(table);
             }
 
-            // --- EV & ODDS COMPARATOR ---
             calculateEV() {
                 if (!this.lastAnalysis) return;
 
@@ -1382,7 +1353,6 @@
                     let statusText = 'Sin cuota';
 
                     if (m.market > 0) {
-                        // EV (%) = (prob * marketOdd - 1) * 100
                         const evVal = (m.prob * m.market - 1) * 100;
                         ev = evVal.toFixed(2) + '%';
                         if (evVal > 3) {
@@ -1411,7 +1381,6 @@
                 });
             }
 
-            // --- EXPORT / IMPORT BACKUPS ---
             exportJSON() {
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.state, null, 2));
                 const dlAnchorElem = document.createElement('a');
@@ -1458,7 +1427,6 @@
             }
         }
 
-        // Helper to prevent XSS
         function escapeHtml(str) {
             return String(str)
                 .replace(/&/g, '&amp;')
@@ -1467,7 +1435,6 @@
                 .replace(/"/g, '&quot;');
         }
 
-        // Initialize App on Window Load
         let app;
         window.onload = function() {
             app = new BetagsPoissonApp();
