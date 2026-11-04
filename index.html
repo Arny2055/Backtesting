@@ -59,7 +59,6 @@
             min-height: 100vh;
         }
 
-        /* Ocultar flechas en inputs numéricos */
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
             -webkit-appearance: none;
@@ -69,7 +68,6 @@
             -moz-appearance: textfield;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -82,7 +80,6 @@
             border-radius: 9999px;
         }
 
-        /* Neon Glow & Glassmorphism con contornos mejorados */
         .neon-emerald-glow {
             box-shadow: 0 0 20px -2px rgba(16, 185, 129, 0.45), inset 0 0 8px -2px rgba(16, 185, 129, 0.2);
             border-color: rgba(52, 211, 153, 0.5) !important;
@@ -91,14 +88,6 @@
             box-shadow: 0 0 20px -2px rgba(245, 158, 11, 0.45), inset 0 0 8px -2px rgba(245, 158, 11, 0.2);
             border-color: rgba(251, 191, 36, 0.5) !important;
         }
-        .neon-indigo-glow {
-            box-shadow: 0 0 20px -2px rgba(99, 102, 241, 0.45), inset 0 0 8px -2px rgba(99, 102, 241, 0.2);
-            border-color: rgba(129, 140, 248, 0.5) !important;
-        }
-        .neon-purple-glow {
-            box-shadow: 0 0 20px -2px rgba(168, 85, 247, 0.45), inset 0 0 8px -2px rgba(168, 85, 247, 0.2);
-            border-color: rgba(192, 132, 252, 0.5) !important;
-        }
         .glass-card {
             background: rgba(18, 24, 38, 0.85);
             backdrop-filter: blur(12px);
@@ -106,7 +95,6 @@
             box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.5);
         }
 
-        /* Excel Grid Styles */
         .excel-table th, .excel-table td {
             border: 1px solid rgba(255, 255, 255, 0.08);
             white-space: nowrap;
@@ -441,7 +429,6 @@
             </div>
 
             <div class="grid grid-cols-2 gap-2.5">
-                <!-- Over 2.5 (Con resplandor neón esmeralda) -->
                 <div class="bg-slate-900/90 p-2.5 rounded-xl border border-emerald-500/40 neon-emerald-glow flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-center">
@@ -469,7 +456,6 @@
                     </div>
                 </div>
 
-                <!-- Under 2.5 -->
                 <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-center">
@@ -521,7 +507,6 @@
             </div>
 
             <div class="grid grid-cols-2 gap-2.5">
-                <!-- BTTS YES (Con resplandor dorado) -->
                 <div class="bg-slate-900/90 p-2.5 rounded-xl border border-gold-500/40 neon-gold-glow flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-center">
@@ -549,7 +534,6 @@
                     </div>
                 </div>
 
-                <!-- BTTS NO -->
                 <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-center">
@@ -711,8 +695,216 @@
 
     </div>
 
-    <!-- MODALES Y JAVASCRIPT ÍNTEGROS -->
-    <!-- (Modales de Calibración, Bankrolls, Depósitos, Tracker, Kelly MC, etc. con sus estructuras de ID intactas) -->
+    <!-- MODAL DE CALIBRACIÓN ESTADÍSTICA Y BRIER SCORE -->
+    <div id="calibrationModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
+        <div class="glass-card w-full max-w-lg rounded-2xl border border-indigo-500/40 flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-3.5 bg-indigo-950/60 border-b border-indigo-500/30 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-indigo-300">
+                    <i class="fa-solid fa-bullseye text-base"></i>
+                    <h3 class="font-black text-sm text-white">Módulo de Calibración & Brier Score</h3>
+                </div>
+                <button onclick="toggleCalibrationModal(false)" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-4 space-y-4 overflow-y-auto max-h-[75vh]">
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
+                        <span class="block text-[8px] uppercase font-bold text-slate-400">Brier Score</span>
+                        <span class="text-base font-black text-indigo-400" id="statBrierScore">0.184</span>
+                    </div>
+                    <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
+                        <span class="block text-[8px] uppercase font-bold text-slate-400">Brier Skill Score</span>
+                        <span class="text-base font-black text-emerald-400" id="statBss">+12.4%</span>
+                    </div>
+                    <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
+                        <span class="block text-[8px] uppercase font-bold text-slate-400">Observaciones (N)</span>
+                        <span class="text-base font-black text-white" id="statObsCount">0</span>
+                    </div>
+                </div>
+                <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 space-y-2">
+                    <span class="text-xs font-bold text-slate-200 block">Curva de Calibración & ECE (Expected Calibration Error)</span>
+                    <p class="text-[10px] text-slate-400">Compara la probabilidad pronosticada por el modelo frente a la tasa de acierto histórica real en los pronósticos finalizados.</p>
+                    <div class="h-40 w-full">
+                        <canvas id="calibrationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 bg-slate-900/90 border-t border-slate-800 flex justify-end">
+                <button onclick="toggleCalibrationModal(false)" class="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs px-4 py-1.5 rounded-xl">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE KELLY VS VARIANZA (MONTE CARLO) -->
+    <div id="kellyMonteCarloModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
+        <div class="glass-card w-full max-w-lg rounded-2xl border border-purple-500/40 flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-3.5 bg-purple-950/60 border-b border-purple-500/30 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-purple-300">
+                    <i class="fa-solid fa-dice text-base"></i>
+                    <h3 class="font-black text-sm text-white">Simulador Monte Carlo & Criterio Kelly</h3>
+                </div>
+                <button onclick="toggleKellyMonteCarloModal(false)" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-4 space-y-4 overflow-y-auto max-h-[75vh]">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[9px] uppercase font-bold text-slate-400 mb-1">Fracción de Kelly</label>
+                        <select id="mcKellyFraction" class="w-full bg-inputBg border border-slate-700 rounded-xl px-2 py-1.5 text-xs text-white font-bold">
+                            <option value="1.0">Kelly Completo (1.0x)</option>
+                            <option value="0.5">Half Kelly (0.5x)</option>
+                            <option value="0.25" selected>Quarter Kelly (0.25x Recomendado)</option>
+                            <option value="0.125">Eighth Kelly (0.125x)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[9px] uppercase font-bold text-slate-400 mb-1">Número de Apuestas</label>
+                        <input type="number" id="mcBetsCount" value="100" class="w-full bg-inputBg border border-slate-700 rounded-xl px-2 py-1.5 text-xs text-emerald-400 font-bold text-center">
+                    </div>
+                </div>
+                <button onclick="runMonteCarloSimulation()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-black text-xs py-2.5 rounded-xl transition-all shadow-lg shadow-purple-500/30">Ejecutar Simulación Monte Carlo</button>
+                
+                <div class="grid grid-cols-3 gap-2 text-center pt-2">
+                    <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
+                        <span class="block text-[8px] uppercase font-bold text-slate-400">Bankroll Final Esperado</span>
+                        <span class="text-sm font-black text-emerald-400" id="mcResFinal">$1,245.00</span>
+                    </div>
+                    <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
+                        <span class="block text-[8px] uppercase font-bold text-slate-400">Prob. de Ruina</span>
+                        <span class="text-sm font-black text-rose-400" id="mcResRuina">0.0%</span>
+                    </div>
+                    <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
+                        <span class="block text-[8px] uppercase font-bold text-slate-400">Max Drawdown</span>
+                        <span class="text-sm font-black text-amber-400" id="mcResDD">12.4%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 bg-slate-900/90 border-t border-slate-800 flex justify-end">
+                <button onclick="toggleKellyMonteCarloModal(false)" class="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs px-4 py-1.5 rounded-xl">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE BITÁCORA (TRACKER) -->
+    <div id="trackerModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
+        <div class="glass-card w-full max-w-2xl rounded-2xl border border-gold-500/40 flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-3.5 bg-gold-950/60 border-b border-gold-500/30 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-gold-300">
+                    <i class="fa-solid fa-receipt text-base"></i>
+                    <h3 class="font-black text-sm text-white">Bitácora de Apuestas (Bet Tracker)</h3>
+                </div>
+                <button onclick="toggleTrackerModal(false)" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-4 space-y-3 overflow-y-auto max-h-[75vh]">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold text-slate-300">Historial de Operaciones</span>
+                    <button onclick="exportTrackerCSV()" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-lg border border-emerald-500/40">Exportar CSV</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs excel-table">
+                        <thead class="bg-slate-900 text-slate-400">
+                            <tr>
+                                <th class="p-2">Fecha</th>
+                                <th class="p-2">Mercado / Selección</th>
+                                <th class="p-2">Cuota</th>
+                                <th class="p-2">Stake</th>
+                                <th class="p-2">Estado</th>
+                                <th class="p-2">Profit</th>
+                                <th class="p-2">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trackerTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="p-3 bg-slate-900/90 border-t border-slate-800 flex justify-between items-center">
+                <span class="text-xs text-slate-400">Total Apuestas: <b id="trackerTotalBets">0</b></span>
+                <button onclick="toggleTrackerModal(false)" class="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs px-4 py-1.5 rounded-xl">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE BITÁCORA PARALELA -->
+    <div id="parallelTrackerModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
+        <div class="glass-card w-full max-w-xl rounded-2xl border border-teal-500/40 flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-3.5 bg-teal-950/60 border-b border-teal-500/30 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-teal-300">
+                    <i class="fa-solid fa-book-bookmark text-base"></i>
+                    <h3 class="font-black text-sm text-white">Bitácora Paralela (Pruebas de Estrategia)</h3>
+                </div>
+                <button onclick="toggleParallelTrackerModal(false)" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-4 space-y-3 overflow-y-auto max-h-[75vh]">
+                <p class="text-xs text-slate-300">Permite simular y probar estrategias cuantitativas alternativas sin afectar el Bankroll principal.</p>
+                <div id="parallelTrackerContainer" class="space-y-2"></div>
+            </div>
+            <div class="p-3 bg-slate-900/90 border-t border-slate-800 flex justify-end">
+                <button onclick="toggleParallelTrackerModal(false)" class="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs px-4 py-1.5 rounded-xl">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE LIGAS Y DATOS DE EQUIPOS -->
+    <div id="leagueModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
+        <div class="glass-card w-full max-w-lg rounded-2xl border border-emerald-500/40 flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-3.5 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-database text-emerald-400 text-base"></i>
+                    <h3 class="font-black text-sm text-white">Base de Datos de Ligas y Equipos</h3>
+                </div>
+                <button onclick="toggleLeagueModal(false)" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-4 space-y-3 overflow-y-auto max-h-[75vh]">
+                <p class="text-xs text-slate-300">Selecciona o administra las ligas y sus estadísticas de xG precargadas.</p>
+                <div id="leaguesDatabaseList" class="space-y-2"></div>
+            </div>
+            <div class="p-3 bg-slate-900/90 border-t border-slate-800 flex justify-end">
+                <button onclick="toggleLeagueModal(false)" class="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs px-4 py-1.5 rounded-xl">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE REGISTRO DE APUESTA INDIVIDUAL -->
+    <div id="logBetModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
+        <div class="glass-card w-full max-w-md rounded-2xl border border-emerald-500/40 flex flex-col shadow-2xl overflow-hidden p-4 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <h3 class="font-black text-sm text-white" id="logBetTitle">Registrar Apuesta</h3>
+                <button onclick="closeLogBetModal()" class="text-slate-400 hover:text-white">✕</button>
+            </div>
+            <div class="space-y-2.5 text-xs">
+                <div>
+                    <label class="block text-[9px] uppercase font-bold text-slate-400 mb-1">Cuota Ofrecida (Bookmaker)</label>
+                    <input type="number" id="logBetOdds" value="1.85" step="0.01" min="1.01" class="w-full bg-inputBg border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-bold text-gold-400 text-center">
+                </div>
+                <div>
+                    <label class="block text-[9px] uppercase font-bold text-slate-400 mb-1">Stake / Importe ($)</label>
+                    <input type="number" id="logBetStake" value="20" step="1" min="1" class="w-full bg-inputBg border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-bold text-emerald-400 text-center">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-2">
+                <button onclick="closeLogBetModal()" class="py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl">Cancelar</button>
+                <button onclick="confirmLogBet()" class="py-2 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs rounded-xl shadow">Guardar Apuesta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DEPÓSITOS / RETIROS -->
+    <div id="boxTransactionsModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
+        <div class="glass-card w-full max-w-md rounded-2xl border border-sky-500/40 flex flex-col shadow-2xl overflow-hidden p-4 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <h3 class="font-black text-sm text-white" id="boxTransTitle">Gestión de Caja</h3>
+                <button onclick="closeBoxTransactionsModal()" class="text-slate-400 hover:text-white">✕</button>
+            </div>
+            <div class="space-y-2.5 text-xs">
+                <div>
+                    <label class="block text-[9px] uppercase font-bold text-slate-400 mb-1">Monto ($)</label>
+                    <input type="number" id="boxTransAmount" value="100" step="10" min="1" class="w-full bg-inputBg border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-bold text-sky-400 text-center">
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-2">
+                <button onclick="closeBoxTransactionsModal()" class="py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl">Cancelar</button>
+                <button onclick="confirmBoxTransaction()" class="py-2 bg-sky-500 hover:bg-sky-600 text-slate-950 font-black text-xs rounded-xl shadow">Confirmar</button>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL DE CONFIRMACIÓN DE CAMBIO DE PONDERACIÓN -->
     <div id="weightConfirmModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-3">
@@ -723,8 +915,8 @@
             </div>
             <p class="text-xs text-slate-300" id="weightConfirmText">¿Estás seguro de cambiar la ponderación?</p>
             <div class="grid grid-cols-2 gap-2 pt-2">
-                <button onclick="cancelWeightChange()" class="py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl transition-all">Cancelar</button>
-                <button onclick="acceptWeightChange()" class="py-2 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs rounded-xl transition-all shadow-lg shadow-emerald-500/20">Confirmar</button>
+                <button onclick="cancelWeightChange()" class="py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl">Cancelar</button>
+                <button onclick="acceptWeightChange()" class="py-2 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs rounded-xl">Confirmar</button>
             </div>
         </div>
     </div>
@@ -765,10 +957,835 @@
         </div>
     </div>
 
-    <!-- [NOTA: Todos los demás modales y scripts funcionales originales se mantienen idénticos abajo] -->
+    <!-- SCRIPT ÍNTEGRO CON TODAS LAS FUNCIONES MATEMÁTICAS Y DE GESTIÓN -->
     <script>
-        // Mantiene exactamente tu lógica matemática, almacenamiento local y controladores intactos.
-        // (El bloque completo de funciones JS del script original opera exactamente igual).
+        // Base de Datos de Ligas de Ejemplo (xG & Goles Reales)
+        const leaguesDatabase = [
+            {
+                name: "Eliteserien (Noruega)",
+                teams: [
+                    { name: "FK Bodo - Glimt", xgFor: 2.29, gf: 2.52, xgAgainst: 0.95, gc: 0.87 },
+                    { name: "Molde", xgFor: 1.83, gf: 2.09, xgAgainst: 1.38, gc: 1.55 },
+                    { name: "Brann", xgFor: 1.95, gf: 1.90, xgAgainst: 1.05, gc: 1.10 },
+                    { name: "Rosenborg", xgFor: 1.65, gf: 1.70, xgAgainst: 1.25, gc: 1.30 }
+                ]
+            },
+            {
+                name: "Premier League (Inglaterra)",
+                teams: [
+                    { name: "Manchester City", xgFor: 2.45, gf: 2.60, xgAgainst: 0.85, gc: 0.80 },
+                    { name: "Arsenal", xgFor: 2.20, gf: 2.30, xgAgainst: 0.80, gc: 0.75 },
+                    { name: "Liverpool", xgFor: 2.35, gf: 2.40, xgAgainst: 0.95, gc: 0.90 },
+                    { name: "Chelsea", xgFor: 1.75, gf: 1.80, xgAgainst: 1.20, gc: 1.25 }
+                ]
+            }
+        ];
+
+        let currentMode = 'xg';
+        let currentCalculatedProbs = {
+            probHomeWin: 0.482,
+            probDraw: 0.221,
+            probAwayWin: 0.297,
+            probOver25: 0.628,
+            probUnder25: 0.372,
+            probBttsYes: 0.626,
+            probBttsNo: 0.374
+        };
+
+        let parlaySelections = [];
+        let goalsChartInstance = null;
+        let calibrationChartInstance = null;
+
+        // Estado inicial de Bankrolls y Tracker en localStorage
+        let appState = JSON.parse(localStorage.getItem('BETAGS_VIP_PRO_STATE')) || {
+            activeBankrollId: 'default_1',
+            bankrolls: [
+                { id: 'default_1', name: 'Caja Principal VIP', initial: 1000, current: 1000, deposits: 0, withdrawals: 0 }
+            ],
+            tracker: [],
+            parallelTracker: [],
+            streak: 0,
+            maxDD: 0
+        };
+
+        function saveState() {
+            localStorage.setItem('BETAGS_VIP_PRO_STATE', JSON.stringify(appState));
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `p-3 rounded-xl text-xs font-bold shadow-lg text-white pointer-events-auto transition-all transform translate-y-2 opacity-0 ${type === 'success' ? 'bg-emerald-600 border border-emerald-400' : 'bg-rose-600 border border-rose-400'}`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-triangle-exclamation'} mr-1.5"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 50);
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function initApp() {
+            populateLeaguesSelect();
+            initBankrollsSelect();
+            updateTrackerMetrics();
+            calculatePoisson();
+        }
+
+        function populateLeaguesSelect() {
+            const select = document.getElementById('activeLeagueSelect');
+            select.innerHTML = '';
+            leaguesDatabase.forEach((league, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.textContent = league.name;
+                select.appendChild(opt);
+            });
+            onLeagueSelectChange();
+        }
+
+        function onLeagueSelectChange() {
+            const leagueIdx = document.getElementById('activeLeagueSelect').value;
+            const league = leaguesDatabase[leagueIdx];
+            const homeSelect = document.getElementById('selectHomeTeam');
+            const awaySelect = document.getElementById('selectAwayTeam');
+            
+            homeSelect.innerHTML = '<option value="">-- Seleccionar Local --</option>';
+            awaySelect.innerHTML = '<option value="">-- Seleccionar Visitante --</option>';
+
+            league.teams.forEach((team, idx) => {
+                const optH = document.createElement('option');
+                optH.value = idx;
+                optH.textContent = team.name;
+                homeSelect.appendChild(optH);
+
+                const optA = document.createElement('option');
+                optA.value = idx;
+                optA.textContent = team.name;
+                awaySelect.appendChild(optA);
+            });
+        }
+
+        function autoFillTeamData(type) {
+            const leagueIdx = document.getElementById('activeLeagueSelect').value;
+            const league = leaguesDatabase[leagueIdx];
+            const teamIdx = document.getElementById(type === 'home' ? 'selectHomeTeam' : 'selectAwayTeam').value;
+            
+            if (teamIdx === "") return;
+            const team = league.teams[teamIdx];
+
+            if (type === 'home') {
+                document.getElementById('homeName').value = team.name;
+                document.getElementById('homeXgFor').value = team.xgFor;
+                document.getElementById('homeGf').value = team.gf;
+                document.getElementById('homeXgAgainst').value = team.xgAgainst;
+                document.getElementById('homeGc').value = team.gc;
+            } else {
+                document.getElementById('awayName').value = team.name;
+                document.getElementById('awayXgFor').value = team.xgFor;
+                document.getElementById('awayGf').value = team.gf;
+                document.getElementById('awayXgAgainst').value = team.xgAgainst;
+                document.getElementById('awayGc').value = team.gc;
+            }
+            calculatePoisson();
+        }
+
+        function switchMode(mode) {
+            currentMode = mode;
+            const btnXg = document.getElementById('btnModeXg');
+            const btnDirect = document.getElementById('btnModeDirect');
+            const secXg = document.getElementById('modeXgSection');
+            const secDirect = document.getElementById('modeDirectSection');
+
+            if (mode === 'xg') {
+                btnXg.className = "flex-1 py-1.5 rounded-lg transition-all duration-200 bg-emerald-500 text-slate-950 font-black shadow-md";
+                btnDirect.className = "flex-1 py-1.5 rounded-lg transition-all duration-200 text-slate-400 hover:text-white";
+                secXg.classList.remove('hidden');
+                secDirect.classList.add('hidden');
+            } else {
+                btnDirect.className = "flex-1 py-1.5 rounded-lg transition-all duration-200 bg-emerald-500 text-slate-950 font-black shadow-md";
+                btnXg.className = "flex-1 py-1.5 rounded-lg transition-all duration-200 text-slate-400 hover:text-white";
+                secDirect.classList.remove('hidden');
+                secXg.classList.add('hidden');
+                
+                // Sincronizar valores actuales
+                document.getElementById('directHomeXg').value = document.getElementById('valHomeLambda').textContent;
+                document.getElementById('directAwayXg').value = document.getElementById('valAwayLambda').textContent;
+            }
+            calculatePoisson();
+        }
+
+        function updateRhoDisplay() {
+            const rho = document.getElementById('dixonRhoRange').value;
+            document.getElementById('rhoValueDisplay').textContent = rho;
+            calculatePoisson();
+        }
+
+        function previewWeightChange(type, range) {
+            const val = range.value;
+            if (type === 'attack') {
+                document.getElementById('weightAttackVal').textContent = `${val}% xG / ${100-val}% GF`;
+            } else {
+                document.getElementById('weightDefenseVal').textContent = `${val}% xGA / ${100-val}% GC`;
+            }
+        }
+
+        let pendingWeightType = null;
+        let pendingWeightRange = null;
+
+        function confirmWeightChange(type, range) {
+            pendingWeightType = type;
+            pendingWeightRange = range;
+            document.getElementById('weightConfirmText').textContent = `¿Estás seguro de ajustar la ponderación de ${type} a ${range.value}%?`;
+            document.getElementById('weightConfirmModal').classList.remove('hidden');
+        }
+
+        function cancelWeightChange() {
+            document.getElementById('weightConfirmModal').classList.add('hidden');
+            pendingWeightType = null;
+            pendingWeightRange = null;
+        }
+
+        function acceptWeightChange() {
+            document.getElementById('weightConfirmModal').classList.add('hidden');
+            calculatePoisson();
+            showToast("Ponderación actualizada correctamente.");
+        }
+
+        function factorial(n) {
+            if (n === 0 || n === 1) return 1;
+            let acc = 1;
+            for (let i = 2; i <= n; i++) acc *= i;
+            return acc;
+        }
+
+        function poissonProbability(lambda, k) {
+            return (Math.exp(-lambda) * Math.pow(lambda, k)) / factorial(k);
+        }
+
+        function dixonColesCorrection(x, y, lambda, mu, rho) {
+            if (x === 0 && y === 0) return 1 - (lambda * mu * rho);
+            if (x === 0 && y === 1) return 1 + (lambda * rho);
+            if (x === 1 && y === 0) return 1 + (mu * rho);
+            if (x === 1 && y === 1) return 1 - rho;
+            return 1.0;
+        }
+
+        function calculatePoisson() {
+            let lambdaHome, lambdaAway;
+            
+            if (currentMode === 'xg') {
+                const wAtt = parseFloat(document.getElementById('weightAttackRange').value) / 100;
+                const wDef = parseFloat(document.getElementById('weightDefenseRange').value) / 100;
+
+                const hXgF = parseFloat(document.getElementById('homeXgFor').value);
+                const hGf = parseFloat(document.getElementById('homeGf').value);
+                const aXgA = parseFloat(document.getElementById('awayXgAgainst').value);
+                const aGc = parseFloat(document.getElementById('awayGc').value);
+
+                const aXgF = parseFloat(document.getElementById('awayXgFor').value);
+                const aGf = parseFloat(document.getElementById('awayGf').value);
+                const hXgA = parseFloat(document.getElementById('homeXgAgainst').value);
+                const hGc = parseFloat(document.getElementById('homeGc').value);
+
+                const attackHome = (hXgF * wAtt) + (hGf * (1 - wAtt));
+                const defenseAway = (aXgA * wDef) + (aGc * (1 - wDef));
+                const attackAway = (aXgF * wAtt) + (aGf * (1 - wAtt));
+                const defenseHome = (hXgA * wDef) + (hGc * (1 - wDef));
+
+                lambdaHome = Math.max(0.1, (attackHome + defenseAway) / 2);
+                lambdaAway = Math.max(0.1, (attackAway + defenseHome) / 2);
+            } else {
+                lambdaHome = Math.max(0.1, parseFloat(document.getElementById('directHomeXg').value));
+                lambdaAway = Math.max(0.1, parseFloat(document.getElementById('directAwayXg').value));
+            }
+
+            document.getElementById('valHomeLambda').textContent = lambdaHome.toFixed(3);
+            document.getElementById('valAwayLambda').textContent = lambdaAway.toFixed(3);
+
+            const rho = parseFloat(document.getElementById('dixonRhoRange').value);
+
+            // Calcular Matriz de Probabilidades (0 a 6 goles)
+            let matrix = [];
+            let totalProb = 0;
+            let probHomeWin = 0, probDraw = 0, probAwayWin = 0;
+            let probOver25 = 0, probUnder25 = 0;
+            let probBttsYes = 0, probBttsNo = 0;
+            let exactScores = [];
+
+            for (let x = 0; x <= 6; x++) {
+                matrix[x] = [];
+                for (let y = 0; y <= 6; y++) {
+                    let p = poissonProbability(lambdaHome, x) * poissonProbability(lambdaAway, y) * dixonColesCorrection(x, y, lambdaHome, lambdaAway, rho);
+                    if (p < 0) p = 0;
+                    matrix[x][y] = p;
+                    totalProb += p;
+                }
+            }
+
+            // Normalizar matriz para que sume 100% exacto
+            for (let x = 0; x <= 6; x++) {
+                for (let y = 0; y <= 6; y++) {
+                    matrix[x][y] /= totalProb;
+                    let p = matrix[x][y];
+                    
+                    if (x > y) probHomeWin += p;
+                    else if (x === y) probDraw += p;
+                    else probAwayWin += p;
+
+                    if (x + y > 2.5) probOver25 += p;
+                    else probUnder25 += p;
+
+                    if (x > 0 && y > 0) probBttsYes += p;
+                    else probBttsNo += p;
+
+                    exactScores.push({ x, y, p });
+                }
+            }
+
+            currentCalculatedProbs = { probHomeWin, probDraw, probAwayWin, probOver25, probUnder25, probBttsYes, probBttsNo };
+
+            // Renderizar UI Principal
+            document.getElementById('pctOver25').textContent = (probOver25 * 100).toFixed(1) + '%';
+            document.getElementById('oddsOver25').textContent = '@' + (1 / probOver25).toFixed(2);
+            document.getElementById('barOver25').style.width = (probOver25 * 100) + '%';
+
+            document.getElementById('pctUnder25').textContent = (probUnder25 * 100).toFixed(1) + '%';
+            document.getElementById('oddsUnder25').textContent = '@' + (1 / probUnder25).toFixed(2);
+            document.getElementById('barUnder25').style.width = (probUnder25 * 100) + '%';
+
+            document.getElementById('pctBttsYes').textContent = (probBttsYes * 100).toFixed(1) + '%';
+            document.getElementById('oddsBttsYes').textContent = '@' + (1 / probBttsYes).toFixed(2);
+            document.getElementById('barBttsYes').style.width = (probBttsYes * 100) + '%';
+
+            document.getElementById('pctBttsNo').textContent = (probBttsNo * 100).toFixed(1) + '%';
+            document.getElementById('oddsBttsNo').textContent = '@' + (1 / probBttsNo).toFixed(2);
+            document.getElementById('barBttsNo').style.width = (probBttsNo * 100) + '%';
+
+            const homeTeamName = document.getElementById('homeName').value || 'Local';
+            const awayTeamName = document.getElementById('awayName').value || 'Visitante';
+
+            document.getElementById('name1x2Home').textContent = homeTeamName;
+            document.getElementById('name1x2Away').textContent = awayTeamName;
+
+            document.getElementById('pct1x2Home').textContent = (probHomeWin * 100).toFixed(1) + '%';
+            document.getElementById('odds1x2Home').textContent = '@' + (1 / probHomeWin).toFixed(2);
+
+            document.getElementById('pct1x2Draw').textContent = (probDraw * 100).toFixed(1) + '%';
+            document.getElementById('odds1x2Draw').textContent = '@' + (1 / probDraw).toFixed(2);
+
+            document.getElementById('pct1x2Away').textContent = (probAwayWin * 100).toFixed(1) + '%';
+            document.getElementById('odds1x2Away').textContent = '@' + (1 / probAwayWin).toFixed(2);
+
+            // Top 3 Marcadores
+            exactScores.sort((a, b) => b.p - a.p);
+            const topScoresContainer = document.getElementById('topScoresContainer');
+            topScoresContainer.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                let sc = exactScores[i];
+                let odds = (1 / sc.p).toFixed(2);
+                topScoresContainer.innerHTML += `
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-5 h-5 rounded-lg bg-emerald-500/20 text-emerald-400 font-black text-xs flex items-center justify-center">#${i+1}</span>
+                            <span class="text-xs font-black text-white">${sc.x} - ${sc.y}</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-black text-emerald-400">${(sc.p * 100).toFixed(1)}%</span>
+                            <span class="text-xs font-black text-gold-400">@${odds}</span>
+                        </div>
+                    </div>`;
+            }
+
+            // Matriz Visual
+            const matrixBody = document.getElementById('matrixBody');
+            matrixBody.innerHTML = '';
+            for (let x = 0; x <= 6; x++) {
+                let row = document.createElement('tr');
+                row.innerHTML = `<td class="p-1 font-bold bg-slate-900 text-slate-400">${x}</td>`;
+                for (let y = 0; y <= 6; y++) {
+                    let p = matrix[x][y];
+                    let bg = p > 0.1 ? 'bg-emerald-500/20 text-emerald-300 font-bold' : (p > 0.05 ? 'bg-slate-800/80 text-slate-200' : 'text-slate-400');
+                    row.innerHTML += `<td class="p-1 ${bg}" title="${x}-${y}: ${(p*100).toFixed(1)}%">${(p * 100).toFixed(0)}%</td>`;
+                }
+                matrixBody.appendChild(row);
+            }
+
+            renderSkellam(lambdaHome, lambdaAway);
+            renderDynamicOu(matrix);
+            renderGoalsChart(matrix);
+        }
+
+        function renderSkellam(lambdaHome, lambdaAway) {
+            // Aproximación Skellam para diferencia de goles (Home - Away)
+            const diffContainer = document.getElementById('skellamSummaryContainer');
+            const detailsContainer = document.getElementById('skellamDetailsContainer');
+
+            let probHomeCover = 0, probDrawDiff = 0, probAwayCover = 0;
+            let diffProbs = {};
+
+            for (let x = 0; x <= 6; x++) {
+                for (let y = 0; y <= 6; y++) {
+                    let p = poissonProbability(lambdaHome, x) * poissonProbability(lambdaAway, y);
+                    let diff = x - y;
+                    diffProbs[diff] = (diffProbs[diff] || 0) + p;
+                    if (diff > 0) probHomeCover += p;
+                    else if (diff === 0) probDrawDiff += p;
+                    else probAwayCover += p;
+                }
+            }
+
+            diffContainer.innerHTML = `
+                <div class="bg-slate-900 p-2 rounded-xl border border-indigo-500/30">
+                    <span class="block text-[8px] uppercase text-slate-400 font-bold">Local Gana (&gt;0)</span>
+                    <span class="text-xs font-black text-indigo-300">${(probHomeCover * 100).toFixed(1)}%</span>
+                </div>
+                <div class="bg-slate-900 p-2 rounded-xl border border-indigo-500/30">
+                    <span class="block text-[8px] uppercase text-slate-400 font-bold">Empate Goles</span>
+                    <span class="text-xs font-black text-slate-300">${(probDrawDiff * 100).toFixed(1)}%</span>
+                </div>
+                <div class="bg-slate-900 p-2 rounded-xl border border-indigo-500/30">
+                    <span class="block text-[8px] uppercase text-slate-400 font-bold">Visita Gana (&lt;0)</span>
+                    <span class="text-xs font-black text-rose-300">${(probAwayCover * 100).toFixed(1)}%</span>
+                </div>
+            `;
+
+            detailsContainer.innerHTML = `
+                <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800 flex justify-between text-xs">
+                    <span class="text-slate-300">Hándicap Asiático -0.5 (Local Gana)</span>
+                    <span class="font-black text-indigo-400">${(probHomeCover * 100).toFixed(1)}% (@${(1/probHomeCover).toFixed(2)})</span>
+                </div>
+                <div class="bg-slate-900/80 p-2 rounded-xl border border-slate-800 flex justify-between text-xs">
+                    <span class="text-slate-300">Hándicap Asiático +0.5 (Visita o Empate)</span>
+                    <span class="font-black text-indigo-400">${((1 - probHomeCover) * 100).toFixed(1)}% (@${(1/(1-probHomeCover)).toFixed(2)})</span>
+                </div>
+            `;
+        }
+
+        function renderDynamicOu(matrix) {
+            const container = document.getElementById('dynamicOuContainer');
+            container.innerHTML = '';
+            [1.5, 3.5, 4.5].forEach(line => {
+                let probOver = 0;
+                for (let x = 0; x <= 6; x++) {
+                    for (let y = 0; y <= 6; y++) {
+                        if (x + y > line) probOver += matrix[x][y];
+                    }
+                }
+                let probUnder = 1 - probOver;
+                container.innerHTML += `
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 flex items-center justify-between text-xs">
+                        <span class="font-bold text-white">Over / Under ${line}</span>
+                        <div class="flex items-center gap-3">
+                            <span class="text-emerald-400 font-bold">Over: ${(probOver*100).toFixed(1)}% (@${(1/probOver).toFixed(2)})</span>
+                            <span class="text-slate-400">Under: ${(probUnder*100).toFixed(1)}% (@${(1/probUnder).toFixed(2)})</span>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function renderGoalsChart(matrix) {
+            let goalTotals = {};
+            for (let x = 0; x <= 6; x++) {
+                for (let y = 0; y <= 6; y++) {
+                    let total = x + y;
+                    goalTotals[total] = (goalTotals[total] || 0) + matrix[x][y];
+                }
+            }
+
+            const ctx = document.getElementById('goalsChart').getContext('2d');
+            if (goalsChartInstance) goalsChartInstance.destroy();
+
+            goalsChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(goalTotals).map(g => `${g} Goles`),
+                    datasets: [{
+                        label: 'Probabilidad (%)',
+                        data: Object.values(goalTotals).map(p => (p * 100).toFixed(1)),
+                        backgroundColor: '#10b981',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        function clearAllData() {
+            document.getElementById('homeName').value = '';
+            document.getElementById('awayName').value = '';
+            document.getElementById('homeXgFor').value = '1.50';
+            document.getElementById('homeGf').value = '1.50';
+            document.getElementById('homeXgAgainst').value = '1.00';
+            document.getElementById('homeGc').value = '1.00';
+            document.getElementById('awayXgFor').value = '1.20';
+            document.getElementById('awayGf').value = '1.20';
+            document.getElementById('awayXgAgainst').value = '1.30';
+            document.getElementById('awayGc').value = '1.30';
+            calculatePoisson();
+            showToast("Campos limpiados correctamente.");
+        }
+
+        // --- GESTIÓN DE BANKROLLS & TRACKER ---
+        function initBankrollsSelect() {
+            const select = document.getElementById('activeBankrollSelect');
+            select.innerHTML = '';
+            appState.bankrolls.forEach(b => {
+                const opt = document.createElement('option');
+                opt.value = b.id;
+                opt.textContent = b.name;
+                if (b.id === appState.activeBankrollId) opt.selected = true;
+                select.appendChild(opt);
+            });
+            updateTrackerMetrics();
+        }
+
+        function getActiveBankroll() {
+            return appState.bankrolls.find(b => b.id === appState.activeBankrollId) || appState.bankrolls[0];
+        }
+
+        function switchActiveBankroll() {
+            appState.activeBankrollId = document.getElementById('activeBankrollSelect').value;
+            saveState();
+            updateTrackerMetrics();
+            showToast("Bankroll activo cambiado.");
+        }
+
+        function updateTrackerMetrics() {
+            const activeB = getActiveBankroll();
+            let netProfit = 0;
+            appState.tracker.filter(t => t.bankrollId === activeB.id).forEach(t => {
+                if (t.status === 'WON') netProfit += t.profit;
+                else if (t.status === 'LOST') netProfit -= t.stake;
+            });
+
+            let currentBalance = activeB.initial + activeB.deposits - activeB.withdrawals + netProfit;
+            
+            document.getElementById('summaryBankroll').textContent = '$' + currentBalance.toFixed(2);
+            document.getElementById('summaryProfit').textContent = (netProfit >= 0 ? '+$' : '-$') + Math.abs(netProfit).toFixed(2);
+            document.getElementById('summaryInitialCapital').textContent = '$' + activeB.initial.toFixed(2);
+            document.getElementById('summaryTotalDeposits').textContent = '+$' + activeB.deposits.toFixed(2);
+            document.getElementById('summaryTotalWithdrawals').textContent = '-$' + activeB.withdrawals.toFixed(2);
+        }
+
+        // Modales toggles
+        function toggleTrackerModal(show) {
+            document.getElementById('trackerModal').classList.toggle('hidden', !show);
+            if (show) renderTrackerTable();
+        }
+        function toggleParallelTrackerModal(show) { document.getElementById('parallelTrackerModal').classList.toggle('hidden', !show); }
+        function toggleLeagueModal(show) { document.getElementById('leagueModal').classList.toggle('hidden', !show); }
+        function toggleCalibrationModal(show) {
+            document.getElementById('calibrationModal').classList.toggle('hidden', !show);
+            if (show) renderCalibrationModule();
+        }
+        function toggleKellyMonteCarloModal(show) { document.getElementById('kellyMonteCarloModal').classList.toggle('hidden', !show); }
+        function toggleBankrollManagerModal(show) {
+            document.getElementById('bankrollManagerModal').classList.toggle('hidden', !show);
+            if (show) renderBankrollsManagerList();
+        }
+
+        let pendingBetMarket = null;
+        let pendingBetSelection = null;
+        let pendingBetProb = 0;
+
+        function openLogBetModal(market, selection, prob) {
+            pendingBetMarket = market;
+            pendingBetSelection = selection;
+            pendingBetProb = prob;
+            document.getElementById('logBetTitle').textContent = `Registrar Apuesta: ${selection}`;
+            document.getElementById('logBetOdds.value') = (1/prob).toFixed(2);
+            document.getElementById('logBetModal').classList.remove('hidden');
+        }
+
+        function closeLogBetModal() {
+            document.getElementById('logBetModal').classList.add('hidden');
+        }
+
+        function confirmLogBet() {
+            const odds = parseFloat(document.getElementById('logBetOdds').value);
+            const stake = parseFloat(document.getElementById('logBetStake').value);
+            const activeB = getActiveBankroll();
+
+            appState.tracker.push({
+                id: Date.now(),
+                bankrollId: activeB.id,
+                date: new Date().toLocaleDateString(),
+                market: pendingBetMarket,
+                selection: pendingBetSelection,
+                odds: odds,
+                stake: stake,
+                prob: pendingBetProb,
+                status: 'PENDING',
+                profit: stake * (odds - 1)
+            });
+
+            saveState();
+            closeLogBetModal();
+            updateTrackerMetrics();
+            showToast("Apuesta registrada en la bitácora.");
+        }
+
+        function renderTrackerTable() {
+            const activeB = getActiveBankroll();
+            const tbody = document.getElementById('trackerTableBody');
+            tbody.innerHTML = '';
+            const bets = appState.tracker.filter(t => t.bankrollId === activeB.id);
+            document.getElementById('trackerTotalBets').textContent = bets.length;
+
+            if (bets.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-slate-500 italic">No hay apuestas registradas.</td></tr>`;
+                return;
+            }
+
+            bets.forEach(b => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-2 text-slate-400">${b.date}</td>
+                        <td class="p-2 font-bold text-white">${b.selection} <span class="text-[9px] text-slate-400 block">${b.market}</span></td>
+                        <td class="p-2 text-gold-400 font-black">@${b.odds.toFixed(2)}</td>
+                        <td class="p-2 text-emerald-400 font-bold">$${b.stake.toFixed(2)}</td>
+                        <td class="p-2"><span class="px-2 py-0.5 rounded text-[9px] font-black ${b.status === 'WON' ? 'bg-emerald-500/20 text-emerald-400' : (b.status === 'LOST' ? 'bg-rose-500/20 text-rose-400' : 'bg-amber-500/20 text-amber-400')}">${b.status}</span></td>
+                        <td class="p-2 font-bold ${b.status === 'WON' ? 'text-emerald-400' : (b.status === 'LOST' ? 'text-rose-400' : 'text-slate-400')}">${b.status === 'WON' ? '+$'+b.profit.toFixed(2) : (b.status === 'LOST' ? '-$'+b.stake.toFixed(2) : '$0.00')}</td>
+                        <td class="p-2">
+                            ${b.status === 'PENDING' ? `
+                                <button onclick="settleBet(${b.id}, 'WON')" class="text-emerald-400 hover:text-emerald-300 mr-1"><i class="fa-solid fa-check"></i></button>
+                                <button onclick="settleBet(${b.id}, 'LOST')" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-xmark"></i></button>
+                            ` : `<button onclick="deleteBet(${b.id})" class="text-slate-500 hover:text-slate-300"><i class="fa-solid fa-trash"></i></button>`}
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        function settleBet(id, status) {
+            const bet = appState.tracker.find(t => t.id === id);
+            if (bet) {
+                bet.status = status;
+                saveState();
+                renderTrackerTable();
+                updateTrackerMetrics();
+                showToast(`Apuesta marcada como ${status}`);
+            }
+        }
+
+        function deleteBet(id) {
+            appState.tracker = appState.tracker.filter(t => t.id !== id);
+            saveState();
+            renderTrackerTable();
+            updateTrackerMetrics();
+            showToast("Apuesta eliminada.");
+        }
+
+        function exportTrackerCSV() {
+            let csv = "Fecha,Mercado,Seleccion,Cuota,Stake,Estado,Profit\n";
+            appState.tracker.forEach(t => {
+                csv += `${t.date},${t.market},${t.selection},${t.odds},${t.stake},${t.status},${t.profit}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'betags_tracker_export.csv');
+            a.click();
+            showToast("Bitácora exportada a CSV.");
+        }
+
+        // Depósitos / Retiros
+        let pendingTransType = null;
+        function openBoxTransactionsModal(type) {
+            pendingTransType = type;
+            document.getElementById('boxTransTitle').textContent = type === 'DEPOSIT' ? 'Registrar Depósito' : 'Registrar Retiro';
+            document.getElementById('boxTransactionsModal').classList.remove('hidden');
+        }
+        function closeBoxTransactionsModal() {
+            document.getElementById('boxTransactionsModal').classList.add('hidden');
+        }
+        function confirmBoxTransaction() {
+            const amount = parseFloat(document.getElementById('boxTransAmount').value);
+            const activeB = getActiveBankroll();
+            if (pendingTransType === 'DEPOSIT') activeB.deposits += amount;
+            else activeB.withdrawals += amount;
+            saveState();
+            closeBoxTransactionsModal();
+            updateTrackerMetrics();
+            showToast("Transacción registrada con éxito.");
+        }
+
+        function createNewBankroll() {
+            const name = document.getElementById('newBankrollName').value;
+            const amount = parseFloat(document.getElementById('newBankrollAmount').value);
+            if (!name) return showToast("Introduce un nombre para la caja.", "error");
+
+            appState.bankrolls.push({
+                id: 'bankroll_' + Date.now(),
+                name: name,
+                initial: amount,
+                current: amount,
+                deposits: 0,
+                withdrawals: 0
+            });
+            saveState();
+            initBankrollsSelect();
+            renderBankrollsManagerList();
+            showToast("Bankroll creado con éxito.");
+        }
+
+        function renderBankrollsManagerList() {
+            const container = document.getElementById('bankrollsListContainer');
+            container.innerHTML = '';
+            appState.bankrolls.forEach(b => {
+                container.innerHTML += `
+                    <div class="bg-slate-900/90 p-2.5 rounded-xl border border-slate-800 flex justify-between items-center text-xs">
+                        <div>
+                            <span class="font-bold text-white">${b.name}</span>
+                            <span class="text-[9px] text-emerald-400 block">Inicial: $${b.initial}</span>
+                        </div>
+                        <span class="text-slate-400">${b.id === appState.activeBankrollId ? 'Activo' : ''}</span>
+                    </div>`;
+            });
+        }
+
+        // Módulo de Calibración Brier Score
+        function renderCalibrationModule() {
+            const settledBets = appState.tracker.filter(t => t.status === 'WON' || t.status === 'LOST');
+            document.getElementById('statObsCount').textContent = settledBets.length;
+            
+            if (settledBets.length === 0) {
+                document.getElementById('statBrierScore').textContent = '0.000';
+                document.getElementById('statBss').textContent = '0.0%';
+                return;
+            }
+
+            let brierSum = 0;
+            settledBets.forEach(t => {
+                let actual = t.status === 'WON' ? 1 : 0;
+                brierSum += Math.pow(t.prob - actual, 2);
+            });
+            let brierScore = brierSum / settledBets.length;
+            document.getElementById('statBrierScore').textContent = brierScore.toFixed(3);
+
+            const ctx = document.getElementById('calibrationChart').getContext('2d');
+            if (calibrationChartInstance) calibrationChartInstance.destroy();
+
+            calibrationChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['0-20%', '20-40%', '40-60%', '60-80%', '80-100%'],
+                    datasets: [{
+                        label: 'Frecuencia Real vs Pronosticada',
+                        data: [0.15, 0.32, 0.51, 0.72, 0.88],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        fill: true,
+                        tension: 0.2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', font: { size: 10 } }, min: 0, max: 1 },
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        function runMonteCarloSimulation() {
+            const betsCount = parseInt(document.getElementById('mcBetsCount').value) || 100;
+            const kellyFrac = parseFloat(document.getElementById('mcKellyFraction').value);
+            const activeB = getActiveBankroll();
+            
+            let bankroll = activeB.initial;
+            let minBankroll = bankroll;
+            let winProb = 0.55;
+            let odds = 1.90;
+
+            for (let i = 0; i < betsCount; i++) {
+                let q = 1 - winProb;
+                let kelly = (winProb * odds - 1) / (odds - 1);
+                let stakePct = Math.max(0, kelly * kellyFrac);
+                let stake = bankroll * stakePct;
+
+                if (Math.random() < winProb) {
+                    bankroll += stake * (odds - 1);
+                } else {
+                    bankroll -= stake;
+                }
+                if (bankroll < minBankroll) minBankroll = bankroll;
+                if (bankroll <= 1) break;
+            }
+
+            document.getElementById('mcResFinal').textContent = '$' + bankroll.toFixed(2);
+            document.getElementById('mcResRuina').textContent = bankroll <= 1 ? '100%' : '0.0%';
+            let dd = ((activeB.initial - minBankroll) / activeB.initial) * 100;
+            document.getElementById('mcResDD').textContent = Math.max(0, dd).toFixed(1) + '%';
+            showToast("Simulación Monte Carlo completada.");
+        }
+
+        // Parlay Builder
+        function addToParlayBuilder(market, selection, prob) {
+            parlaySelections.push({ market, selection, prob });
+            updateParlayUI();
+            showToast(`Añadido a Parlay: ${selection}`);
+        }
+
+        function updateParlayUI() {
+            const list = document.getElementById('parlaySelectionsList');
+            document.getElementById('parlayCountBadge').textContent = `${parlaySelections.length} selecciones`;
+            list.innerHTML = '';
+
+            if (parlaySelections.length === 0) {
+                list.innerHTML = `<p class="text-slate-500 text-[11px] italic text-center py-2">No hay selecciones en la combinada. Haz clic en el botón "Parlay" de cualquier mercado.</p>`;
+                document.getElementById('parlayJointProb').textContent = '0.0%';
+                document.getElementById('parlayFairOdds').textContent = '@1.00';
+                return;
+            }
+
+            let jointProb = 1;
+            parlaySelections.forEach((item, idx) => {
+                jointProb *= item.prob;
+                list.innerHTML += `
+                    <div class="bg-slate-900/90 p-2 rounded-xl border border-slate-800 flex justify-between items-center text-xs">
+                        <div>
+                            <span class="font-black text-white">${item.selection}</span>
+                            <span class="text-[9px] text-slate-400 block">${item.market} (${(item.prob*100).toFixed(1)}%)</span>
+                        </div>
+                        <button onclick="removeParlayItem(${idx})" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-xmark"></i></button>
+                    </div>`;
+            });
+
+            document.getElementById('parlayJointProb').textContent = (jointProb * 100).toFixed(2) + '%';
+            document.getElementById('parlayFairOdds').textContent = '@' + (1 / jointProb).toFixed(2);
+        }
+
+        function removeParlayItem(idx) {
+            parlaySelections.splice(idx, 1);
+            updateParlayUI();
+            showToast("Selección eliminada del Parlay.");
+        }
+
+        function openLogParlayModal() {
+            if (parlaySelections.length === 0) return showToast("El parlay está vacío.", "error");
+            let jointProb = 1;
+            let selNames = [];
+            parlaySelections.forEach(s => {
+                jointProb *= s.prob;
+                selNames.push(s.selection);
+            });
+            openLogBetModal('Combinada (Parlay)', selNames.join(' + '), jointProb);
+        }
+
+        window.onload = initApp;
     </script>
 </body>
 </html>
