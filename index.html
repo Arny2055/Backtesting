@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Poisson de Fútbol</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Scrollbar personalizado fino */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- Header Principal -->
+    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-emerald-600 to-teal-500 text-white p-3 rounded-2xl shadow-lg shadow-emerald-900/30 flex items-center justify-center">
+                    <i class="fa-solid fa-futbol text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        PoissonFootball <span class="text-xs bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-semibold">Pro Analytics</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Modelo estadístico y cálculo de cuotas justas por Poisson</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <div class="relative flex-grow sm:flex-grow-0">
+                    <select id="leagueSelect" class="w-full sm:w-64 bg-slate-800/90 border border-slate-700/80 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-200 cursor-pointer shadow-inner">
+                        <!-- Dinámico -->
+                    </select>
+                </div>
+                <button onclick="openLeagueModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition shadow-lg shadow-emerald-900/20 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-gear"></i> <span class="hidden sm:inline">Gestionar Ligas</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Column: Match Selection, xG & Standings (5 Cols) -->
+        <div class="lg:col-span-5 space-y-6">
+            
+            <!-- Match Selector Card -->
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-7 shadow-2xl relative overflow-hidden">
+                <div class="absolute -top-12 -right-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <h2 class="text-base font-bold uppercase tracking-wider text-slate-300 mb-5 flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    Configurar Partido
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Equipo Local</label>
+                        <select id="homeTeamSelect" class="w-full bg-slate-800 border border-slate-700/80 rounded-2xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-200 shadow-sm cursor-pointer">
+                            <!-- Dinámico -->
+                        </select>
+                    </div>
+
+                    <div class="flex justify-center -my-3 relative z-10">
+                        <div class="bg-slate-800 border border-slate-700 text-slate-400 w-11 h-11 rounded-2xl flex items-center justify-center font-black text-xs shadow-md tracking-wider">
+                            VS
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Equipo Visitante</label>
+                        <select id="awayTeamSelect" class="w-full bg-slate-800 border border-slate-700/80 rounded-2xl px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-200 shadow-sm cursor-pointer">
+                            <!-- Dinámico -->
+                        </select>
+                    </div>
+
+                    <button onclick="calculatePoisson()" class="w-full mt-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-emerald-900/30 transition transform active:scale-[0.99] flex items-center justify-center gap-2.5 text-sm tracking-wide">
+                        <i class="fa-solid fa-calculator text-base"></i> Calcular Probabilidades
+                    </button>
+                </div>
+            </div>
+
+            <!-- xG & Stats Preview Card -->
+            <div id="statsCard" class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl hidden">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center text-xs">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    Goles Esperados (xG / Lambda)
+                </h3>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-slate-800/70 border border-slate-700/60 rounded-2xl p-4 shadow-inner">
+                        <span id="statHomeName" class="block text-xs text-slate-400 font-semibold truncate mb-1">Local</span>
+                        <span id="statHomeXG" class="text-3xl font-black text-emerald-400 block tracking-tight">0.00</span>
+                        <span class="text-[10px] text-slate-500 uppercase tracking-widest mt-1 block font-medium">xG Estimado</span>
+                    </div>
+                    <div class="bg-slate-800/70 border border-slate-700/60 rounded-2xl p-4 shadow-inner">
+                        <span id="statAwayName" class="block text-xs text-slate-400 font-semibold truncate mb-1">Visitante</span>
+                        <span id="statAwayXG" class="text-3xl font-black text-teal-400 block tracking-tight">0.00</span>
+                        <span class="text-[10px] text-slate-500 uppercase tracking-widest mt-1 block font-medium">xG Estimado</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standings Table Accordion / Box -->
+            <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-table"></i>
+                        </div>
+                        Tabla de Posiciones
+                    </h3>
+                </div>
+                <div class="flex gap-2 p-1 bg-slate-950/60 border border-slate-800 rounded-2xl mb-4">
+                    <button onclick="switchStandingsTab('home')" id="tabHomeBtn" class="flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-600 text-white transition shadow">Local</button>
+                    <button onclick="switchStandingsTab('away')" id="tabAwayBtn" class="flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition">Visitante</button>
+                </div>
+                <div class="overflow-x-auto max-h-72 pr-1">
+                    <table id="standingsTable" class="w-full text-left text-xs text-slate-300">
+                        <thead class="bg-slate-800/90 text-slate-400 uppercase font-bold text-[10px] sticky top-0 z-10">
+                            <tr>
+                                <th class="p-2.5 rounded-l-xl">Equipo</th>
+                                <th class="p-2.5 text-center">PJ</th>
+                                <th class="p-2.5 text-center">GF</th>
+                                <th class="p-2.5 text-center">GC</th>
+                                <th class="p-2.5 text-center rounded-r-xl">Pts</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standingsTableBody" class="divide-y divide-slate-800/60">
+                            <!-- Dinámico -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Results & Matrix (7 Cols) -->
+        <div class="lg:col-span-7 space-y-6">
+            
+            <!-- Initial State / Placeholder -->
+            <div id="initialState" class="bg-slate-900/90 border border-slate-800 rounded-3xl p-12 text-center flex flex-col items-center justify-center min-h-[480px] shadow-2xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-radial from-emerald-500/5 to-transparent pointer-events-none"></div>
+                <div class="w-20 h-20 bg-slate-800/80 text-slate-500 rounded-3xl flex items-center justify-center text-3xl mb-5 shadow-inner border border-slate-700/50">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Esperando datos de simulación</h3>
+                <p class="text-sm text-slate-400 max-w-md leading-relaxed">Selecciona los equipos local y visitante en el panel izquierdo y haz clic en <strong class="text-slate-200">"Calcular Probabilidades"</strong> para generar el análisis Poisson completo.</p>
+            </div>
+
+            <!-- Results Container (Hidden initially) -->
+            <div id="resultsContainer" class="space-y-6 hidden">
+                
+                <!-- 1X2 Probabilities & Odds Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <!-- Home Win -->
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 shadow-2xl relative overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Victoria Local (1)</span>
+                                <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs">
+                                    <i class="fa-solid fa-house"></i>
+                                </div>
+                            </div>
+                            <div class="text-3xl font-black text-white tracking-tight" id="probHome">0%</div>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-slate-800/80 flex justify-between items-center">
+                            <span class="text-xs text-slate-400 font-medium">Cuota Justa</span>
+                            <span class="text-sm font-extrabold text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-xl border border-emerald-800/50" id="oddsHome">0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Draw -->
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 shadow-2xl relative overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Empate (X)</span>
+                                <div class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center text-xs">
+                                    <i class="fa-solid fa-handshake"></i>
+                                </div>
+                            </div>
+                            <div class="text-3xl font-black text-white tracking-tight" id="probDraw">0%</div>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-slate-800/80 flex justify-between items-center">
+                            <span class="text-xs text-slate-400 font-medium">Cuota Justa</span>
+                            <span class="text-sm font-extrabold text-amber-400 bg-amber-950/60 px-3 py-1 rounded-xl border border-amber-800/50" id="oddsDraw">0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Away Win -->
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 shadow-2xl relative overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Victoria Visita (2)</span>
+                                <div class="w-7 h-7 rounded-lg bg-teal-500/10 text-teal-400 flex items-center justify-center text-xs">
+                                    <i class="fa-solid fa-plane"></i>
+                                </div>
+                            </div>
+                            <div class="text-3xl font-black text-white tracking-tight" id="probAway">0%</div>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-slate-800/80 flex justify-between items-center">
+                            <span class="text-xs text-slate-400 font-medium">Cuota Justa</span>
+                            <span class="text-sm font-extrabold text-teal-400 bg-teal-950/60 px-3 py-1 rounded-xl border border-teal-800/50" id="oddsAway">0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Markets & Most Likely Score -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Most Likely Score -->
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">Marcador Más Probable</span>
+                            <span id="mostLikelyScore" class="text-3xl font-black text-white tracking-tight">0 - 0</span>
+                        </div>
+                        <div class="text-right bg-slate-800/50 border border-slate-700/50 px-4 py-3 rounded-2xl">
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-semibold">Probabilidad</span>
+                            <span id="mostLikelyProb" class="text-xl font-extrabold text-emerald-400">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Over / Under 2.5 -->
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl flex items-center justify-around text-center">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">+2.5 Goles</span>
+                            <span id="over25Prob" class="text-xl font-extrabold text-white">0%</span>
+                            <span id="over25Odds" class="text-xs font-semibold text-emerald-400 block mt-1 bg-emerald-950/40 px-2 py-0.5 rounded-lg border border-emerald-800/30">Cuota: 0.00</span>
+                        </div>
+                        <div class="h-12 w-px bg-slate-800"></div>
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">-2.5 Goles</span>
+                            <span id="under25Prob" class="text-xl font-extrabold text-white">0%</span>
+                            <span id="under25Odds" class="text-xs font-semibold text-teal-400 block mt-1 bg-teal-950/40 px-2 py-0.5 rounded-lg border border-teal-800/30">Cuota: 0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Score Matrix (0-5) -->
+                <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-7 shadow-2xl">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-5 flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-table-cells"></i>
+                        </div>
+                        Matriz de Probabilidad de Marcadores Exactos (%)
+                    </h3>
+                    <div class="overflow-x-auto pb-2">
+                        <table class="w-full text-center text-xs border-collapse">
+                            <thead>
+                                <tr id="matrixHeader" class="bg-slate-800/90 text-slate-400 font-bold">
+                                    <th class="p-2.5 border border-slate-700/60 rounded-tl-xl">L \ V</th>
+                                    <!-- Dinámico 0 a 5 -->
+                                </tr>
+                            </thead>
+                            <tbody id="matrixBody" class="divide-y divide-slate-800/50">
+                                <!-- Dinámico -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between text-xs text-slate-400 px-1 font-medium">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-arrow-down text-emerald-400"></i> Fila = Goles Local</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-arrow-right text-emerald-400"></i> Columna = Goles Visitante</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Modal for League Management -->
+    <div id="leagueModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <!-- Modal Header -->
+            <div class="px-6 py-5 border-b border-slate-800 flex justify-between items-center bg-slate-900/90">
+                <h3 class="text-base font-bold text-white flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    Gestión de Ligas y Tablas
+                </h3>
+                <button onclick="closeLeagueModal()" class="text-slate-400 hover:text-white transition w-8 h-8 rounded-xl bg-slate-800 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-6 flex-grow">
+                
+                <!-- Selector / Creación de nueva liga -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Seleccionar Liga Activa</label>
+                        <select id="modalLeagueSelect" onchange="onModalLeagueChange()" class="w-full bg-slate-800 border border-slate-700 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-200">
+                            <!-- Dinámico -->
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="createNewLeaguePrompt()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold py-3 px-4 rounded-2xl transition text-sm flex items-center justify-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-plus text-emerald-400"></i> Crear Nueva Liga
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Editar Nombre -->
+                <div id="editLeagueNameContainer" class="hidden space-y-2">
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Nombre de la Liga</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="leagueNameInput" class="flex-grow bg-slate-800 border border-slate-700 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium text-slate-200">
+                        <button onclick="saveLeagueName()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-2xl text-sm transition shadow">Renombrar</button>
+                    </div>
+                </div>
+
+                <hr class="border-slate-800">
+
+                <!-- Edición Rápida de Tablas (Local y Visitante) -->
+                <div>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">Tablas de Datos (Formato Tabular / TSV o Edición Directa)</h4>
+                        <div class="flex gap-2 bg-slate-950/60 p-1 border border-slate-800 rounded-xl">
+                            <button onclick="switchModalTableTab('home')" id="modalTabHomeBtn" class="px-4 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 text-white shadow">Local</button>
+                            <button onclick="switchModalTableTab('away')" id="modalTabAwayBtn" class="px-4 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white">Visitante</button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-3 leading-relaxed">Puedes pegar datos directamente desde Excel o portapapeles o modificar los campos numéricos individualmente abajo.</p>
+                    
+                    <!-- TextArea para pegar masivo -->
+                    <textarea id="pasteArea" rows="3" placeholder="Pega aquí los datos copiados de la tabla..." class="w-full bg-slate-800 border border-slate-700 rounded-2xl p-3.5 text-xs font-mono text-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 mb-3 shadow-inner"></textarea>
+                    <div class="flex justify-end mb-4">
+                        <button onclick="importPastedData()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-emerald-400 font-bold px-4 py-2 rounded-xl text-xs transition flex items-center gap-2 shadow-sm">
+                            <i class="fa-solid fa-file-import"></i> Procesar Pegado
+                        </button>
+                    </div>
+
+                    <!-- Tabla editable en vivo -->
+                    <div class="border border-slate-800 rounded-2xl overflow-x-auto max-h-60 shadow-inner">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-800/90 text-slate-400 uppercase font-bold text-[10px] sticky top-0 z-10">
+                                <tr>
+                                    <th class="p-2.5">Equipo</th>
+                                    <th class="p-2.5 text-center">PJ</th>
+                                    <th class="p-2.5 text-center">W</th>
+                                    <th class="p-2.5 text-center">D</th>
+                                    <th class="p-2.5 text-center">L</th>
+                                    <th class="p-2.5 text-center">GF</th>
+                                    <th class="p-2.5 text-center">GA</th>
+                                    <th class="p-2.5 text-center">Pts</th>
+                                </tr>
+                            </thead>
+                            <tbody id="editableTableBody" class="divide-y divide-slate-800/60">
+                                <!-- Dinámico -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 border-t border-slate-800 flex justify-between items-center bg-slate-900/90">
+                <button onclick="deleteCurrentLeague()" id="deleteLeagueBtn" class="text-rose-400 hover:text-rose-300 text-xs font-bold flex items-center gap-2 transition px-3 py-2 rounded-xl hover:bg-rose-950/30">
+                    <i class="fa-solid fa-trash"></i> Eliminar Liga
+                </button>
+                <div class="flex gap-3">
+                    <button onclick="closeLeagueModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold px-4 py-2.5 rounded-xl transition">Cancelar</button>
+                    <button onclick="saveLeagueChanges()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow-lg shadow-emerald-900/20">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast / Custom Alert Box -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 border border-slate-700 text-white px-5 py-3.5 rounded-2xl shadow-2xl z-50 transform translate-y-24 opacity-0 transition-all duration-300 flex items-center gap-3 border-l-4 border-l-emerald-500">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toastMessage" class="text-sm font-semibold">Operación exitosa</span>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Datos iniciales por defecto (Premier League provista en el prompt)
+        const defaultLeagueData = {
+            id: "premier_default",
+            name: "Premier League (Datos Base)",
+            home: [
+                { team: "Arsenal", gp: 4, w: 4, d: 0, l: 0, gf: 9, ga: 2, gd: 7, pts: 12, ppg: 3.00 },
+                { team: "Man City", gp: 5, w: 4, d: 0, l: 1, gf: 11, ga: 7, gd: 4, pts: 12, ppg: 2.40 },
+                { team: "Brighton", gp: 4, w: 3, d: 1, l: 0, gf: 13, ga: 1, gd: 12, pts: 10, ppg: 2.50 },
+                { team: "Brentford", gp: 5, w: 3, d: 1, l: 1, gf: 10, ga: 3, gd: 7, pts: 10, ppg: 2.00 },
+                { team: "Chelsea", gp: 5, w: 3, d: 1, l: 1, gf: 13, ga: 8, gd: 5, pts: 10, ppg: 2.00 },
+                { team: "Bournemouth", gp: 5, w: 2, d: 2, l: 1, gf: 7, ga: 4, gd: 3, pts: 8, ppg: 1.60 },
+                { team: "Hull City", gp: 5, w: 1, d: 4, l: 0, gf: 7, ga: 5, gd: 2, pts: 7, ppg: 1.40 },
+                { team: "Tottenham", gp: 5, w: 2, d: 1, l: 2, gf: 7, ga: 6, gd: 1, pts: 7, ppg: 1.40 },
+                { team: "Everton", gp: 4, w: 2, d: 1, l: 1, gf: 5, ga: 4, gd: 1, pts: 7, ppg: 1.75 },
+                { team: "Ipswich", gp: 4, w: 2, d: 1, l: 1, gf: 5, ga: 5, gd: 0, pts: 7, ppg: 1.75 },
+                { team: "Leeds Utd", gp: 4, w: 1, d: 3, l: 0, gf: 6, ga: 3, gd: 3, pts: 6, ppg: 1.50 },
+                { team: "Coventry", gp: 5, w: 2, d: 0, l: 3, gf: 7, ga: 9, gd: -2, pts: 6, ppg: 1.20 },
+                { team: "Aston Villa", gp: 5, w: 1, d: 2, l: 2, gf: 6, ga: 7, gd: -1, pts: 5, ppg: 1.00 },
+                { team: "Newcastle", gp: 5, w: 1, d: 2, l: 2, gf: 6, ga: 7, gd: -1, pts: 5, ppg: 1.00 },
+                { team: "Liverpool", gp: 5, w: 1, d: 2, l: 2, gf: 4, ga: 6, gd: -2, pts: 5, ppg: 1.00 },
+                { team: "Fulham", gp: 4, w: 1, d: 1, l: 2, gf: 6, ga: 7, gd: -1, pts: 4, ppg: 1.00 },
+                { team: "Man Utd", gp: 4, w: 1, d: 1, l: 2, gf: 6, ga: 7, gd: -1, pts: 4, ppg: 1.00 },
+                { team: "Sunderland", gp: 4, w: 1, d: 1, l: 2, gf: 1, ga: 4, gd: -3, pts: 4, ppg: 1.00 },
+                { team: "Crystal Palace", gp: 4, w: 1, d: 0, l: 3, gf: 6, ga: 10, gd: -4, pts: 3, ppg: 0.75 },
+                { team: "Nottingham Forest", gp: 4, w: 0, d: 1, l: 3, gf: 0, ga: 3, gd: -3, pts: 1, ppg: 0.25 }
+            ],
+            away: [
+                { team: "Arsenal", gp: 5, w: 4, d: 0, l: 1, gf: 5, ga: 3, gd: 2, pts: 12, ppg: 2.40 },
+                { team: "Liverpool", gp: 4, w: 3, d: 1, l: 0, gf: 7, ga: 3, gd: 4, pts: 10, ppg: 2.50 },
+                { team: "Man City", gp: 4, w: 3, d: 0, l: 1, gf: 9, ga: 3, gd: 6, pts: 9, ppg: 2.25 },
+                { team: "Brighton", gp: 5, w: 3, d: 0, l: 2, gf: 11, ga: 6, gd: 5, pts: 9, ppg: 1.80 },
+                { team: "Aston Villa", gp: 4, w: 2, d: 1, l: 1, gf: 4, ga: 6, gd: -2, pts: 7, ppg: 1.75 },
+                { team: "Chelsea", gp: 4, w: 2, d: 0, l: 2, gf: 6, ga: 7, gd: -1, pts: 6, ppg: 1.50 },
+                { team: "Everton", gp: 5, w: 1, d: 3, l: 1, gf: 4, ga: 5, gd: -1, pts: 6, ppg: 1.20 },
+                { team: "Newcastle", gp: 4, w: 2, d: 0, l: 2, gf: 6, ga: 8, gd: -2, pts: 6, ppg: 1.50 },
+                { team: "Tottenham", gp: 4, w: 1, d: 2, l: 1, gf: 3, ga: 4, gd: -1, pts: 5, ppg: 1.25 },
+                { team: "Fulham", gp: 5, w: 1, d: 2, l: 2, gf: 3, ga: 4, gd: -1, pts: 5, ppg: 1.00 },
+                { team: "Leeds Utd", gp: 5, w: 1, d: 2, l: 2, gf: 3, ga: 5, gd: -2, pts: 5, ppg: 1.00 },
+                { team: "Nottingham Forest", gp: 5, w: 1, d: 2, l: 2, gf: 6, ga: 9, gd: -3, pts: 5, ppg: 1.00 },
+                { team: "Brentford", gp: 4, w: 0, d: 4, l: 0, gf: 6, ga: 6, gd: 0, pts: 4, ppg: 1.00 },
+                { team: "Hull City", gp: 4, w: 1, d: 1, l: 2, gf: 4, ga: 5, gd: -1, pts: 4, ppg: 1.00 },
+                { team: "Bournemouth", gp: 4, w: 1, d: 1, l: 2, gf: 7, ga: 9, gd: -2, pts: 4, ppg: 1.00 },
+                { team: "Ipswich", gp: 5, w: 1, d: 1, l: 3, gf: 9, ga: 13, gd: -4, pts: 4, ppg: 0.80 },
+                { team: "Crystal Palace", gp: 5, w: 1, d: 1, l: 3, gf: 3, ga: 11, gd: -8, pts: 4, ppg: 0.80 },
+                { team: "Man Utd", gp: 5, w: 0, d: 3, l: 2, gf: 4, ga: 8, gd: -4, pts: 3, ppg: 0.60 },
+                { team: "Coventry", gp: 4, w: 1, d: 0, l: 3, gf: 2, ga: 7, gd: -5, pts: 3, ppg: 0.75 },
+                { team: "Sunderland", gp: 5, w: 0, d: 1, l: 4, gf: 6, ga: 13, gd: -7, pts: 1, ppg: 0.20 }
+            ]
+        };
+
+        let leagues = [];
+        let currentLeagueId = "";
+        let currentStandingsTab = "home";
+        let modalTableTab = "home";
+        let activeModalLeague = null;
+
+        // Inicialización
+        window.onload = function() {
+            loadLeaguesFromStorage();
+            initUI();
+        };
+
+        function loadLeaguesFromStorage() {
+            const stored = localStorage.getItem("poisson_leagues");
+            if (stored) {
+                try {
+                    leagues = JSON.parse(stored);
+                } catch(e) {
+                    leagues = [defaultLeagueData];
+                }
+            } else {
+                leagues = [defaultLeagueData];
+                saveLeaguesToStorage();
+            }
+            if (leagues.length > 0) {
+                currentLeagueId = leagues[0].id;
+            }
+        }
+
+        function saveLeaguesToStorage() {
+            localStorage.setItem("poisson_leagues", JSON.stringify(leagues));
+        }
+
+        function getActiveLeague() {
+            return leagues.find(l => l.id === currentLeagueId) || leagues[0];
+        }
+
+        function initUI() {
+            updateLeagueSelects();
+            populateTeamSelects();
+            renderStandingsTable();
+        }
+
+        function updateLeagueSelects() {
+            const select = document.getElementById("leagueSelect");
+            select.innerHTML = "";
+            leagues.forEach(l => {
+                const opt = document.createElement("option");
+                opt.value = l.id;
+                opt.textContent = l.name;
+                if (l.id === currentLeagueId) opt.selected = true;
+                select.appendChild(opt);
+            });
+
+            select.onchange = (e) => {
+                currentLeagueId = e.target.value;
+                populateTeamSelects();
+                renderStandingsTable();
+                document.getElementById("resultsContainer").classList.add("hidden");
+                document.getElementById("initialState").classList.remove("hidden");
+                document.getElementById("statsCard").classList.add("hidden");
+            };
+        }
+
+        function populateTeamSelects() {
+            const league = getActiveLeague();
+            const homeSelect = document.getElementById("homeTeamSelect");
+            const awaySelect = document.getElementById("awayTeamSelect");
+            
+            homeSelect.innerHTML = "";
+            awaySelect.innerHTML = "";
+
+            const teams = league.home.map(h => h.team).sort();
+
+            teams.forEach(team => {
+                const opt1 = document.createElement("option");
+                opt1.value = team;
+                opt1.textContent = team;
+                homeSelect.appendChild(opt1);
+
+                const opt2 = document.createElement("option");
+                opt2.value = team;
+                opt2.textContent = team;
+                awaySelect.appendChild(opt2);
+            });
+
+            if (teams.length > 1) {
+                awaySelect.value = teams[1];
+            }
+        }
+
+        function switchStandingsTab(tab) {
+            currentStandingsTab = tab;
+            if (tab === 'home') {
+                document.getElementById("tabHomeBtn").className = "flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-600 text-white transition shadow";
+                document.getElementById("tabAwayBtn").className = "flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition";
+            } else {
+                document.getElementById("tabHomeBtn").className = "flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition";
+                document.getElementById("tabAwayBtn").className = "flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-600 text-white transition shadow";
+            }
+            renderStandingsTable();
+        }
+
+        function renderStandingsTable() {
+            const league = getActiveLeague();
+            const tbody = document.getElementById("standingsTableBody");
+            tbody.innerHTML = "";
+
+            const data = currentStandingsTab === 'home' ? league.home : league.away;
+            const sorted = [...data].sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
+
+            sorted.forEach((item, index) => {
+                const tr = document.createElement("tr");
+                tr.className = "hover:bg-slate-800/40 transition";
+                tr.innerHTML = `
+                    <td class="p-2.5 font-medium flex items-center gap-2.5">
+                        <span class="text-[10px] text-slate-500 font-bold w-4">${index + 1}</span>
+                        <span class="text-white truncate font-semibold">${item.team}</span>
+                    </td>
+                    <td class="p-2.5 text-center text-slate-400 font-medium">${item.gp}</td>
+                    <td class="p-2.5 text-center text-emerald-400 font-semibold">${item.gf}</td>
+                    <td class="p-2.5 text-center text-rose-400 font-semibold">${item.ga}</td>
+                    <td class="p-2.5 text-center font-black text-white">${item.pts}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // --- CÁLCULO POISSON ---
+        function factorial(n) {
+            if (n === 0 || n === 1) return 1;
+            let acc = 1;
+            for (let i = 2; i <= n; i++) acc *= i;
+            return acc;
+        }
+
+        function poissonProbability(lambda, k) {
+            if (lambda < 0) return 0;
+            return (Math.pow(lambda, k) * Math.exp(-lambda)) / factorial(k);
+        }
+
+        function calculatePoisson() {
+            const league = getActiveLeague();
+            const homeTeamName = document.getElementById("homeTeamSelect").value;
+            const awayTeamName = document.getElementById("awayTeamSelect").value;
+
+            if (homeTeamName === awayTeamName) {
+                showToast("El equipo local y visitante no pueden ser el mismo.", "error");
+                return;
+            }
+
+            const homeRecord = league.home.find(h => h.team === homeTeamName);
+            const awayRecord = league.away.find(a => a.team === awayTeamName);
+
+            if (!homeRecord || !awayRecord) {
+                showToast("No se encontraron estadísticas para los equipos seleccionados.", "error");
+                return;
+            }
+
+            let totalHomeGF = 0, totalHomeGP = 0;
+            let totalAwayGF = 0, totalAwayGP = 0;
+
+            league.home.forEach(h => { totalHomeGF += h.gf; totalHomeGP += h.gp; });
+            league.away.forEach(a => { totalAwayGF += a.gf; totalAwayGP += a.gp; });
+
+            const leagueAvgHomeGoals = totalHomeGP > 0 ? totalHomeGF / totalHomeGP : 1.3;
+            const leagueAvgAwayGoals = totalAwayGP > 0 ? totalAwayGF / totalAwayGP : 1.1;
+
+            const teamHomeGFPerGame = homeRecord.gp > 0 ? homeRecord.gf / homeRecord.gp : leagueAvgHomeGoals;
+            const homeAttackStrength = teamHomeGFPerGame / leagueAvgHomeGoals;
+
+            const teamAwayGAPerGame = awayRecord.gp > 0 ? awayRecord.ga / awayRecord.gp : leagueAvgAwayGoals;
+            const awayDefenseWeakness = teamAwayGAPerGame / leagueAvgAwayGoals;
+
+            const teamAwayGFPerGame = awayRecord.gp > 0 ? awayRecord.gf / awayRecord.gp : leagueAvgAwayGoals;
+            const awayAttackStrength = teamAwayGFPerGame / leagueAvgAwayGoals;
+
+            const teamHomeGAPerGame = homeRecord.gp > 0 ? homeRecord.ga / homeRecord.gp : leagueAvgHomeGoals;
+            const homeDefenseWeakness = teamHomeGAPerGame / leagueAvgHomeGoals;
+
+            const lambdaHome = homeAttackStrength * awayDefenseWeakness * leagueAvgHomeGoals;
+            const lambdaAway = awayAttackStrength * homeDefenseWeakness * leagueAvgAwayGoals;
+
+            document.getElementById("statHomeName").textContent = homeTeamName;
+            document.getElementById("statAwayName").textContent = awayTeamName;
+            document.getElementById("statHomeXG").textContent = lambdaHome.toFixed(2);
+            document.getElementById("statAwayXG").textContent = lambdaAway.toFixed(2);
+            document.getElementById("statsCard").classList.remove("hidden");
+
+            const maxGoals = 5;
+            let probHomeWin = 0;
+            let probDraw = 0;
+            let probAwayWin = 0;
+            let maxScoreProb = -1;
+            let mostLikelyScoreStr = "0 - 0";
+
+            let matrixProbs = Array(maxGoals + 1).fill(0).map(() => Array(maxGoals + 1).fill(0));
+
+            for (let h = 0; h <= maxGoals; h++) {
+                for (let a = 0; a <= maxGoals; a++) {
+                    const p = poissonProbability(lambdaHome, h) * poissonProbability(lambdaAway, a);
+                    matrixProbs[h][a] = p;
+
+                    if (h > a) probHomeWin += p;
+                    else if (h === a) probDraw += p;
+                    else probAwayWin += p;
+
+                    if (p > maxScoreProb) {
+                        maxScoreProb = p;
+                        mostLikelyScoreStr = `${h} - ${a}`;
+                    }
+                }
+            }
+
+            const total1X2 = probHomeWin + probDraw + probAwayWin;
+            probHomeWin /= total1X2;
+            probDraw /= total1X2;
+            probAwayWin /= total1X2;
+
+            let probOver25 = 0;
+            let probUnder25 = 0;
+            for (let h = 0; h <= maxGoals; h++) {
+                for (let a = 0; a <= maxGoals; a++) {
+                    if ((h + a) > 2.5) probOver25 += matrixProbs[h][a];
+                    else probUnder25 += matrixProbs[h][a];
+                }
+            }
+            const totalOverUnder = probOver25 + probUnder25;
+            probOver25 /= totalOverUnder;
+            probUnder25 /= totalOverUnder;
+
+            document.getElementById("probHome").textContent = (probHomeWin * 100).toFixed(1) + "%";
+            document.getElementById("oddsHome").textContent = probHomeWin > 0 ? (1 / probHomeWin).toFixed(2) : "99.00";
+
+            document.getElementById("probDraw").textContent = (probDraw * 100).toFixed(1) + "%";
+            document.getElementById("oddsDraw").textContent = probDraw > 0 ? (1 / probDraw).toFixed(2) : "99.00";
+
+            document.getElementById("probAway").textContent = (probAwayWin * 100).toFixed(1) + "%";
+            document.getElementById("oddsAway").textContent = probAwayWin > 0 ? (1 / probAwayWin).toFixed(2) : "99.00";
+
+            document.getElementById("mostLikelyScore").textContent = mostLikelyScoreStr;
+            document.getElementById("mostLikelyProb").textContent = (maxScoreProb * 100).toFixed(1) + "%";
+
+            document.getElementById("over25Prob").textContent = (probOver25 * 100).toFixed(1) + "%";
+            document.getElementById("over25Odds").textContent = "Cuota: " + (probOver25 > 0 ? (1 / probOver25).toFixed(2) : "99.00");
+            document.getElementById("under25Prob").textContent = (probUnder25 * 100).toFixed(1) + "%";
+            document.getElementById("under25Odds").textContent = "Cuota: " + (probUnder25 > 0 ? (1 / probUnder25).toFixed(2) : "99.00");
+
+            renderMatrixTable(matrixProbs, maxGoals);
+
+            document.getElementById("initialState").classList.add("hidden");
+            document.getElementById("resultsContainer").classList.remove("hidden");
+            showToast("¡Cálculo Poisson completado con éxito!");
+        }
+
+        function renderMatrixTable(matrix, maxGoals) {
+            const header = document.getElementById("matrixHeader");
+            const body = document.getElementById("matrixBody");
+
+            let headerHtml = `<th class="p-2.5 border border-slate-700/60 bg-slate-800">L \\ V</th>`;
+            for (let a = 0; a <= maxGoals; a++) {
+                headerHtml += `<th class="p-2.5 border border-slate-700/60">${a}</th>`;
+            }
+            header.innerHTML = headerHtml;
+
+            let bodyHtml = "";
+            for (let h = 0; h <= maxGoals; h++) {
+                bodyHtml += `<tr>`;
+                bodyHtml += `<td class="p-2.5 border border-slate-700/60 font-bold bg-slate-800/80 text-slate-300">${h}</td>`;
+                for (let a = 0; a <= maxGoals; a++) {
+                    const val = matrix[h][a] * 100;
+                    let bgClass = "bg-slate-900";
+                    if (val > 15) bgClass = "bg-emerald-950/80 text-emerald-300 font-bold shadow-inner";
+                    else if (val > 8) bgClass = "bg-emerald-900/40 text-emerald-400 font-semibold";
+                    else if (val > 3) bgClass = "bg-slate-800/60 text-slate-300";
+                    else bgClass = "bg-slate-900 text-slate-500";
+
+                    bodyHtml += `<td class="p-2.5 border border-slate-700/60 ${bgClass}">${val.toFixed(1)}%</td>`;
+                }
+                bodyHtml += `</tr>`;
+            }
+            body.innerHTML = bodyHtml;
+        }
+
+        // --- GESTIÓN DE LIGAS Y MODAL ---
+        function openLeagueModal() {
+            const league = getActiveLeague();
+            activeModalLeague = JSON.parse(JSON.stringify(league));
+
+            updateModalLeagueSelect();
+            document.getElementById("leagueNameInput").value = activeModalLeague.name;
+            document.getElementById("editLeagueNameContainer").classList.remove("hidden");
+            
+            modalTableTab = "home";
+            updateModalTableButtons();
+            renderEditableTable();
+
+            document.getElementById("leagueModal").classList.remove("hidden");
+        }
+
+        function closeLeagueModal() {
+            document.getElementById("leagueModal").classList.add("hidden");
+            activeModalLeague = null;
+        }
+
+        function updateModalLeagueSelect() {
+            const select = document.getElementById("modalLeagueSelect");
+            select.innerHTML = "";
+            leagues.forEach(l => {
+                const opt = document.createElement("option");
+                opt.value = l.id;
+                opt.textContent = l.name;
+                if (l.id === activeModalLeague.id) opt.selected = true;
+                select.appendChild(opt);
+            });
+        }
+
+        function onModalLeagueChange() {
+            const selectId = document.getElementById("modalLeagueSelect").value;
+            const found = leagues.find(l => l.id === selectId);
+            if (found) {
+                activeModalLeague = JSON.parse(JSON.stringify(found));
+                document.getElementById("leagueNameInput").value = activeModalLeague.name;
+                renderEditableTable();
+            }
+        }
+
+        function createNewLeaguePrompt() {
+            const name = prompt("Introduce el nombre de la nueva liga:", "Liga Española 2026");
+            if (!name) return;
+
+            const newId = "league_" + Date.now();
+            const newLeague = {
+                id: newId,
+                name: name,
+                home: JSON.parse(JSON.stringify(defaultLeagueData.home)),
+                away: JSON.parse(JSON.stringify(defaultLeagueData.away))
+            };
+
+            leagues.push(newLeague);
+            currentLeagueId = newId;
+            activeModalLeague = JSON.parse(JSON.stringify(newLeague));
+            
+            saveLeaguesToStorage();
+            updateLeagueSelects();
+            updateModalLeagueSelect();
+            document.getElementById("leagueNameInput").value = activeModalLeague.name;
+            renderEditableTable();
+            showToast("Nueva liga creada con éxito.");
+        }
+
+        function saveLeagueName() {
+            if (!activeModalLeague) return;
+            const newName = document.getElementById("leagueNameInput").value.trim();
+            if (!newName) {
+                showToast("El nombre no puede estar vacío.", "error");
+                return;
+            }
+            activeModalLeague.name = newName;
+            showToast("Nombre actualizado temporalmente. Haz clic en Guardar Cambios.");
+        }
+
+        function switchModalTableTab(tab) {
+            modalTableTab = tab;
+            updateModalTableButtons();
+            renderEditableTable();
+        }
+
+        function updateModalTableButtons() {
+            if (modalTableTab === 'home') {
+                document.getElementById("modalTabHomeBtn").className = "px-4 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 text-white shadow";
+                document.getElementById("modalTabAwayBtn").className = "px-4 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white";
+            } else {
+                document.getElementById("modalTabHomeBtn").className = "px-4 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white";
+                document.getElementById("modalTabAwayBtn").className = "px-4 py-1.5 text-xs font-bold rounded-lg bg-emerald-600 text-white shadow";
+            }
+        }
+
+        function renderEditableTable() {
+            if (!activeModalLeague) return;
+            const tbody = document.getElementById("editableTableBody");
+            tbody.innerHTML = "";
+
+            const list = modalTableTab === 'home' ? activeModalLeague.home : activeModalLeague.away;
+
+            list.forEach((item, index) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td class="p-2"><input type="text" value="${item.team}" onchange="updateRowData(${index}, 'team', this.value)" class="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-white w-full font-medium"></td>
+                    <td class="p-2 text-center"><input type="number" value="${item.gp}" onchange="updateRowData(${index}, 'gp', this.value)" class="bg-slate-900 border border-slate-700 rounded-xl px-1.5 py-1.5 text-xs text-white w-12 text-center font-medium"></td>
+                    <td class="p-2 text-center"><input type="number" value="${item.w}" onchange="updateRowData(${index}, 'w', this.value)" class="bg-slate-900 border border-slate-700 rounded-xl px-1.5 py-1.5 text-xs text-white w-12 text-center font-medium"></td>
+                    <td class="p-2 text-center"><input type="number" value="${item.d}" onchange="updateRowData(${index}, 'd', this.value)" class="bg-slate-900 border border-slate-700 rounded-xl px-1.5 py-1.5 text-xs text-white w-12 text-center font-medium"></td>
+                    <td class="p-2 text-center"><input type="number" value="${item.l}" onchange="updateRowData(${index}, 'l', this.value)" class="bg-slate-900 border border-slate-700 rounded-xl px-1.5 py-1.5 text-xs text-white w-12 text-center font-medium"></td>
+                    <td class="p-2 text-center"><input type="number" value="${item.gf}" onchange="updateRowData(${index}, 'gf', this.value)" class="bg-slate-900 border border-slate-700 rounded-xl px-1.5 py-1.5 text-xs text-white w-12 text-center font-medium"></td>
+                    <td class="p-2 text-center"><input type="number" value="${item.ga}" onchange="updateRowData(${index}, 'ga', this.value)" class="bg-slate-900 border border-slate-700 rounded-xl px-1.5 py-1.5 text-xs text-white w-12 text-center font-medium"></td>
+                    <td class="p-2 text-center"><input type="number" value="${item.pts}" onchange="updateRowData(${index}, 'pts', this.value)" class="bg-slate-900 border border-slate-700 rounded-xl px-1.5 py-1.5 text-xs text-white w-12 text-center font-medium"></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateRowData(index, field, value) {
+            if (!activeModalLeague) return;
+            const list = modalTableTab === 'home' ? activeModalLeague.home : activeModalLeague.away;
+            if (field === 'team') {
+                list[index][field] = value;
+            } else {
+                list[index][field] = parseInt(value) || 0;
+                list[index].gd = list[index].gf - list[index].ga;
+                list[index].ppg = list[index].gp > 0 ? parseFloat((list[index].pts / list[index].gp).toFixed(2)) : 0.0;
+            }
+        }
+
+        function importPastedData() {
+            const text = document.getElementById("pasteArea").value.trim();
+            if (!text) {
+                showToast("Pega contenido válido en el cuadro de texto.", "error");
+                return;
+            }
+
+            const lines = text.split("\n");
+            let newList = [];
+
+            lines.forEach(line => {
+                const cols = line.split(/\t+|\s{2,}/).map(c => c.trim()).filter(c => c.length > 0);
+                if (cols.length >= 8) {
+                    let teamNameIdx = isNaN(cols[0]) ? 0 : 1;
+                    if (cols.length > teamNameIdx + 7) {
+                        const team = cols[teamNameIdx];
+                        const gp = parseInt(cols[teamNameIdx + 1]) || 0;
+                        const w = parseInt(cols[teamNameIdx + 2]) || 0;
+                        const d = parseInt(cols[teamNameIdx + 3]) || 0;
+                        const l = parseInt(cols[teamNameIdx + 4]) || 0;
+                        const gf = parseInt(cols[teamNameIdx + 5]) || 0;
+                        const ga = parseInt(cols[teamNameIdx + 6]) || 0;
+                        const gd = gf - ga;
+                        const pts = parseInt(cols[cols.length - 2]) || (w * 3 + d);
+                        const ppg = gp > 0 ? parseFloat((pts / gp).toFixed(2)) : 0;
+
+                        newList.push({ team, gp, w, d, l, gf, ga, gd, pts, ppg });
+                    }
+                }
+            });
+
+            if (newList.length > 0) {
+                if (modalTableTab === 'home') activeModalLeague.home = newList;
+                else activeModalLeague.away = newList;
+
+                renderEditableTable();
+                document.getElementById("pasteArea").value = "";
+                showToast(`Se importaron ${newList.length} equipos correctamente.`);
+            } else {
+                showToast("No se pudo parsear el formato. Asegúrate de incluir las columnas estándar.", "error");
+            }
+        }
+
+        function saveLeagueChanges() {
+            if (!activeModalLeague) return;
+            const index = leagues.findIndex(l => l.id === activeModalLeague.id);
+            if (index !== -1) {
+                leagues[index] = JSON.parse(JSON.stringify(activeModalLeague));
+            } else {
+                leagues.push(activeModalLeague);
+            }
+
+            currentLeagueId = activeModalLeague.id;
+            saveLeaguesToStorage();
+            initUI();
+            closeLeagueModal();
+            showToast("Cambios guardados exitosamente.");
+        }
+
+        function deleteCurrentLeague() {
+            if (leagues.length <= 1) {
+                showToast("No puedes eliminar la última liga disponible.", "error");
+                return;
+            }
+            if (confirm("¿Estás seguro de que deseas eliminar esta liga?")) {
+                leagues = leagues.filter(l => l.id !== activeModalLeague.id);
+                currentLeagueId = leagues[0].id;
+                saveLeaguesToStorage();
+                initUI();
+                closeLeagueModal();
+                showToast("Liga eliminada.");
+            }
+        }
+
+        function showToast(message, type = "success") {
+            const toast = document.getElementById("toast");
+            const toastMessage = document.getElementById("toastMessage");
+            const toastIcon = document.getElementById("toastIcon");
+
+            toastMessage.textContent = message;
+            if (type === "error") {
+                toastIcon.className = "fa-solid fa-triangle-exclamation text-rose-400 text-lg";
+                toast.className = "fixed bottom-6 right-6 bg-slate-900 border border-slate-700 text-white px-5 py-3.5 rounded-2xl shadow-2xl z-50 transform translate-y-0 opacity-100 transition-all duration-300 flex items-center gap-3 border-l-4 border-l-rose-500";
+            } else {
+                toastIcon.className = "fa-solid fa-circle-check text-emerald-400 text-lg";
+                toast.className = "fixed bottom-6 right-6 bg-slate-900 border border-slate-700 text-white px-5 py-3.5 rounded-2xl shadow-2xl z-50 transform translate-y-0 opacity-100 transition-all duration-300 flex items-center gap-3 border-l-4 border-l-emerald-500";
+            }
+
+            setTimeout(() => {
+                toast.className = "fixed bottom-6 right-6 bg-slate-900 border border-slate-700 text-white px-5 py-3.5 rounded-2xl shadow-2xl z-50 transform translate-y-24 opacity-0 transition-all duration-300 flex items-center gap-3 border-l-4 border-l-emerald-500";
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
