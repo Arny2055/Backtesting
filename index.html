@@ -97,7 +97,7 @@
                 <div class="relative z-10">
                     <span class="text-xs font-mono uppercase tracking-widest text-neonBlue px-3 py-1 rounded-full bg-neonBlue/10 border border-neonBlue/30">Motor de Intervalos 15-Min</span>
                     <h2 class="text-2xl sm:text-3xl font-black mt-3 text-white">Análisis Dinámico de Goles HT & Minutos Clave</h2>
-                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Lectura avanzada de tablas por intervalos de 15 minutos, cálculo de Poisson HT (Over 0.5) y rangos especiales 0-30 y 16-45.</p>
+                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Lectura avanzada de tablas por intervalos de 15 minutos, cálculo de Poisson HT, tramos 0-30 / 16-45 e Índice de Presión en Vivo.</p>
                     <div class="mt-6 flex flex-wrap gap-3">
                         <button onclick="app.switchTab('leagues')" class="px-5 py-2.5 rounded-xl bg-neonBlue text-black font-bold text-xs uppercase tracking-wider hover:bg-neonBlue/90 transition-all shadow-lg shadow-neonBlue/20">Gestionar Ligas</button>
                         <button onclick="app.switchTab('analyzer')" class="px-5 py-2.5 rounded-xl bg-cardBg border border-neonGreen text-neonGreen font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/10 transition-all">Analizar Tramos</button>
@@ -215,12 +215,12 @@
             </div>
         </section>
 
-        <!-- ================= 5. ANALIZADOR POISSON DINÁMICO & TRAMOS ESPECIALES ================= -->
+        <!-- ================= 5. ANALIZADOR POISSON & ÍNDICE DE PRESIÓN HT ================= -->
         <section id="tab-analyzer" class="tab-content hidden space-y-6">
             <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-5">
                 <div>
-                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Analizador Poisson: HT, 0-30 y 16-45</h2>
-                    <p class="text-xs text-slate-400">Cálculo de probabilidad acumulada mediante Poisson (ponderación 70% GF / 30% GA) para franjas estándar y parciales.</p>
+                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Analizador Avanzado HT & Live Pressure Index</h2>
+                    <p class="text-xs text-slate-400">Cálculo de Poisson (70% GF / 30% GA), probabilidad de 0-0 HT y métrica de agresividad en vivo para detección de valor.</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
@@ -266,6 +266,26 @@
                                 <span id="res1645FairOdds" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
                             </div>
                             <p class="text-[11px] text-slate-300 mt-2">xG 16-45: <span id="res1645Xg" class="font-bold text-white">0.00</span></p>
+                        </div>
+                    </div>
+
+                    <!-- MEJORA AÑADIDA: ÍNDICE DE PRESIÓN HT & PROBABILIDAD DE 0-0 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-2">
+                            <span class="text-xs font-mono text-neonBlue uppercase font-bold block">Probabilidad Exacta 0-0 al Descanso</span>
+                            <div class="flex items-baseline space-x-3">
+                                <span id="resZeroZeroProb" class="text-2xl font-black text-amber-400 font-mono">0.0%</span>
+                                <span class="text-[11px] text-slate-400">Riesgo de partido cerrado en la 1ª mitad</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 pt-2 border-t border-cardBorder/50">Calculado mediante la distribución de Poisson para 0 goles combinados.</p>
+                        </div>
+                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-2">
+                            <span class="text-xs font-mono text-neonGreen uppercase font-bold block">Live Pressure Index (Índice de Agresividad HT)</span>
+                            <div class="flex items-baseline space-x-3">
+                                <span id="resPressureIndex" class="text-2xl font-black text-white font-mono">-- / 10</span>
+                                <span id="resPressureBadge" class="text-[10px] px-2 py-0.5 rounded font-bold uppercase bg-neonGreen/10 text-neonGreen border border-neonGreen/30">Neutral</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 pt-2 border-t border-cardBorder/50">Mide la concentración de goles en los primeros 30 minutos frente al cierre.</p>
                         </div>
                     </div>
 
@@ -651,7 +671,7 @@
                 if (curH && curA) this.runAnalysis();
             }
 
-            // --- MOTOR DE POISSON DINÁMICO (HT, 0-30 Y 16-45) ---
+            // --- MOTOR DE POISSON AVANZADO CON LIVE PRESSURE INDEX Y 0-0 HT ---
             runAnalysis() {
                 const homeName = document.getElementById('selectHomeTeam').value;
                 const awayName = document.getElementById('selectAwayTeam').value;
@@ -706,32 +726,49 @@
                     });
                 });
 
-                // Cálculo para HT (0-45)
+                // 1. Probabilidades estándar HT
                 const probOver05HT = (1 - Math.exp(-totalHtXg)) * 100;
                 const fairOddsHT = probOver05HT > 0 ? (100 / probOver05HT) : 99;
 
-                // Cálculo para Tramo 0-30 (0-15 + 16-30)
-                const xg0_30 = (xgByInterval['0-15'] || 0) + (xgByInterval['16-30'] || 0);
+                // 2. Probabilidad Exacta 0-0 al Descanso (Poisson P(0) = e^(-lambda))
+                const probZeroZeroHT = Math.exp(-totalHtXg) * 100;
+
+                // 3. Live Pressure Index (Mide si la presión de goles se concentra al inicio 0-30 vs tarde 31-45)
+                const xgEarly = (xgByInterval['0-15'] || 0) + (xgByInterval['16-30'] || 0);
+                const xgLate = xgByInterval['31-45'] || 0;
+                let pressureScore = totalHtXg > 0 ? Math.min(10, Math.max(1, ((xgEarly * 1.5 + xgLate) / totalHtXg) * 5)).toFixed(1) : "5.0";
+                
+                let pressureBadgeText = "Neutral";
+                let pressureBadgeClass = "bg-neonBlue/10 text-neonBlue border-neonBlue/30";
+                if (parseFloat(pressureScore) >= 7.0) {
+                    pressureBadgeText = "Alta Agresividad";
+                    pressureBadgeClass = "bg-neonGreen/10 text-neonGreen border-neonGreen/30";
+                } else if (parseFloat(pressureScore) <= 4.0) {
+                    pressureBadgeText = "Lento / Conservador";
+                    pressureBadgeClass = "bg-red-500/10 text-red-400 border-red-500/30";
+                }
+
+                // Tramos 0-30 y 16-45
+                const xg0_30 = xgEarly;
                 const prob0_30 = (1 - Math.exp(-xg0_30)) * 100;
                 const fairOdds0_30 = prob0_30 > 0 ? (100 / prob0_30) : 99;
 
-                // Cálculo para Tramo 16-45 (16-30 + 31-45)
                 const xg16_45 = (xgByInterval['16-30'] || 0) + (xgByInterval['31-45'] || 0);
                 const prob16_45 = (1 - Math.exp(-xg16_45)) * 100;
                 const fairOdds16_45 = prob16_45 > 0 ? (100 / prob16_45) : 99;
 
-                // Recomendación de entrada
+                // Recomendación táctica inteligente
                 const avgMinEntry = Math.round((hStats.avgGF + aStats.avgGF) / 2);
                 let recommendation = `Promedio combinado de anotación: ${avgMinEntry} min. `;
-                if (prob0_30 >= 65) {
-                    recommendation += `Alta presión inicial detectada (Tramo 0-30 al ${prob0_30.toFixed(1)}%). Ideal para buscar entradas tempranas o Over 0.5 antes del minuto 30.`;
-                } else if (prob16_45 >= 70) {
-                    recommendation += `Fuerte tendencia de goles hacia el cierre de la primera parte (Tramo 16-45 al ${prob16_45.toFixed(1)}%). Recomendable esperar cuotas altas superado el minuto 20.`;
+                if (probZeroZeroHT > 35) {
+                    recommendation += `Alerta: Alta probabilidad de 0-0 al descanso (${probZeroZeroHT.toFixed(1)}%). Evita entrar de inicio y espera a que la cuota del Over 0.5 HT supere 2.00 pasada la media hora de juego.`;
+                } else if (prob0_30 >= 65) {
+                    recommendation += `Fuerte tendencia de presión inicial (Tramo 0-30 al ${prob0_30.toFixed(1)}%). Excelente escenario para buscar entrada en directo si hay remates tempranos.`;
                 } else {
-                    recommendation += `Partido equilibrado en la primera mitad. Monitorear en vivo según el desarrollo táctico inicial.`;
+                    recommendation += `Comportamiento estable en la primera parte. Índice de presión en nivel ${pressureScore}/10.`;
                 }
 
-                // Renderizar resultados en pantalla
+                // Renderizar en UI
                 document.getElementById('resHtProb').innerText = `${probOver05HT.toFixed(1)}%`;
                 document.getElementById('resHtFairOdds').innerText = `Cuota: ${fairOddsHT.toFixed(2)}`;
                 document.getElementById('resHtXg').innerText = totalHtXg.toFixed(2);
@@ -744,9 +781,16 @@
                 document.getElementById('res1645FairOdds').innerText = `Cuota: ${fairOdds16_45.toFixed(2)}`;
                 document.getElementById('res1645Xg').innerText = xg16_45.toFixed(2);
 
+                document.getElementById('resZeroZeroProb').innerText = `${probZeroZeroHT.toFixed(1)}%`;
+                document.getElementById('resPressureIndex').innerText = `${pressureScore} / 10`;
+                
+                const badgeEl = document.getElementById('resPressureBadge');
+                badgeEl.innerText = pressureBadgeText;
+                badgeEl.className = `text-[10px] px-2 py-0.5 rounded font-bold uppercase border ${pressureBadgeClass}`;
+
                 document.getElementById('resHtRecommendation').innerText = recommendation;
 
-                // Renderizar tabla de intervalos 15m
+                // Renderizar tabla de intervalos
                 const tbody = document.getElementById('intervalsTableBody');
                 tbody.innerHTML = '';
                 combinedIntervals.forEach(item => {
