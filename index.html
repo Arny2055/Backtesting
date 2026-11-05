@@ -209,7 +209,7 @@
             <!-- EDITOR DE EQUIPOS DE LA LIGA ACTIVA -->
             <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-4">
                 <div class="flex items-center justify-between">
-                    <h3 id="activeLeagueEditorTitle" class="text-sm font-bold text-neonBlue uppercase tracking-wider">Editor de Equipos - Liga Activa</h3>
+                    <h3 id="activeLeagueEditorTitle" class="text-sm font-bold text-neonBlue uppercase tracking-wider">Editor de Tablas - Liga Activa</h3>
                     <button onclick="app.openAddTeamModal()" class="px-3 py-1.5 rounded-xl bg-neonBlue/10 border border-neonBlue text-neonBlue text-xs font-bold uppercase">Añadir Equipo</button>
                 </div>
                 <div class="overflow-x-auto">
@@ -217,9 +217,9 @@
                         <thead>
                             <tr class="border-b border-cardBorder text-slate-400">
                                 <th class="py-2 px-2">Equipo</th>
-                                <th class="py-2 px-2">PJ (Home/Away)</th>
-                                <th class="py-2 px-2">GF</th>
-                                <th class="py-2 px-2">GA</th>
+                                <th class="py-2 px-2">PJ (H/A)</th>
+                                <th class="py-2 px-2">GF (H / A)</th>
+                                <th class="py-2 px-2">GA (H / A)</th>
                                 <th class="py-2 px-2 text-right">Acción</th>
                             </tr>
                         </thead>
@@ -284,18 +284,27 @@
     <!-- MODAL AÑADIR EQUIPO -->
     <div id="teamModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="bg-cardBg border border-cardBorder rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
-            <h3 class="text-base font-bold text-white uppercase tracking-wider">Añadir Equipo a la Liga</h3>
+            <h3 class="text-base font-bold text-white uppercase tracking-wider">Añadir Equipo (Local & Visitante)</h3>
             <div class="space-y-3">
                 <input type="text" id="modalTeamName" placeholder="Nombre del Equipo" class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-neonGreen font-mono">
                 <div class="grid grid-cols-3 gap-2">
-                    <input type="number" id="modalTeamGP" placeholder="PJ" value="10" class="bg-darkBg border border-cardBorder rounded-xl p-2.5 text-sm text-white font-mono text-center">
-                    <input type="number" id="modalTeamGF" placeholder="GF" value="15" class="bg-darkBg border border-cardBorder rounded-xl p-2.5 text-sm text-white font-mono text-center">
-                    <input type="number" id="modalTeamGA" placeholder="GA" value="10" class="bg-darkBg border border-cardBorder rounded-xl p-2.5 text-sm text-white font-mono text-center">
+                    <div>
+                        <span class="text-[10px] text-slate-400 block mb-1">PJ</span>
+                        <input type="number" id="modalTeamGP" value="10" class="w-full bg-darkBg border border-cardBorder rounded-xl p-2.5 text-sm text-white font-mono text-center">
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-neonGreen block mb-1">GF (H/A)</span>
+                        <input type="number" id="modalTeamGF" value="15" class="w-full bg-darkBg border border-cardBorder rounded-xl p-2.5 text-sm text-white font-mono text-center">
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-neonPink block mb-1">GA (H/A)</span>
+                        <input type="number" id="modalTeamGA" value="10" class="w-full bg-darkBg border border-cardBorder rounded-xl p-2.5 text-sm text-white font-mono text-center">
+                    </div>
                 </div>
             </div>
             <div class="flex justify-end space-x-3 pt-2">
                 <button onclick="app.closeTeamModal()" class="px-4 py-2 rounded-xl bg-darkBg border border-cardBorder text-slate-300 text-xs font-bold uppercase">Cancelar</button>
-                <button onclick="app.submitTeamModal()" class="px-4 py-2 rounded-xl bg-neonGreen text-black text-xs font-bold uppercase">Guardar</button>
+                <button onclick="app.submitTeamModal()" class="px-4 py-2 rounded-xl bg-neonGreen text-black text-xs font-bold uppercase">Guardar en Tablas</button>
             </div>
         </div>
     </div>
@@ -304,7 +313,7 @@
     <script>
         class BetagsMultiLeagueApp {
             constructor() {
-                this.STORAGE_KEY = 'betags_einstein_multileague_data_v2';
+                this.STORAGE_KEY = 'betags_einstein_multileague_data_v3';
                 this.state = { activeLeagueId: 'brasileirao_2026', leagues: {} };
                 this.currentTab = 'dashboard';
             }
@@ -461,7 +470,7 @@
                     card.innerHTML = `
                         <div>
                             <h3 class="text-sm font-bold text-white">${escapeHtml(l.name)}</h3>
-                            <p class="text-[11px] text-slate-400 mt-1">Equipos: ${l.homeTable.length}</p>
+                            <p class="text-[11px] text-slate-400 mt-1">Equipos (Local): ${l.homeTable.length} | (Visitante): ${l.awayTable.length}</p>
                         </div>
                         <div class="flex items-center gap-2 pt-2 border-t border-cardBorder">
                             ${!isActive ? `<button onclick="app.switchActiveLeague('${id}')" class="px-3 py-1.5 rounded-lg bg-neonBlue/10 border border-neonBlue text-neonBlue text-xs font-bold">Seleccionar</button>` : '<span class="text-xs text-neonGreen font-mono font-bold">Activa</span>'}
@@ -478,19 +487,20 @@
                 const title = document.getElementById('activeLeagueEditorTitle');
                 if (!tbody || !title) return;
 
-                title.innerText = `Editor de Equipos - ${league.name}`;
+                title.innerText = `Editor de Tablas - ${league.name}`;
                 tbody.innerHTML = '';
 
-                league.homeTable.forEach((t, index) => {
+                league.homeTable.forEach((hTeam, index) => {
+                    const aTeam = league.awayTable.find(t => t.name === hTeam.name) || { gp: hTeam.gp, gf: hTeam.gf, ga: hTeam.ga };
                     const tr = document.createElement('tr');
                     tr.className = 'border-b border-cardBorder/30';
                     tr.innerHTML = `
-                        <td class="py-2 px-2 text-white font-bold">${escapeHtml(t.name)}</td>
-                        <td class="py-2 px-2 text-slate-300">${t.gp}</td>
-                        <td class="py-2 px-2 text-neonGreen">${t.gf}</td>
-                        <td class="py-2 px-2 text-neonPink">${t.ga}</td>
-                        <td class="py-2 px-2 text-right">
-                            <button onclick="app.deleteTeam(${index})" class="px-2 py-1 bg-red-500/10 border border-red-500/30 text-red-400 rounded text-[10px]">Borrar</button>
+                        <td class="py-2.5 px-2 text-white font-bold">${escapeHtml(hTeam.name)}</td>
+                        <td class="py-2.5 px-2 text-slate-300 font-mono">H:${hTeam.gp} / A:${aTeam.gp}</td>
+                        <td class="py-2.5 px-2 text-neonGreen font-mono">H:${hTeam.gf} / A:${aTeam.gf}</td>
+                        <td class="py-2.5 px-2 text-neonPink font-mono">H:${hTeam.ga} / A:${aTeam.ga}</td>
+                        <td class="py-2.5 px-2 text-right">
+                            <button onclick="app.deleteTeam(${index})" class="px-2.5 py-1 bg-red-500/10 border border-red-500/30 text-red-400 rounded text-[10px]">Borrar</button>
                         </td>
                     `;
                     tbody.appendChild(tr);
@@ -518,12 +528,12 @@
                 this.state.leagues[id] = {
                     name: name,
                     homeTable: [
-                        { name: "Equipo Local 1", gp: 10, gf: 15, ga: 10, pts: 18 },
-                        { name: "Equipo Local 2", gp: 10, gf: 12, ga: 12, pts: 15 }
+                        { name: "Equipo Local A", gp: 10, gf: 16, ga: 10, pts: 21 },
+                        { name: "Equipo Local B", gp: 10, gf: 12, ga: 12, pts: 16 }
                     ],
                     awayTable: [
-                        { name: "Equipo Local 1", gp: 10, gf: 11, ga: 14, pts: 12 },
-                        { name: "Equipo Local 2", gp: 10, gf: 10, ga: 11, pts: 13 }
+                        { name: "Equipo Local A", gp: 10, gf: 13, ga: 11, pts: 17 },
+                        { name: "Equipo Local B", gp: 10, gf: 10, ga: 14, pts: 11 }
                     ]
                 };
                 this.state.activeLeagueId = id;
@@ -552,20 +562,26 @@
             submitTeamModal() {
                 const name = document.getElementById('modalTeamName').value.trim();
                 const gp = parseInt(document.getElementById('modalTeamGP').value) || 10;
-                const gf = parseInt(document.getElementById('modalTeamGF').value) || 12;
-                const ga = parseInt(document.getElementById('modalTeamGA').value) || 12;
+                const gf = parseInt(document.getElementById('modalTeamGF').value) || 15;
+                const ga = parseInt(document.getElementById('modalTeamGA').value) || 10;
 
                 if (!name) return;
                 const league = this.getActiveLeague();
-                league.homeTable.push({ name, gp, gf, ga, pts: 15 });
-                league.awayTable.push({ name, gp, gf: gf - 2, ga: ga + 2, pts: 12 });
+
+                // Evitar duplicados exactos
+                if (!league.homeTable.some(t => t.name === name)) {
+                    league.homeTable.push({ name, gp, gf, ga, pts: Math.floor(gp * 1.5) });
+                }
+                if (!league.awayTable.some(t => t.name === name)) {
+                    league.awayTable.push({ name, gp, gf: Math.max(1, gf - 3), ga: ga + 3, pts: Math.floor(gp * 1.2) });
+                }
 
                 this.saveToLocalStorage();
                 this.closeTeamModal();
                 document.getElementById('modalTeamName').value = '';
                 this.populateTeamSelects();
                 this.renderTeamsEditor();
-                this.showToast("Éxito", `Equipo ${name} añadido`, "green");
+                this.showToast("Éxito", `Equipo ${name} guardado en Local y Visitante`, "green");
             }
 
             deleteTeam(index) {
@@ -574,12 +590,14 @@
                     this.showToast("Aviso", "Debe haber al menos 2 equipos", "red");
                     return;
                 }
+                const teamName = league.homeTable[index].name;
                 league.homeTable.splice(index, 1);
-                league.awayTable.splice(index, 1);
+                league.awayTable = league.awayTable.filter(t => t.name !== teamName);
+
                 this.saveToLocalStorage();
                 this.populateTeamSelects();
                 this.renderTeamsEditor();
-                this.showToast("Eliminado", "Equipo borrado", "red");
+                this.showToast("Eliminado", "Equipo borrado de ambas tablas", "red");
             }
 
             deleteLeague(id) {
