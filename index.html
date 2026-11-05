@@ -199,11 +199,33 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
                         <h2 class="text-lg font-bold text-white uppercase tracking-wider">Gestión de Competiciones</h2>
-                        <p class="text-xs text-slate-400">Crea nuevas ligas o selecciona la competición activa.</p>
+                        <p class="text-xs text-slate-400">Crea nuevas ligas, selecciona la activa o añade equipos y estadísticas.</p>
                     </div>
                     <button onclick="app.openNewLeagueModal()" class="px-4 py-2.5 rounded-xl bg-neonGreen text-black font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/90 transition-all shadow-lg shadow-neonGreen/20">Nueva Liga</button>
                 </div>
                 <div id="leaguesListContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"></div>
+            </div>
+
+            <!-- EDITOR DE EQUIPOS DE LA LIGA ACTIVA -->
+            <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 id="activeLeagueEditorTitle" class="text-sm font-bold text-neonBlue uppercase tracking-wider">Editor de Equipos - Liga Activa</h3>
+                    <button onclick="app.openAddTeamModal()" class="px-3 py-1.5 rounded-xl bg-neonBlue/10 border border-neonBlue text-neonBlue text-xs font-bold uppercase">Añadir Equipo</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs font-mono">
+                        <thead>
+                            <tr class="border-b border-cardBorder text-slate-400">
+                                <th class="py-2 px-2">Equipo</th>
+                                <th class="py-2 px-2">PJ (Home/Away)</th>
+                                <th class="py-2 px-2">GF</th>
+                                <th class="py-2 px-2">GA</th>
+                                <th class="py-2 px-2 text-right">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teamsEditorTableBody" class="divide-y divide-cardBorder/50"></tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
@@ -259,11 +281,30 @@
         </div>
     </div>
 
+    <!-- MODAL AÑADIR EQUIPO -->
+    <div id="teamModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-cardBg border border-cardBorder rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
+            <h3 class="text-base font-bold text-white uppercase tracking-wider">Añadir Equipo a la Liga</h3>
+            <div class="space-y-3">
+                <input type="text" id="modalTeamName" placeholder="Nombre del Equipo" class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-neonGreen font-mono">
+                <div class="grid grid-cols-3 gap-2">
+                    <input type="number" id="modalTeamGP" placeholder="PJ" value="10" class="bg-darkBg border border-cardBorder rounded-xl p-2.5 text-sm text-white font-mono text-center">
+                    <input type="number" id="modalTeamGF" placeholder="GF" value="15" class="bg-darkBg border border-cardBorder rounded-xl p-2.5 text-sm text-white font-mono text-center">
+                    <input type="number" id="modalTeamGA" placeholder="GA" value="10" class="bg-darkBg border border-cardBorder rounded-xl p-2.5 text-sm text-white font-mono text-center">
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3 pt-2">
+                <button onclick="app.closeTeamModal()" class="px-4 py-2 rounded-xl bg-darkBg border border-cardBorder text-slate-300 text-xs font-bold uppercase">Cancelar</button>
+                <button onclick="app.submitTeamModal()" class="px-4 py-2 rounded-xl bg-neonGreen text-black text-xs font-bold uppercase">Guardar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- SCRIPT CORE -->
     <script>
         class BetagsMultiLeagueApp {
             constructor() {
-                this.STORAGE_KEY = 'betags_einstein_multileague_data';
+                this.STORAGE_KEY = 'betags_einstein_multileague_data_v2';
                 this.state = { activeLeagueId: 'brasileirao_2026', leagues: {} };
                 this.currentTab = 'dashboard';
             }
@@ -273,6 +314,7 @@
                 this.populateLeagueSelects();
                 this.populateTeamSelects();
                 this.renderLeaguesManager();
+                this.renderTeamsEditor();
                 this.switchTab('dashboard');
             }
 
@@ -365,7 +407,10 @@
                 });
 
                 if (tabId === 'analyzer') this.populateTeamSelects();
-                if (tabId === 'leagues') this.renderLeaguesManager();
+                if (tabId === 'leagues') {
+                    this.renderLeaguesManager();
+                    this.renderTeamsEditor();
+                }
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
@@ -384,12 +429,14 @@
                     this.populateLeagueSelects();
                     this.populateTeamSelects();
                     this.renderLeaguesManager();
+                    this.renderTeamsEditor();
                     this.showToast("Cambiado", `Liga activa: ${this.getActiveLeague().name}`, "green");
                 }
             }
 
             populateLeagueSelects() {
                 const select = document.getElementById('headerLeagueSelect');
+                if (!select) return;
                 select.innerHTML = '';
                 for (let id in this.state.leagues) {
                     const opt = document.createElement('option');
@@ -398,11 +445,13 @@
                     if (id === this.state.activeLeagueId) opt.selected = true;
                     select.appendChild(opt);
                 }
-                document.getElementById('activeLeagueBadge').innerText = this.getActiveLeague().name;
+                const badge = document.getElementById('activeLeagueBadge');
+                if (badge) badge.innerText = this.getActiveLeague().name;
             }
 
             renderLeaguesManager() {
                 const container = document.getElementById('leaguesListContainer');
+                if (!container) return;
                 container.innerHTML = '';
                 for (let id in this.state.leagues) {
                     const l = this.state.leagues[id];
@@ -412,7 +461,7 @@
                     card.innerHTML = `
                         <div>
                             <h3 class="text-sm font-bold text-white">${escapeHtml(l.name)}</h3>
-                            <p class="text-[11px] text-slate-400 mt-1">Equipos Local: ${l.homeTable.length} | Visitante: ${l.awayTable.length}</p>
+                            <p class="text-[11px] text-slate-400 mt-1">Equipos: ${l.homeTable.length}</p>
                         </div>
                         <div class="flex items-center gap-2 pt-2 border-t border-cardBorder">
                             ${!isActive ? `<button onclick="app.switchActiveLeague('${id}')" class="px-3 py-1.5 rounded-lg bg-neonBlue/10 border border-neonBlue text-neonBlue text-xs font-bold">Seleccionar</button>` : '<span class="text-xs text-neonGreen font-mono font-bold">Activa</span>'}
@@ -423,35 +472,114 @@
                 }
             }
 
+            renderTeamsEditor() {
+                const league = this.getActiveLeague();
+                const tbody = document.getElementById('teamsEditorTableBody');
+                const title = document.getElementById('activeLeagueEditorTitle');
+                if (!tbody || !title) return;
+
+                title.innerText = `Editor de Equipos - ${league.name}`;
+                tbody.innerHTML = '';
+
+                league.homeTable.forEach((t, index) => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b border-cardBorder/30';
+                    tr.innerHTML = `
+                        <td class="py-2 px-2 text-white font-bold">${escapeHtml(t.name)}</td>
+                        <td class="py-2 px-2 text-slate-300">${t.gp}</td>
+                        <td class="py-2 px-2 text-neonGreen">${t.gf}</td>
+                        <td class="py-2 px-2 text-neonPink">${t.ga}</td>
+                        <td class="py-2 px-2 text-right">
+                            <button onclick="app.deleteTeam(${index})" class="px-2 py-1 bg-red-500/10 border border-red-500/30 text-red-400 rounded text-[10px]">Borrar</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
             openNewLeagueModal() {
-                document.getElementById('leagueModal').classList.remove('hidden');
-                document.getElementById('leagueModal').classList.add('flex');
+                const modal = document.getElementById('leagueModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
             }
 
             closeLeagueModal() {
-                document.getElementById('leagueModal').classList.remove('flex');
-                document.getElementById('leagueModal').classList.add('hidden');
+                const modal = document.getElementById('leagueModal');
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
             }
 
             submitLeagueModal() {
-                const name = document.getElementById('modalLeagueNameInput').value.trim();
+                const nameInput = document.getElementById('modalLeagueNameInput');
+                const name = nameInput.value.trim();
                 if (!name) return;
                 const id = 'league_' + Date.now();
-                // Clonamos la estructura base del Brasileirao para que tenga equipos de ejemplo listos para editar
-                const template = this.state.leagues['brasileirao_2026'] || Object.values(this.state.leagues)[0];
+                
                 this.state.leagues[id] = {
                     name: name,
-                    homeTable: JSON.parse(JSON.stringify(template.homeTable)),
-                    awayTable: JSON.parse(JSON.stringify(template.awayTable))
+                    homeTable: [
+                        { name: "Equipo Local 1", gp: 10, gf: 15, ga: 10, pts: 18 },
+                        { name: "Equipo Local 2", gp: 10, gf: 12, ga: 12, pts: 15 }
+                    ],
+                    awayTable: [
+                        { name: "Equipo Local 1", gp: 10, gf: 11, ga: 14, pts: 12 },
+                        { name: "Equipo Local 2", gp: 10, gf: 10, ga: 11, pts: 13 }
+                    ]
                 };
                 this.state.activeLeagueId = id;
                 this.saveToLocalStorage();
                 this.closeLeagueModal();
-                document.getElementById('modalLeagueNameInput').value = '';
+                nameInput.value = '';
                 this.populateLeagueSelects();
                 this.populateTeamSelects();
                 this.renderLeaguesManager();
-                this.showToast("Éxito", `Liga "${name}" creada`, "green");
+                this.renderTeamsEditor();
+                this.showToast("Éxito", `Liga "${name}" creada correctamente`, "green");
+            }
+
+            openAddTeamModal() {
+                const modal = document.getElementById('teamModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+
+            closeTeamModal() {
+                const modal = document.getElementById('teamModal');
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }
+
+            submitTeamModal() {
+                const name = document.getElementById('modalTeamName').value.trim();
+                const gp = parseInt(document.getElementById('modalTeamGP').value) || 10;
+                const gf = parseInt(document.getElementById('modalTeamGF').value) || 12;
+                const ga = parseInt(document.getElementById('modalTeamGA').value) || 12;
+
+                if (!name) return;
+                const league = this.getActiveLeague();
+                league.homeTable.push({ name, gp, gf, ga, pts: 15 });
+                league.awayTable.push({ name, gp, gf: gf - 2, ga: ga + 2, pts: 12 });
+
+                this.saveToLocalStorage();
+                this.closeTeamModal();
+                document.getElementById('modalTeamName').value = '';
+                this.populateTeamSelects();
+                this.renderTeamsEditor();
+                this.showToast("Éxito", `Equipo ${name} añadido`, "green");
+            }
+
+            deleteTeam(index) {
+                const league = this.getActiveLeague();
+                if (league.homeTable.length <= 2) {
+                    this.showToast("Aviso", "Debe haber al menos 2 equipos", "red");
+                    return;
+                }
+                league.homeTable.splice(index, 1);
+                league.awayTable.splice(index, 1);
+                this.saveToLocalStorage();
+                this.populateTeamSelects();
+                this.renderTeamsEditor();
+                this.showToast("Eliminado", "Equipo borrado", "red");
             }
 
             deleteLeague(id) {
@@ -462,6 +590,7 @@
                 this.populateLeagueSelects();
                 this.populateTeamSelects();
                 this.renderLeaguesManager();
+                this.renderTeamsEditor();
                 this.showToast("Eliminado", "Competición borrada", "red");
             }
 
@@ -469,6 +598,7 @@
                 const league = this.getActiveLeague();
                 const homeSelect = document.getElementById('selectHomeTeam');
                 const awaySelect = document.getElementById('selectAwayTeam');
+                if (!homeSelect || !awaySelect) return;
 
                 const curH = homeSelect.value;
                 const curA = awaySelect.value;
@@ -512,21 +642,17 @@
 
                 if (!hStats || !aStats) return;
 
-                // Promedios de la liga activa
                 const avgHomeGF = league.homeTable.reduce((acc, t) => acc + (t.gf / t.gp), 0) / league.homeTable.length;
                 const avgAwayGF = league.awayTable.reduce((acc, t) => acc + (t.gf / t.gp), 0) / league.awayTable.length;
 
-                // Fuerzas relativas de ataque y defensa
                 const homeAttack = (hStats.gf / hStats.gp) / avgHomeGF;
                 const awayDefense = (aStats.ga / aStats.gp) / avgHomeGF;
                 const awayAttack = (aStats.gf / aStats.gp) / avgAwayGF;
                 const homeDefense = (hStats.ga / hStats.gp) / avgAwayGF;
 
-                // Tensor de curvatura y expectativas de gol (xG) relativistas
                 const lambdaHome = homeAttack * awayDefense * avgHomeGF;
                 const lambdaAway = awayAttack * homeDefense * avgAwayGF;
 
-                // Poisson auxiliar
                 const poisson = (k, lambda) => {
                     let fact = 1;
                     for (let i = 2; i <= k; i++) fact *= i;
@@ -568,7 +694,6 @@
 
                 scoreProbs.sort((a, b) => b.prob - a.prob);
 
-                // Renderizar Top Marcadores Exactos
                 const scoresContainer = document.getElementById('correctScoresContainer');
                 scoresContainer.innerHTML = '';
                 scoreProbs.slice(0, 4).forEach(item => {
@@ -582,7 +707,6 @@
                     scoresContainer.appendChild(card);
                 });
 
-                // Recomendación
                 let recommendation = `xG Local: ${lambdaHome.toFixed(2)} | xG Visitante: ${lambdaAway.toFixed(2)}. `;
                 if (prob1 > 55) {
                     recommendation += `El equipo local (${homeName}) ejerce una fuerte atracción gravitacional en su estadio. Alta probabilidad de victoria local.`;
@@ -592,7 +716,6 @@
                     recommendation += `Encuentro de alta simetría y paridad táctica en el espacio-tiempo. Mercado de Over 2.5 u Over 1.5 recomendado.`;
                 }
 
-                // Renderizado de UI 1X2
                 document.getElementById('resProb1').innerText = `${prob1.toFixed(1)}%`;
                 document.getElementById('resOdds1').innerText = `Cuota: ${(100 / prob1).toFixed(2)}`;
 
@@ -602,7 +725,6 @@
                 document.getElementById('resProb2').innerText = `${prob2.toFixed(1)}%`;
                 document.getElementById('resOdds2').innerText = `Cuota: ${(100 / prob2).toFixed(2)}`;
 
-                // Renderizado de O/U y BTTS
                 document.getElementById('resOver15').innerText = `${over15.toFixed(1)}%`;
                 document.getElementById('resOddsOver15').innerText = `Cuota: ${(100 / over15).toFixed(2)}`;
 
