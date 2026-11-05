@@ -100,7 +100,7 @@
                 <div class="relative z-10">
                     <span class="text-xs font-mono uppercase tracking-widest text-neonBlue px-3 py-1 rounded-full bg-neonBlue/10 border border-neonBlue/30">Motor Relativista 1X2, O/U & BTTS</span>
                     <h2 class="text-2xl sm:text-3xl font-black mt-3 text-white">Análisis Termodinámico de Partidos</h2>
-                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Modelo predictivo avanzado basado en tablas de rendimiento Local/Visitante y corrección de tensores de Einstein.</p>
+                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Modelo predictivo basado en tablas de rendimiento Local/Visitante y corrección de tensores de curvatura de Einstein.</p>
                     <div class="mt-6 flex flex-wrap gap-3">
                         <button onclick="app.switchTab('analyzer')" class="px-5 py-2.5 rounded-xl bg-neonGreen text-black font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/90 transition-all shadow-lg shadow-neonGreen/20">Iniciar Analizador</button>
                     </div>
@@ -109,11 +109,11 @@
         </section>
 
         <!-- ================= 2. ANALIZADOR RELATIVISTA PRINCIPAL ================= -->
-        <section id="tab-analyzer" class="tab-content space-y-6">
+        <section id="tab-analyzer" class="tab-content hidden space-y-6">
             <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-5">
                 <div>
                     <h2 class="text-lg font-bold text-white uppercase tracking-wider">Predictor de Partidos 1X2, O/U & BTTS</h2>
-                    <p class="text-xs text-slate-400">Selecciona los equipos para calcular las cuotas justas mediante el campo unificado relativista.</p>
+                    <p class="text-xs text-slate-400">Selecciona los equipos para calcular las probabilidades y cuotas justas mediante el campo unificado relativista.</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
@@ -199,7 +199,7 @@
                 <h2 class="text-lg font-bold text-white uppercase tracking-wider">Configuración & Datos</h2>
                 <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
                     <span class="text-xs font-mono uppercase text-neonBlue font-bold block">Base de Datos Brasileirao 2026</span>
-                    <p class="text-xs text-slate-400">Tablas de Local y Visitante cargadas e indexadas correctamente en el motor de cálculo.</p>
+                    <p class="text-xs text-slate-400">Tablas oficiales de Local y Visitante indexadas con éxito en el motor de cálculo relativista.</p>
                 </div>
             </div>
         </section>
@@ -238,48 +238,48 @@
                 this.state.leagues['brasileirao_2026'] = {
                     name: "Brasileirao 2026",
                     homeTable: [
-                        { name: "Flamengo", gp: 17, gf: 35, ga: 13 },
-                        { name: "Palmeiras", gp: 16, gf: 30, ga: 10 },
-                        { name: "Fluminense", gp: 17, gf: 31, ga: 17 },
-                        { name: "Atletico Mineiro", gp: 17, gf: 27, ga: 18 },
-                        { name: "Sao Paulo", gp: 16, gf: 25, ga: 13 },
-                        { name: "Athletico PR", gp: 17, gf: 28, ga: 18 },
-                        { name: "Vitoria", gp: 16, gf: 23, ga: 13 },
-                        { name: "Cruzeiro", gp: 16, gf: 27, ga: 16 },
-                        { name: "Bragantino", gp: 17, gf: 29, ga: 18 },
-                        { name: "Bahia", gp: 17, gf: 26, ga: 19 },
-                        { name: "Gremio", gp: 17, gf: 27, ga: 21 },
-                        { name: "Mirassol", gp: 17, gf: 24, ga: 22 },
-                        { name: "Vasco da Gama", gp: 17, gf: 25, ga: 24 },
-                        { name: "Santos", gp: 17, gf: 23, ga: 21 },
-                        { name: "Botafogo", gp: 16, gf: 26, ga: 22 },
-                        { name: "Internacional", gp: 17, gf: 22, ga: 17 },
-                        { name: "Coritiba", gp: 17, gf: 22, ga: 21 },
-                        { name: "Corinthians", gp: 17, gf: 18, ga: 17 },
-                        { name: "Remo", gp: 17, gf: 22, ga: 22 },
-                        { name: "Chapecoense", gp: 16, gf: 22, ga: 36 }
+                        { name: "Flamengo", gp: 17, gf: 35, ga: 13, pts: 42 },
+                        { name: "Palmeiras", gp: 16, gf: 30, ga: 10, pts: 39 },
+                        { name: "Fluminense", gp: 17, gf: 31, ga: 17, pts: 39 },
+                        { name: "Atletico Mineiro", gp: 17, gf: 27, ga: 18, pts: 35 },
+                        { name: "Sao Paulo", gp: 16, gf: 25, ga: 13, pts: 33 },
+                        { name: "Athletico PR", gp: 17, gf: 28, ga: 18, pts: 32 },
+                        { name: "Vitoria", gp: 16, gf: 23, ga: 13, pts: 32 },
+                        { name: "Cruzeiro", gp: 16, gf: 27, ga: 16, pts: 31 },
+                        { name: "Bragantino", gp: 17, gf: 29, ga: 18, pts: 30 },
+                        { name: "Bahia", gp: 17, gf: 26, ga: 19, pts: 30 },
+                        { name: "Gremio", gp: 17, gf: 27, ga: 21, pts: 29 },
+                        { name: "Mirassol", gp: 17, gf: 24, ga: 22, pts: 27 },
+                        { name: "Vasco da Gama", gp: 17, gf: 25, ga: 24, pts: 27 },
+                        { name: "Santos", gp: 17, gf: 23, ga: 21, pts: 25 },
+                        { name: "Botafogo", gp: 16, gf: 26, ga: 22, pts: 24 },
+                        { name: "Internacional", gp: 17, gf: 22, ga: 17, pts: 23 },
+                        { name: "Coritiba", gp: 17, gf: 22, ga: 21, pts: 23 },
+                        { name: "Corinthians", gp: 17, gf: 18, ga: 17, pts: 22 },
+                        { name: "Remo", gp: 17, gf: 22, ga: 22, pts: 19 },
+                        { name: "Chapecoense", gp: 16, gf: 22, ga: 36, pts: 14 }
                     ],
                     awayTable: [
-                        { name: "Flamengo", gp: 17, gf: 36, ga: 16 },
-                        { name: "Palmeiras", gp: 17, gf: 26, ga: 12 },
-                        { name: "Cruzeiro", gp: 17, gf: 25, ga: 30 },
-                        { name: "Bahia", gp: 16, gf: 22, ga: 23 },
-                        { name: "Santos", gp: 17, gf: 27, ga: 28 },
-                        { name: "Athletico PR", gp: 17, gf: 23, ga: 25 },
-                        { name: "Coritiba", gp: 17, gf: 18, ga: 30 },
-                        { name: "Bragantino", gp: 17, gf: 15, ga: 21 },
-                        { name: "Fluminense", gp: 16, gf: 21, ga: 25 },
-                        { name: "Atletico Mineiro", gp: 16, gf: 17, ga: 21 },
-                        { name: "Internacional", gp: 17, gf: 16, ga: 25 },
-                        { name: "Botafogo", gp: 17, gf: 19, ga: 31 },
-                        { name: "Corinthians", gp: 16, gf: 18, ga: 25 },
-                        { name: "Vasco da Gama", gp: 16, gf: 18, ga: 26 },
-                        { name: "Mirassol", gp: 17, gf: 15, ga: 26 },
-                        { name: "Sao Paulo", gp: 17, gf: 14, ga: 26 },
-                        { name: "Remo", gp: 16, gf: 14, ga: 29 },
-                        { name: "Gremio", gp: 17, gf: 11, ga: 26 },
-                        { name: "Chapecoense", gp: 17, gf: 11, ga: 32 },
-                        { name: "Vitoria", gp: 17, gf: 12, ga: 35 }
+                        { name: "Flamengo", gp: 17, gf: 36, ga: 16, pts: 34 },
+                        { name: "Palmeiras", gp: 17, gf: 26, ga: 12, pts: 31 },
+                        { name: "Cruzeiro", gp: 17, gf: 25, ga: 30, pts: 26 },
+                        { name: "Bahia", gp: 16, gf: 22, ga: 23, pts: 23 },
+                        { name: "Santos", gp: 17, gf: 27, ga: 28, pts: 22 },
+                        { name: "Athletico PR", gp: 17, gf: 23, ga: 25, pts: 22 },
+                        { name: "Coritiba", gp: 17, gf: 18, ga: 30, pts: 19 },
+                        { name: "Bragantino", gp: 17, gf: 15, ga: 21, pts: 17 },
+                        { name: "Fluminense", gp: 16, gf: 21, ga: 25, pts: 15 },
+                        { name: "Atletico Mineiro", gp: 16, gf: 17, ga: 21, pts: 15 },
+                        { name: "Internacional", gp: 17, gf: 16, ga: 25, pts: 15 },
+                        { name: "Botafogo", gp: 17, gf: 19, ga: 31, pts: 15 },
+                        { name: "Corinthians", gp: 16, gf: 18, ga: 25, pts: 14 },
+                        { name: "Vasco da Gama", gp: 16, gf: 18, ga: 26, pts: 14 },
+                        { name: "Mirassol", gp: 17, gf: 15, ga: 26, pts: 13 },
+                        { name: "Sao Paulo", gp: 17, gf: 14, ga: 26, pts: 10 },
+                        { name: "Remo", gp: 16, gf: 14, ga: 29, pts: 10 },
+                        { name: "Gremio", gp: 17, gf: 11, ga: 26, pts: 8 },
+                        { name: "Chapecoense", gp: 17, gf: 11, ga: 32, pts: 7 },
+                        { name: "Vitoria", gp: 17, gf: 12, ga: 35, pts: 6 }
                     ]
                 };
             }
@@ -327,7 +327,7 @@
                 if (curH && curA) this.runAnalysis();
             }
 
-            // --- MOTOR DE CÁLCULO 1X2, O/U & BTTS ---
+            // --- MOTOR RELATIVISTA DE EINSTEIN (1X2, O/U & BTTS) ---
             runAnalysis() {
                 const homeName = document.getElementById('selectHomeTeam').value;
                 const awayName = document.getElementById('selectAwayTeam').value;
@@ -346,21 +346,21 @@
 
                 if (!hStats || !aStats) return;
 
-                // Promedios ofensivos y defensivos de la liga
+                // Promedios de la liga
                 const avgHomeGF = league.homeTable.reduce((acc, t) => acc + (t.gf / t.gp), 0) / league.homeTable.length;
                 const avgAwayGF = league.awayTable.reduce((acc, t) => acc + (t.gf / t.gp), 0) / league.awayTable.length;
 
-                // Fuerzas de ataque y defensa
+                // Fuerzas relativas de ataque y defensa
                 const homeAttack = (hStats.gf / hStats.gp) / avgHomeGF;
                 const awayDefense = (aStats.ga / aStats.gp) / avgHomeGF;
                 const awayAttack = (aStats.gf / aStats.gp) / avgAwayGF;
                 const homeDefense = (hStats.ga / hStats.gp) / avgAwayGF;
 
-                // Expectativas de gol (xG) ajustadas por Einstein (fuerza cruzada)
+                // Tensor de curvatura y expectativas de gol (xG) relativistas
                 const lambdaHome = homeAttack * awayDefense * avgHomeGF;
                 const lambdaAway = awayAttack * homeDefense * avgAwayGF;
 
-                // Función auxiliar de Poisson P(k; lambda)
+                // Poisson auxiliar
                 const poisson = (k, lambda) => {
                     let fact = 1;
                     for (let i = 2; i <= k; i++) fact *= i;
@@ -419,14 +419,14 @@
                 // Recomendación
                 let recommendation = `xG Local: ${lambdaHome.toFixed(2)} | xG Visitante: ${lambdaAway.toFixed(2)}. `;
                 if (prob1 > 55) {
-                    recommendation += `El equipo local (${homeName}) muestra superioridad gravitacional clara en su estadio. Alta probabilidad de victoria local.`;
+                    recommendation += `El equipo local (${homeName}) ejerce una fuerte atracción gravitacional en su estadio. Alta probabilidad de victoria local.`;
                 } else if (prob2 > 45) {
-                    recommendation += `El visitante (${awayName}) posee un rendimiento visitante muy sólido. Oportunidad de valor en cuotas de no favoritos.`;
+                    recommendation += `El visitante (${awayName}) muestra gran eficiencia fuera de casa. Excelente valor en cuotas de no favoritos.`;
                 } else {
-                    recommendation += `Encuentro de alta entropía y paridad táctica. Mercado de Over 2.5 o BTTS recomendado según evolución en directo.`;
+                    recommendation += `Encuentro de alta simetría y paridad táctica en el espacio-tiempo. Mercado de Over 2.5 u Over 1.5 recomendado.`;
                 }
 
-                // Renderizar UI 1X2
+                // Renderizado de UI 1X2
                 document.getElementById('resProb1').innerText = `${prob1.toFixed(1)}%`;
                 document.getElementById('resOdds1').innerText = `Cuota: ${(100 / prob1).toFixed(2)}`;
 
@@ -436,7 +436,7 @@
                 document.getElementById('resProb2').innerText = `${prob2.toFixed(1)}%`;
                 document.getElementById('resOdds2').innerText = `Cuota: ${(100 / prob2).toFixed(2)}`;
 
-                // Renderizar O/U y BTTS
+                // Renderizado de O/U y BTTS
                 document.getElementById('resOver15').innerText = `${over15.toFixed(1)}%`;
                 document.getElementById('resOddsOver15').innerText = `Cuota: ${(100 / over15).toFixed(2)}`;
 
