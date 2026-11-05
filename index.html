@@ -2,8 +2,8 @@
 <html lang="es" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>BETAGS EINSTEIN RELATIVISTIC VIP – Multi-League Analyzer 1X2, O/U & BTTS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poisson Betting Pro Elite | AI Football Analytics & Monte Carlo Engine</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,803 +12,1118 @@
             theme: {
                 extend: {
                     colors: {
-                        neonGreen: '#00ff66',
-                        neonBlue: '#00f0ff',
-                        neonPurple: '#b000ff',
-                        neonPink: '#ff007f',
-                        darkBg: '#05050a',
-                        cardBg: '#0f0f1a',
-                        cardBorder: '#1f1f38'
+                        dark: {
+                            900: '#07090e',
+                            800: '#0f1420',
+                            700: '#171f33',
+                            600: '#222d4a',
+                        },
+                        neon: {
+                            cyan: '#00f2fe',
+                            blue: '#4facfe',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            rose: '#f43f5e',
+                            violet: '#8b5cf6'
+                        }
                     }
                 }
             }
         }
     </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #05050a;
-            color: #e2e8f0;
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-panel {
+            background: rgba(15, 20, 32, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        .font-mono {
-            font-family: 'JetBrains Mono', monospace;
+        .neon-glow {
+            box-shadow: 0 0 25px -5px rgba(0, 242, 254, 0.15);
         }
-        .neon-glow-green {
-            box-shadow: 0 0 15px rgba(0, 255, 102, 0.25), inset 0 0 15px rgba(0, 255, 102, 0.1);
-        }
-        .neon-glow-blue {
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25), inset 0 0 15px rgba(0, 240, 255, 0.1);
-        }
-        .neon-glow-purple {
-            box-shadow: 0 0 15px rgba(176, 0, 255, 0.25), inset 0 0 15px rgba(176, 0, 255, 0.1);
-        }
-        .neon-glow-pink {
-            box-shadow: 0 0 15px rgba(255, 0, 127, 0.25), inset 0 0 15px rgba(255, 0, 127, 0.1);
-        }
-        .neon-border-green {
-            border-color: #00ff66;
-            box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
-        }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0b0b14; }
-        ::-webkit-scrollbar-thumb { background: #1f1f38; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+        ::-webkit-scrollbar-track { background: #07090e; }
+        ::-webkit-scrollbar-thumb { background: #222d4a; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4facfe; }
     </style>
 </head>
-<body class="bg-darkBg min-h-screen text-slate-100 flex flex-col justify-between selection:bg-neonBlue selection:text-black">
+<body class="bg-dark-900 text-slate-100 min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black">
 
-    <!-- TOP HEADER -->
-    <header class="sticky top-0 z-50 bg-darkBg/95 backdrop-blur-md border-b border-cardBorder px-4 py-3 flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-            <div class="w-3 h-3 rounded-full bg-neonGreen animate-pulse neon-glow-green"></div>
-            <h1 class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-neonGreen via-neonBlue to-neonPurple text-sm sm:text-lg tracking-wider">
-                BETAGS EINSTEIN RELATIVISTIC VIP
-            </h1>
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800/80 px-4 lg:px-8 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center neon-glow">
+                <i class="fa-solid fa-chart-line text-black font-black text-lg"></i>
+            </div>
+            <div>
+                <h1 class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                    POISSON BETTING PRO <span class="text-xs uppercase px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono">Elite v3.8</span>
+                </h1>
+                <p class="text-xs text-slate-400">Bivariate Dixon-Coles & Monte Carlo Simulation Engine</p>
+            </div>
         </div>
-        <div class="flex items-center space-x-2">
-            <select id="headerLeagueSelect" onchange="app.switchActiveLeague(this.value)" class="text-xs font-mono bg-cardBg border border-cardBorder text-neonBlue px-2.5 py-1.5 rounded-xl truncate max-w-[140px] sm:max-w-[180px] focus:outline-none focus:border-neonBlue">
-            </select>
-            <button onclick="app.switchTab('config')" class="p-2 rounded-xl bg-cardBg border border-cardBorder text-neonPurple hover:border-neonPurple transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+        <div class="flex items-center space-x-3">
+            <button onclick="openLeagueManagerModal()" class="px-3 py-1.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 text-xs font-semibold flex items-center space-x-2 transition">
+                <i class="fa-solid fa-table-cells"></i>
+                <span>Gestionar Ligas</span>
+            </button>
+            <button onclick="openHistoryModal()" class="px-3 py-1.5 rounded-lg bg-dark-700 hover:bg-dark-600 border border-slate-700 text-xs font-medium flex items-center space-x-2 transition">
+                <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i>
+                <span class="hidden sm:inline">Historial</span>
+            </button>
+            <button onclick="openBankrollModal()" class="px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-semibold flex items-center space-x-2 transition">
+                <i class="fa-solid fa-wallet"></i>
+                <span id="nav-bankroll-display">Bankroll: €1,000</span>
             </button>
         </div>
     </header>
 
-    <!-- NOTIFICATION TOAST -->
-    <div id="toast" class="fixed top-20 right-4 z-50 transform translate-x-full transition-transform duration-300 max-w-sm px-4 py-3 rounded-xl border bg-cardBg shadow-2xl flex items-center space-x-3">
-        <div id="toastIcon"></div>
-        <div>
-            <p id="toastTitle" class="text-xs font-bold uppercase tracking-wider"></p>
-            <p id="toastMessage" class="text-xs text-slate-300"></p>
-        </div>
-    </div>
+    <!-- Main Workspace -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- MAIN CONTENT CONTAINER -->
-    <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-4 mb-24 overflow-y-auto">
-
-        <!-- ================= 1. DASHBOARD ================= -->
-        <section id="tab-dashboard" class="tab-content space-y-6">
-            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-cardBg via-cardBorder/30 to-cardBg border border-cardBorder p-6 neon-glow-blue">
-                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-neonBlue/10 rounded-full blur-3xl pointer-events-none"></div>
-                <div class="relative z-10">
-                    <span class="text-xs font-mono uppercase tracking-widest text-neonBlue px-3 py-1 rounded-full bg-neonBlue/10 border border-neonBlue/30">Motor Relativista 1X2, O/U & BTTS</span>
-                    <h2 class="text-2xl sm:text-3xl font-black mt-3 text-white">Análisis Termodinámico de Partidos</h2>
-                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Modelo predictivo basado en múltiples ligas, rendimiento Local/Visitante y tensores de curvatura de Einstein.</p>
-                    <div class="mt-6 flex flex-wrap gap-3">
-                        <button onclick="app.switchTab('analyzer')" class="px-5 py-2.5 rounded-xl bg-neonGreen text-black font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/90 transition-all shadow-lg shadow-neonGreen/20">Iniciar Analizador</button>
-                        <button onclick="app.switchTab('leagues')" class="px-5 py-2.5 rounded-xl bg-cardBg border border-neonBlue text-neonBlue font-bold text-xs uppercase tracking-wider hover:bg-neonBlue/10 transition-all">Gestionar Ligas</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= 2. ANALIZADOR RELATIVISTA PRINCIPAL ================= -->
-        <section id="tab-analyzer" class="tab-content hidden space-y-6">
-            <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-5">
-                <div>
-                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Predictor de Partidos 1X2, O/U & BTTS</h2>
-                    <p class="text-xs text-slate-400">Selecciona los equipos de la liga activa para calcular las probabilidades y cuotas justas.</p>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-mono uppercase text-neonGreen">Equipo Local (Home)</label>
-                        <select id="selectHomeTeam" onchange="app.runAnalysis()" class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-neonGreen font-medium">
-                            <option value="">-- Seleccionar Local --</option>
-                        </select>
-                    </div>
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-mono uppercase text-neonPink">Equipo Visitante (Away)</label>
-                        <select id="selectAwayTeam" onchange="app.runAnalysis()" class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-neonPink font-medium">
-                            <option value="">-- Seleccionar Visitante --</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div id="analysisResultsContainer" class="space-y-6 hidden">
-                    <!-- Mercado 1X2 -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
-                            <span class="text-xs font-mono text-neonGreen uppercase font-bold block">1 (Local Win)</span>
-                            <span id="resProb1" class="text-2xl font-black text-white font-mono mt-1 block">0.0%</span>
-                            <span id="resOdds1" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
-                        </div>
-                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
-                            <span class="text-xs font-mono text-neonBlue uppercase font-bold block">X (Empate)</span>
-                            <span id="resProbX" class="text-2xl font-black text-white font-mono mt-1 block">0.0%</span>
-                            <span id="resOddsX" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
-                        </div>
-                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
-                            <span class="text-xs font-mono text-neonPink uppercase font-bold block">2 (Visitante Win)</span>
-                            <span id="resProb2" class="text-2xl font-black text-white font-mono mt-1 block">0.0%</span>
-                            <span id="resOdds2" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
-                        </div>
-                    </div>
-
-                    <!-- Mercados Over / Under y BTTS -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
-                            <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block">Over 1.5 Goles</span>
-                            <span id="resOver15" class="text-xl font-black text-neonGreen font-mono mt-1 block">0.0%</span>
-                            <span id="resOddsOver15" class="text-[11px] text-slate-400 font-mono">Cuota: 0.00</span>
-                        </div>
-                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
-                            <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block">Over 2.5 Goles</span>
-                            <span id="resOver25" class="text-xl font-black text-neonBlue font-mono mt-1 block">0.0%</span>
-                            <span id="resOddsOver25" class="text-[11px] text-slate-400 font-mono">Cuota: 0.00</span>
-                        </div>
-                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
-                            <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block">Over 3.5 Goles</span>
-                            <span id="resOver35" class="text-xl font-black text-neonPurple font-mono mt-1 block">0.0%</span>
-                            <span id="resOddsOver35" class="text-[11px] text-slate-400 font-mono">Cuota: 0.00</span>
-                        </div>
-                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
-                            <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block">BTTS (Sí / No)</span>
-                            <span id="resBtts" class="text-xl font-black text-amber-400 font-mono mt-1 block">0.0%</span>
-                            <span id="resOddsBtts" class="text-[11px] text-slate-400 font-mono">Cuota: 0.00</span>
-                        </div>
-                    </div>
-
-                    <!-- Marcadores Exactos Más Probables -->
-                    <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
-                        <span class="text-xs font-mono uppercase text-neonPurple block font-bold">Top Marcadores Exactos del Partido (Modelo Relativista)</span>
-                        <div id="correctScoresContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
-                    </div>
-
-                    <!-- Recomendación Táctica -->
-                    <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-2">
-                        <span class="text-xs font-mono text-amber-400 uppercase font-bold block">Dictamen del Campo Unificado de Einstein</span>
-                        <p id="resRecommendation" class="text-xs text-slate-300">Calculando recomendación táctica...</p>
-                    </div>
-                </div>
-
-                <div id="analysisEmptyState" class="text-center py-12 text-slate-500 font-mono text-xs">
-                    Selecciona ambos equipos para ejecutar el análisis completo 1X2, O/U y BTTS.
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= 3. GESTIÓN DE LIGAS ================= -->
-        <section id="tab-leagues" class="tab-content hidden space-y-6">
-            <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <div>
-                        <h2 class="text-lg font-bold text-white uppercase tracking-wider">Gestión de Competiciones</h2>
-                        <p class="text-xs text-slate-400">Crea nuevas ligas, selecciona la activa o añade equipos y estadísticas.</p>
-                    </div>
-                    <button onclick="app.openNewLeagueModal()" class="px-4 py-2.5 rounded-xl bg-neonGreen text-black font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/90 transition-all shadow-lg shadow-neonGreen/20">Nueva Liga</button>
-                </div>
-                <div id="leaguesListContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"></div>
-            </div>
-
-            <!-- EDITOR DE EQUIPOS DE LA LIGA ACTIVA -->
-            <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-4">
+        <!-- Left Column: Controls & Configuration (5 Cols) -->
+        <section class="lg:col-span-5 space-y-5">
+            
+            <!-- Quick League Selector -->
+            <div class="glass-panel p-5 rounded-2xl space-y-4">
                 <div class="flex items-center justify-between">
-                    <h3 id="activeLeagueEditorTitle" class="text-sm font-bold text-neonBlue uppercase tracking-wider">Editor de Tablas - Liga Activa</h3>
-                    <button onclick="app.openAddTeamModal()" class="px-3 py-1.5 rounded-xl bg-neonBlue/10 border border-neonBlue text-neonBlue text-xs font-bold uppercase">Añadir Equipo</button>
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center space-x-2">
+                        <i class="fa-solid fa-trophy text-cyan-400"></i>
+                        <span>Competición y Equipos</span>
+                    </h2>
+                    <select id="league-select" onchange="loadLeagueTeams()" class="bg-dark-800 text-xs border border-slate-700 rounded-lg px-3 py-1.5 text-slate-300 focus:outline-none focus:border-cyan-500">
+                        <option value="brasileirao">Brasileirão (Predeterminado)</option>
+                        <option value="premier">Premier League (Inglaterra)</option>
+                        <option value="laliga">La Liga (España)</option>
+                        <option value="seriea">Serie A (Italia)</option>
+                        <option value="bundesliga">Bundesliga (Alemania)</option>
+                    </select>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs font-mono">
-                        <thead>
-                            <tr class="border-b border-cardBorder text-slate-400">
-                                <th class="py-2 px-2">Equipo</th>
-                                <th class="py-2 px-2">PJ (H/A)</th>
-                                <th class="py-2 px-2">GF (H / A)</th>
-                                <th class="py-2 px-2">GA (H / A)</th>
-                                <th class="py-2 px-2 text-right">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="teamsEditorTableBody" class="divide-y divide-cardBorder/50"></tbody>
-                    </table>
+
+                <!-- Home & Away Team Selection -->
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-medium text-slate-400 flex items-center justify-between">
+                            <span>Local (Home)</span>
+                            <span id="home-rating-badge" class="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 font-mono">Att: 1.8 | Def: 0.9</span>
+                        </label>
+                        <select id="home-team-select" onchange="onTeamSelect('home')" class="w-full bg-dark-800 text-sm border border-slate-700 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-500 font-medium">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-medium text-slate-400 flex items-center justify-between">
+                            <span>Visitante (Away)</span>
+                            <span id="away-rating-badge" class="text-[10px] px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 font-mono">Att: 1.5 | Def: 1.1</span>
+                        </label>
+                        <select id="away-team-select" onchange="onTeamSelect('away')" class="w-full bg-dark-800 text-sm border border-slate-700 rounded-xl px-3 py-2.5 text-slate-200 focus:outline-none focus:border-cyan-500 font-medium">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
                 </div>
             </div>
-        </section>
 
-        <!-- ================= 4. CONFIGURACIÓN ================= -->
-        <section id="tab-config" class="tab-content hidden space-y-6">
-            <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-5">
-                <h2 class="text-lg font-bold text-white uppercase tracking-wider">Configuración & Respaldos</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
-                        <span class="text-xs font-mono uppercase text-neonBlue font-bold block">Exportar / Importar JSON</span>
-                        <div class="flex flex-wrap gap-2 pt-2">
-                            <button onclick="app.exportJSON()" class="px-4 py-2 rounded-xl bg-neonBlue/10 border border-neonBlue text-neonBlue text-xs font-bold uppercase">Exportar</button>
-                            <label class="px-4 py-2 rounded-xl bg-neonPurple/10 border border-neonPurple text-neonPurple text-xs font-bold uppercase cursor-pointer">
-                                Importar <input type="file" accept=".json" onchange="app.importJSON(event)" class="hidden">
-                            </label>
+            <!-- Advanced Match Parameters & Adjustments -->
+            <div class="glass-panel p-5 rounded-2xl space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders text-cyan-400"></i>
+                        <span>Variables y Ajustes Tácticos</span>
+                    </h2>
+                    <button onclick="toggleAdvancedSettings()" class="text-xs text-cyan-400 hover:underline flex items-center space-x-1">
+                        <span id="adv-toggle-text">Modo Avanzado</span>
+                        <i class="fa-solid fa-chevron-down text-[10px]" id="adv-icon"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-3 pt-1">
+                    <!-- Recent Form Weight Slider -->
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-slate-400">Forma Reciente (Últimos 5 Partidos)</span>
+                            <span id="form-val" class="font-mono text-cyan-400 font-semibold">1.15x</span>
+                        </div>
+                        <input type="range" id="form-weight" min="0.8" max="1.4" step="0.05" value="1.15" oninput="updateFormVal(this.value)" class="w-full accent-cyan-400 bg-dark-800 rounded-lg h-2 cursor-pointer">
+                    </div>
+
+                    <!-- Motivation / Importance -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-1">Motivación Local</label>
+                            <select id="home-motivation" class="w-full bg-dark-800 text-xs border border-slate-700 rounded-lg px-2.5 py-2 text-slate-300 focus:outline-none focus:border-cyan-500">
+                                <option value="1.0">Normal (1.0x)</option>
+                                <option value="1.15">Alta / Derbi / Final (1.15x)</option>
+                                <option value="0.9">Baja / Descansando (0.9x)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-1">Motivación Visitante</label>
+                            <select id="away-motivation" class="w-full bg-dark-800 text-xs border border-slate-700 rounded-lg px-2.5 py-2 text-slate-300 focus:outline-none focus:border-cyan-500">
+                                <option value="1.0">Normal (1.0x)</option>
+                                <option value="1.15">Alta / Derbi / Final (1.15x)</option>
+                                <option value="0.9">Baja / Descansando (0.9x)</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
-                        <span class="text-xs font-mono uppercase text-red-400 font-bold block">Zona de Peligro</span>
-                        <button onclick="app.factoryReset()" class="px-4 py-2 rounded-xl bg-red-500/10 border border-red-500 text-red-400 text-xs font-bold uppercase">Restaurar Fábrica</button>
+
+                    <!-- Injuries / Missing Players -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-1">Bajas Clave Local</label>
+                            <select id="home-injuries" class="w-full bg-dark-800 text-xs border border-slate-700 rounded-lg px-2.5 py-2 text-slate-300 focus:outline-none focus:border-cyan-500">
+                                <option value="0">Plantilla Completa</option>
+                                <option value="1">-1 Jugador Clave (-10% Ataque)</option>
+                                <option value="2">-2+ Titulares (-20% Ataque)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-1">Bajas Clave Visitante</label>
+                            <select id="away-injuries" class="w-full bg-dark-800 text-xs border border-slate-700 rounded-lg px-2.5 py-2 text-slate-300 focus:outline-none focus:border-cyan-500">
+                                <option value="0">Plantilla Completa</option>
+                                <option value="1">-1 Jugador Clave (-10% Ataque)</option>
+                                <option value="2">-2+ Titulares (-20% Ataque)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Hidden Advanced Parameters (Expanded via Toggle) -->
+                    <div id="advanced-panel" class="hidden space-y-3 pt-3 border-t border-slate-800">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[11px] text-slate-400 block mb-1">Ventaja Local (Home Adv.)</label>
+                                <input type="number" id="param-home-adv" value="1.22" step="0.01" class="w-full bg-dark-800 text-xs font-mono border border-slate-700 rounded-lg px-2.5 py-1.5 text-cyan-400">
+                            </div>
+                            <div>
+                                <label class="text-[11px] text-slate-400 block mb-1">Dixon-Coles Rho (ρ)</label>
+                                <input type="number" id="param-rho" value="-0.12" step="0.01" class="w-full bg-dark-800 text-xs font-mono border border-slate-700 rounded-lg px-2.5 py-1.5 text-cyan-400">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Market Odds for Value Betting -->
+            <div class="glass-panel p-5 rounded-2xl space-y-4">
+                <h2 class="text-sm font-bold uppercase tracking-wider text-slate-300 flex items-center space-x-2">
+                    <i class="fa-solid fa-coins text-emerald-400"></i>
+                    <span>Cuotas de Mercado (Opcional para Value Bets)</span>
+                </h2>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="text-[11px] text-slate-400 block mb-1">Cuota 1 (Local)</label>
+                        <input type="number" id="odds-1" placeholder="ej. 2.10" step="0.01" class="w-full bg-dark-800 text-xs font-mono border border-slate-700 rounded-lg px-2.5 py-2 text-emerald-400 focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-slate-400 block mb-1">Cuota X (Empate)</label>
+                        <input type="number" id="odds-x" placeholder="ej. 3.40" step="0.01" class="w-full bg-dark-800 text-xs font-mono border border-slate-700 rounded-lg px-2.5 py-2 text-emerald-400 focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-slate-400 block mb-1">Cuota 2 (Visitante)</label>
+                        <input type="number" id="odds-2" placeholder="ej. 3.60" step="0.01" class="w-full bg-dark-800 text-xs font-mono border border-slate-700 rounded-lg px-2.5 py-2 text-emerald-400 focus:outline-none focus:border-emerald-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <button onclick="runSimulation()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-black font-extrabold uppercase tracking-wider text-sm shadow-xl shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-[1.01] active:scale-[0.99] transition duration-200 flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-bolt text-black text-lg"></i>
+                <span>Calcular Pronóstico Pro Elite</span>
+            </button>
+        </section>
+
+        <!-- Right Column: Results & Analytics Dashboard (7 Cols) -->
+        <section id="results-area" class="lg:col-span-7 space-y-5">
+
+            <!-- Initial State / Empty Prompt -->
+            <div id="empty-state" class="glass-panel p-12 rounded-3xl text-center space-y-4 flex flex-col items-center justify-center min-h-[550px]">
+                <div class="w-20 h-20 rounded-3xl bg-dark-700 border border-slate-700 flex items-center justify-center text-cyan-400 text-3xl neon-glow">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <div class="max-w-md space-y-2">
+                    <h3 class="text-xl font-bold text-slate-200">Motor de Predicción Listo</h3>
+                    <p class="text-sm text-slate-400">Selecciona los equipos, configura los parámetros tácticos opcionales y haz clic en <span class="text-cyan-400 font-semibold">"Calcular Pronóstico Pro Elite"</span> para ejecutar 20,000 simulaciones Monte Carlo con corrección Dixon-Coles.</p>
+                </div>
+            </div>
+
+            <!-- Active Results Container (Hidden by default) -->
+            <div id="active-results" class="hidden space-y-5">
+
+                <!-- Match Summary Card -->
+                <div class="glass-panel p-6 rounded-3xl relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                        <div class="flex items-center space-x-2 text-xs text-cyan-400 font-mono">
+                            <i class="fa-solid fa-microchip"></i>
+                            <span id="sim-iterations-label">Simulación Monte Carlo: 20,000 iteraciones</span>
+                        </div>
+                        <div id="model-confidence-badge" class="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold flex items-center space-x-1.5">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span id="confidence-text">Confianza Alta (94.2%)</span>
+                        </div>
+                    </div>
+
+                    <!-- Teams Header & xG -->
+                    <div class="grid grid-cols-7 items-center py-6 text-center">
+                        <div class="col-span-3 space-y-1">
+                            <h3 id="res-home-name" class="text-lg lg:text-xl font-extrabold text-slate-100 truncate">Flamengo</h3>
+                            <div class="text-xs text-slate-400">Goles Esperados (xG)</div>
+                            <div id="res-home-xg" class="text-2xl lg:text-3xl font-black font-mono text-cyan-400">2.14</div>
+                        </div>
+
+                        <div class="col-span-1 flex flex-col items-center justify-center">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Score Probable</span>
+                            <div id="res-expected-score" class="text-xl lg:text-2xl font-black font-mono text-white bg-dark-800 border border-slate-700 px-3 py-1 rounded-xl mt-1">2 - 1</div>
+                        </div>
+
+                        <div class="col-span-3 space-y-1">
+                            <h3 id="res-away-name" class="text-lg lg:text-xl font-extrabold text-slate-100 truncate">Palmeiras</h3>
+                            <div class="text-xs text-slate-400">Goles Esperados (xG)</div>
+                            <div id="res-away-xg" class="text-2xl lg:text-3xl font-black font-mono text-rose-400">1.28</div>
+                        </div>
+                    </div>
+
+                    <!-- 1X2 Probability Bars -->
+                    <div class="space-y-2 pt-2">
+                        <div class="flex justify-between text-xs font-semibold">
+                            <span class="text-cyan-400">Local (1): <span id="prob-1-val">58.4%</span></span>
+                            <span class="text-amber-400">Empate (X): <span id="prob-x-val">22.1%</span></span>
+                            <span class="text-rose-400">Visitante (2): <span id="prob-2-val">19.5%</span></span>
+                        </div>
+                        <div class="w-full h-3 rounded-full bg-dark-800 flex overflow-hidden p-0.5 border border-slate-700">
+                            <div id="bar-1" class="bg-cyan-500 h-full rounded-l-full transition-all duration-500" style="width: 58.4%"></div>
+                            <div id="bar-x" class="bg-amber-500 h-full transition-all duration-500" style="width: 22.1%"></div>
+                            <div id="bar-2" class="bg-rose-500 h-full rounded-r-full transition-all duration-500" style="width: 19.5%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Automated Tactical Commentary -->
+                <div class="glass-panel p-5 rounded-2xl border-l-4 border-l-cyan-400 space-y-2">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center space-x-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>Análisis Táctico y Conclusión Automatizada</span>
+                    </h4>
+                    <p id="tactical-commentary" class="text-sm text-slate-300 leading-relaxed">
+                        El equipo local cuenta con gran superioridad ofensiva, se esperan muchos goles.
+                    </p>
+                </div>
+
+                <!-- Value Bet & Kelly Criterion Recommendation Card -->
+                <div id="value-bet-card" class="glass-panel p-5 rounded-2xl border border-emerald-500/30 bg-emerald-950/10 space-y-3 hidden">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center space-x-2">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>¡Alerta de Value Bet Detectada! (>5% Edge)</span>
+                        </h4>
+                        <span id="value-edge-badge" class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold">+8.4% Edge</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs">
+                        <div class="bg-dark-800/80 p-3 rounded-xl border border-slate-800">
+                            <div class="text-slate-400">Apuesta Recomendada</div>
+                            <div id="val-bet-pick" class="font-bold text-slate-200 mt-0.5">Victoria Local (1)</div>
+                        </div>
+                        <div class="bg-dark-800/80 p-3 rounded-xl border border-slate-800">
+                            <div class="text-slate-400">Cuota / Prob. Modelo</div>
+                            <div class="font-mono font-bold text-emerald-400 mt-0.5"><span id="val-bet-odds">2.10</span> vs <span id="val-bet-model-prob">58.4%</span></div>
+                        </div>
+                        <div class="bg-dark-800/80 p-3 rounded-xl border border-slate-800">
+                            <div class="text-slate-400">Stake Kelly (0.25x)</div>
+                            <div id="val-bet-stake" class="font-mono font-bold text-cyan-400 mt-0.5">€28.50 (2.85%)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Markets & Goals Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="glass-panel p-5 rounded-2xl space-y-4">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center space-x-2">
+                            <i class="fa-solid fa-futbol text-cyan-400"></i>
+                            <span>Mercados de Goles & BTTS</span>
+                        </h4>
+                        <div id="market-probabilities-list" class="space-y-2.5 text-xs"></div>
+                    </div>
+
+                    <div class="glass-panel p-5 rounded-2xl space-y-4">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center space-x-2">
+                            <i class="fa-solid fa-list-ol text-cyan-400"></i>
+                            <span>Top 6 Marcadores Exactos</span>
+                        </h4>
+                        <div id="top-scorelines-list" class="space-y-2 text-xs"></div>
+                    </div>
+                </div>
+
+                <!-- Chart.js Visualizations Section -->
+                <div class="glass-panel p-5 rounded-2xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center space-x-2">
+                            <i class="fa-solid fa-chart-bar text-cyan-400"></i>
+                            <span>Distribución de Probabilidad de Goles</span>
+                        </h4>
+                        <div class="flex space-x-1">
+                            <button onclick="switchChartTab('goals')" id="btn-chart-goals" class="px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-400 text-xs font-semibold transition">Goles</button>
+                            <button onclick="switchChartTab('1x2')" id="btn-chart-1x2" class="px-2.5 py-1 rounded bg-dark-800 text-slate-400 hover:text-white text-xs font-semibold transition">1X2</button>
+                        </div>
+                    </div>
+                    <div class="h-56 relative w-full">
+                        <canvas id="predictionChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="grid grid-cols-3 gap-3 pt-2">
+                    <button onclick="openScenarioModal()" class="py-3 px-4 rounded-xl bg-dark-700 hover:bg-dark-600 border border-slate-700 text-xs font-bold flex items-center justify-center space-x-2 transition">
+                        <i class="fa-solid fa-scale-balanced text-cyan-400"></i>
+                        <span>Comparar Escenario</span>
+                    </button>
+                    <button onclick="exportPredictionCard()" class="py-3 px-4 rounded-xl bg-dark-700 hover:bg-dark-600 border border-slate-700 text-xs font-bold flex items-center justify-center space-x-2 transition">
+                        <i class="fa-solid fa-download text-emerald-400"></i>
+                        <span>Exportar Texto/Card</span>
+                    </button>
+                    <button onclick="savePredictionToHistory()" class="py-3 px-4 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 text-xs font-bold flex items-center justify-center space-x-2 transition">
+                        <i class="fa-solid fa-bookmark"></i>
+                        <span>Guardar</span>
+                    </button>
+                </div>
+
+            </div>
+
         </section>
 
     </main>
 
-    <!-- BOTTOM NAVIGATION BAR -->
-    <nav class="fixed bottom-0 left-0 right-0 z-40 bg-darkBg/95 backdrop-blur-md border-t border-cardBorder px-2 py-2 flex items-center justify-around overflow-x-auto no-scrollbar">
-        <button onclick="app.switchTab('dashboard')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="dashboard">
-            <span class="text-[9px] font-mono uppercase tracking-wider">Dash</span>
-        </button>
-        <button onclick="app.switchTab('analyzer')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="analyzer">
-            <span class="text-[9px] font-mono uppercase tracking-wider">Analizador</span>
-        </button>
-        <button onclick="app.switchTab('leagues')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="leagues">
-            <span class="text-[9px] font-mono uppercase tracking-wider">Ligas</span>
-        </button>
-        <button onclick="app.switchTab('config')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="config">
-            <span class="text-[9px] font-mono uppercase tracking-wider">Config</span>
-        </button>
-    </nav>
+    <!-- Footer -->
+    <footer class="glass-panel border-t border-slate-800 py-4 px-6 text-center text-xs text-slate-500 mt-auto">
+        Poisson Betting Pro Elite &bull; Bivariate Dixon-Coles & Monte Carlo Mathematical Modeling Engine &bull; Custom League Manager
+    </footer>
 
-    <!-- MODAL NUEVA LIGA -->
-    <div id="leagueModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-cardBg border border-cardBorder rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
-            <h3 class="text-base font-bold text-white uppercase tracking-wider">Crear Nueva Competición</h3>
-            <input type="text" id="modalLeagueNameInput" placeholder="Ej. Premier League 2026" class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-neonGreen font-mono">
-            <div class="flex justify-end space-x-3 pt-2">
-                <button onclick="app.closeLeagueModal()" class="px-4 py-2 rounded-xl bg-darkBg border border-cardBorder text-slate-300 text-xs font-bold uppercase">Cancelar</button>
-                <button onclick="app.submitLeagueModal()" class="px-4 py-2 rounded-xl bg-neonGreen text-black text-xs font-bold uppercase">Crear</button>
+    <!-- LEAGUE MANAGER & TABLE PARSER MODAL -->
+    <div id="league-manager-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-4xl max-h-[90vh] rounded-3xl p-6 flex flex-col space-y-4 border border-slate-700 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <h3 class="font-bold text-base text-slate-200 flex items-center space-x-2">
+                    <i class="fa-solid fa-table-cells text-cyan-400"></i>
+                    <span>Gestor de Ligas & Importador de Tablas (Local / Visita)</span>
+                </h3>
+                <button onclick="closeLeagueManagerModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                    <label class="text-slate-400 block mb-1 font-semibold">Nombre de la Competición</label>
+                    <input type="text" id="new-league-name" placeholder="ej. Brasileirão Serie A" class="w-full bg-dark-800 border border-slate-700 rounded-xl px-3 py-2 text-slate-200 focus:outline-none focus:border-cyan-500">
+                </div>
+                <div class="md:col-span-2 flex items-end">
+                    <button onclick="importTables()" class="w-full py-2.5 bg-cyan-500 hover:bg-cyan-600 text-black font-extrabold rounded-xl transition shadow-lg shadow-cyan-500/20 flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-file-import"></i>
+                        <span>Procesar e Importar Tablas al Modelo</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 overflow-y-auto">
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-300 flex items-center justify-between">
+                        <span>Tabla Local (Pegar desde Excel o Web)</span>
+                    </label>
+                    <textarea id="input-table-home" rows="10" placeholder="Pega aquí los datos de Local..." class="w-full bg-dark-800 text-[11px] font-mono border border-slate-700 rounded-xl p-3 text-slate-300 focus:outline-none focus:border-cyan-500">1	Flamengo	17	13	3	1	35	13	+22	42	2.47
+2	Palmeiras	16	12	3	1	30	10	+20	39	2.44
+3	Fluminense	17	12	3	2	31	17	+14	39	2.29
+4	Atletico Mineiro	17	10	5	2	27	18	+9	35	2.06
+5	Sao Paulo	17	10	4	3	25	13	+12	34	2.00
+6	Athletico PR	17	9	5	3	28	18	+10	32	1.88
+7	Vitoria	16	10	2	4	23	13	+10	32	2.00
+8	Cruzeiro	16	9	4	3	27	16	+11	31	1.94
+9	Bragantino	17	9	3	5	29	18	+11	30	1.76
+10	Bahia	17	8	6	3	26	19	+7	30	1.76
+11	Gremio	17	8	5	4	27	21	+6	29	1.71
+12	Botafogo	17	7	6	4	27	22	+5	27	1.59
+13	Mirassol	17	7	6	4	24	22	+2	27	1.59
+14	Vasco da Gama	17	8	3	6	25	24	+1	27	1.59
+15	Santos	17	6	7	4	23	21	+2	25	1.47
+16	Internacional	17	6	5	6	22	17	+5	23	1.35
+17	Coritiba	17	6	5	6	22	21	+1	23	1.35
+18	Corinthians	17	6	4	7	18	17	+1	22	1.29
+19	Remo	17	4	7	6	22	22	0	19	1.12
+20	Chapecoense	16	3	5	8	22	36	-14	14	0.88</textarea>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-slate-300 flex items-center justify-between">
+                        <span>Tabla Visitante (Pegar desde Excel o Web)</span>
+                    </label>
+                    <textarea id="input-table-away" rows="10" placeholder="Pega aquí los datos de Visita..." class="w-full bg-dark-800 text-[11px] font-mono border border-slate-700 rounded-xl p-3 text-slate-300 focus:outline-none focus:border-cyan-500">1	Flamengo	17	10	4	3	36	16	+20	34	2.00
+2	Palmeiras	17	8	7	2	26	12	+14	31	1.82
+3	Cruzeiro	17	8	2	7	25	30	-5	26	1.53
+4	Bahia	16	6	5	5	22	23	-1	23	1.44
+5	Santos	17	6	4	7	27	28	-1	22	1.29
+6	Athletico PR	17	6	4	7	23	25	-2	22	1.29
+7	Coritiba	17	5	4	8	18	30	-12	19	1.12
+8	Bragantino	17	4	5	8	15	21	-6	17	1.00
+9	Fluminense	16	3	6	7	21	25	-4	15	0.94
+10	Atletico Mineiro	17	4	3	10	17	22	-5	15	0.88
+11	Corinthians	17	3	6	8	18	25	-7	15	0.88
+12	Internacional	17	3	6	8	16	25	-9	15	0.88
+13	Botafogo	17	4	3	10	19	31	-12	15	0.88
+14	Vasco da Gama	16	3	5	8	18	26	-8	14	0.88
+15	Mirassol	17	3	4	10	15	26	-11	13	0.76
+16	Sao Paulo	17	2	4	11	14	26	-12	10	0.59
+17	Remo	16	2	4	10	14	29	-15	10	0.63
+18	Gremio	17	1	5	11	11	26	-15	8	0.47
+19	Chapecoense	17	1	4	12	11	32	-21	7	0.41
+20	Vitoria	17	0	6	11	12	35	-23	6	0.35</textarea>
+                </div>
+            </div>
+
+            <div class="pt-2 flex justify-between items-center border-t border-slate-800 text-xs">
+                <span class="text-slate-400">Las tablas se procesarán automáticamente calculando el ataque y defensa por partido.</span>
+                <button onclick="closeLeagueManagerModal()" class="px-4 py-2 rounded-xl bg-dark-700 hover:bg-dark-600 text-slate-300 font-semibold">Cerrar</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL AÑADIR EQUIPO -->
-    <div id="teamModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-cardBg border border-cardBorder rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
-            <h3 class="text-base font-bold text-white uppercase tracking-wider">Añadir Equipo (Local & Visitante)</h3>
-            <div class="space-y-3">
-                <input type="text" id="modalTeamName" placeholder="Nombre del Equipo" class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-neonGreen font-mono">
-                <div class="grid grid-cols-3 gap-2">
-                    <div>
-                        <span class="text-[10px] text-slate-400 block mb-1">PJ</span>
-                        <input type="number" id="modalTeamGP" value="10" class="w-full bg-darkBg border border-cardBorder rounded-xl p-2.5 text-sm text-white font-mono text-center">
+    <!-- HISTORY MODAL -->
+    <div id="history-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-2xl max-h-[85vh] rounded-3xl p-6 flex flex-col space-y-4 border border-slate-700 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <h3 class="font-bold text-base text-slate-200 flex items-center space-x-2">
+                    <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i>
+                    <span>Historial de Predicciones Guardadas</span>
+                </h3>
+                <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="history-list" class="flex-1 overflow-y-auto space-y-3 pr-2"></div>
+            <div class="pt-2 flex justify-between items-center border-t border-slate-800">
+                <button onclick="clearHistory()" class="text-xs text-rose-400 hover:underline"><i class="fa-solid fa-trash-can mr-1"></i> Borrar Historial</button>
+                <button onclick="closeHistoryModal()" class="px-4 py-2 rounded-xl bg-dark-700 hover:bg-dark-600 text-xs font-semibold text-slate-300">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BANKROLL MODAL -->
+    <div id="bankroll-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md rounded-3xl p-6 space-y-5 border border-slate-700 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <h3 class="font-bold text-base text-slate-200 flex items-center space-x-2">
+                    <i class="fa-solid fa-wallet text-emerald-400"></i>
+                    <span>Gestión de Bankroll & Criterio Kelly</span>
+                </h3>
+                <button onclick="closeBankrollModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="text-slate-400 block mb-1">Bankroll Total (€)</label>
+                    <input type="number" id="input-bankroll" value="1000" class="w-full bg-dark-800 font-mono text-sm border border-slate-700 rounded-xl px-3 py-2 text-emerald-400 focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="text-slate-400 block mb-1">Fracción de Criterio Kelly</label>
+                    <select id="kelly-fraction" class="w-full bg-dark-800 border border-slate-700 rounded-xl px-3 py-2 text-slate-300 focus:outline-none focus:border-emerald-500">
+                        <option value="0.25">0.25x Kelly (Conservador / Recomendado)</option>
+                        <option value="0.5">0.50x Kelly (Moderado)</option>
+                        <option value="1.0">1.00x Kelly (Completo / Alto Riesgo)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="closeBankrollModal()" class="px-4 py-2 rounded-xl bg-dark-700 text-slate-300 font-semibold">Cancelar</button>
+                <button onclick="saveBankrollSettings()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-black font-extrabold">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCENARIO MODAL -->
+    <div id="scenario-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-3xl max-h-[85vh] rounded-3xl p-6 flex flex-col space-y-4 border border-slate-700 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <h3 class="font-bold text-base text-slate-200 flex items-center space-x-2">
+                    <i class="fa-solid fa-scale-balanced text-cyan-400"></i>
+                    <span>Modo Comparación de Escenarios</span>
+                </h3>
+                <button onclick="closeScenarioModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 overflow-y-auto pt-2">
+                <div class="bg-dark-800/80 p-4 rounded-2xl border border-slate-800 space-y-3">
+                    <div class="text-xs font-bold uppercase tracking-wider text-cyan-400">Escenario Base (Actual)</div>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between"><span class="text-slate-400">xG Local / Visitante:</span> <span id="sc-base-xg" class="font-mono text-white">2.14 - 1.28</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Probabilidad Local (1):</span> <span id="sc-base-1" class="font-mono text-cyan-400">58.4%</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Probabilidad Empate (X):</span> <span id="sc-base-x" class="font-mono text-amber-400">22.1%</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Probabilidad Visitante (2):</span> <span id="sc-base-2" class="font-mono text-rose-400">19.5%</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Score Más Probable:</span> <span id="sc-base-score" class="font-mono text-white">2 - 1</span></div>
                     </div>
-                    <div>
-                        <span class="text-[10px] text-neonGreen block mb-1">GF (H/A)</span>
-                        <input type="number" id="modalTeamGF" value="15" class="w-full bg-darkBg border border-cardBorder rounded-xl p-2.5 text-sm text-white font-mono text-center">
-                    </div>
-                    <div>
-                        <span class="text-[10px] text-neonPink block mb-1">GA (H/A)</span>
-                        <input type="number" id="modalTeamGA" value="10" class="w-full bg-darkBg border border-cardBorder rounded-xl p-2.5 text-sm text-white font-mono text-center">
+                </div>
+                <div class="bg-dark-800/80 p-4 rounded-2xl border border-slate-800 space-y-3">
+                    <div class="text-xs font-bold uppercase tracking-wider text-amber-400">Escenario Modificado (Bajas / Fatiga)</div>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between"><span class="text-slate-400">xG Local / Visitante:</span> <span id="sc-mod-xg" class="font-mono text-white">1.75 - 1.55</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Probabilidad Local (1):</span> <span id="sc-mod-1" class="font-mono text-cyan-400">46.2%</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Probabilidad Empate (X):</span> <span id="sc-mod-x" class="font-mono text-amber-400">26.8%</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Probabilidad Visitante (2):</span> <span id="sc-mod-2" class="font-mono text-rose-400">27.0%</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Score Más Probable:</span> <span id="sc-mod-score" class="font-mono text-white">1 - 1</span></div>
                     </div>
                 </div>
             </div>
-            <div class="flex justify-end space-x-3 pt-2">
-                <button onclick="app.closeTeamModal()" class="px-4 py-2 rounded-xl bg-darkBg border border-cardBorder text-slate-300 text-xs font-bold uppercase">Cancelar</button>
-                <button onclick="app.submitTeamModal()" class="px-4 py-2 rounded-xl bg-neonGreen text-black text-xs font-bold uppercase">Guardar en Tablas</button>
+            <div class="pt-3 border-t border-slate-800 text-xs text-slate-400 flex justify-end">
+                <button onclick="closeScenarioModal()" class="px-4 py-2 rounded-xl bg-dark-700 text-slate-300 font-semibold">Cerrar</button>
             </div>
         </div>
     </div>
 
-    <!-- SCRIPT CORE -->
+    <!-- EXPORT MODAL -->
+    <div id="export-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-lg rounded-3xl p-6 space-y-4 border border-slate-700 shadow-2xl">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <h3 class="font-bold text-base text-slate-200 flex items-center space-x-2">
+                    <i class="fa-solid fa-share-nodes text-emerald-400"></i>
+                    <span>Exportar Predicción</span>
+                </h3>
+                <button onclick="closeExportModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div>
+                <textarea id="export-text-area" rows="8" class="w-full bg-dark-800 text-xs font-mono border border-slate-700 rounded-xl p-3 text-slate-300 focus:outline-none focus:border-cyan-500"></textarea>
+            </div>
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="closeExportModal()" class="px-4 py-2 rounded-xl bg-dark-700 text-slate-300 text-xs font-semibold">Cerrar</button>
+                <button onclick="copyExportText()" class="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-black font-extrabold text-xs flex items-center space-x-2">
+                    <i class="fa-solid fa-copy"></i>
+                    <span>Copiar al Portapapeles</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
     <script>
-        class BetagsMultiLeagueApp {
-            constructor() {
-                this.STORAGE_KEY = 'betags_einstein_multileague_data_v3';
-                this.state = { activeLeagueId: 'brasileirao_2026', leagues: {} };
-                this.currentTab = 'dashboard';
+        // --- BASE LIGAS Y DATOS ---
+        let leaguesDatabase = JSON.parse(localStorage.getItem('poisson_custom_leagues') || JSON.stringify({
+            brasileirao: {
+                name: "Brasileirão Serie A",
+                teams: [
+                    { name: "Flamengo", att: 2.15, def: 0.72 },
+                    { name: "Palmeiras", att: 1.95, def: 0.75 },
+                    { name: "Fluminense", att: 1.82, def: 1.00 },
+                    { name: "Atletico Mineiro", att: 1.58, def: 1.05 },
+                    { name: "Sao Paulo", att: 1.47, def: 0.95 },
+                    { name: "Athletico PR", att: 1.52, def: 1.05 },
+                    { name: "Vitoria", att: 1.35, def: 1.15 },
+                    { name: "Cruzeiro", att: 1.52, def: 1.25 },
+                    { name: "Bragantino", att: 1.29, def: 1.10 },
+                    { name: "Bahia", att: 1.41, def: 1.25 },
+                    { name: "Gremio", att: 1.11, def: 1.18 },
+                    { name: "Botafogo", att: 1.35, def: 1.35 },
+                    { name: "Mirassol", att: 1.11, def: 1.30 },
+                    { name: "Vasco da Gama", att: 1.24, def: 1.47 },
+                    { name: "Santos", att: 1.41, def: 1.41 },
+                    { name: "Internacional", att: 1.11, def: 1.18 },
+                    { name: "Coritiba", att: 1.11, def: 1.47 },
+                    { name: "Corinthians", att: 1.05, def: 1.25 },
+                    { name: "Remo", att: 1.05, def: 1.75 },
+                    { name: "Chapecoense", att: 0.95, def: 2.00 }
+                ]
+            },
+            premier: [
+                { name: "Manchester City", att: 2.35, def: 0.75 },
+                { name: "Arsenal", att: 2.15, def: 0.70 },
+                { name: "Liverpool", att: 2.25, def: 0.85 },
+                { name: "Aston Villa", att: 1.75, def: 1.10 }
+            ],
+            laliga: [
+                { name: "Real Madrid", att: 2.30, def: 0.72 },
+                { name: "Barcelona", att: 2.20, def: 0.82 },
+                { name: "Atletico Madrid", att: 1.75, def: 0.78 }
+            ]
+        }));
+
+        let currentTeamsList = [];
+        let globalPredictionResult = null;
+        let predictionChartInstance = null;
+        let activeChartTab = 'goals';
+        let userBankroll = 1000;
+        let kellyFractionSetting = 0.25;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateLeagueSelectOptions();
+            loadLeagueTeams();
+        });
+
+        function updateLeagueSelectOptions() {
+            const select = document.getElementById('league-select');
+            select.innerHTML = '';
+            for (const key in leaguesDatabase) {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = leaguesDatabase[key].name;
+                select.appendChild(opt);
             }
+        }
 
-            init() {
-                this.loadFromLocalStorage();
-                this.populateLeagueSelects();
-                this.populateTeamSelects();
-                this.renderLeaguesManager();
-                this.renderTeamsEditor();
-                this.switchTab('dashboard');
+        function loadLeagueTeams() {
+            const leagueKey = document.getElementById('league-select').value;
+            const leagueData = leaguesDatabase[leagueKey];
+            if (!leagueData) return;
+
+            currentTeamsList = leagueData.teams;
+            const homeSelect = document.getElementById('home-team-select');
+            const awaySelect = document.getElementById('away-team-select');
+            
+            homeSelect.innerHTML = '';
+            awaySelect.innerHTML = '';
+
+            currentTeamsList.forEach((t, idx) => {
+                const opt1 = document.createElement('option');
+                opt1.value = idx;
+                opt1.textContent = t.name;
+                homeSelect.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = idx;
+                opt2.textContent = t.name;
+                awaySelect.appendChild(opt2);
+            });
+
+            if (currentTeamsList.length > 1) {
+                awaySelect.value = 1;
             }
+            updateTeamBadges();
+        }
 
-            loadFromLocalStorage() {
-                try {
-                    const raw = localStorage.getItem(this.STORAGE_KEY);
-                    if (!raw) {
-                        this.loadDefaultData();
-                        this.saveToLocalStorage();
-                    } else {
-                        this.state = JSON.parse(raw);
-                    }
-                } catch (e) {
-                    this.loadDefaultData();
-                }
+        function onTeamSelect() {
+            updateTeamBadges();
+        }
+
+        function updateTeamBadges() {
+            const homeIdx = document.getElementById('home-team-select').value;
+            const awayIdx = document.getElementById('away-team-select').value;
+            
+            const home = currentTeamsList[homeIdx];
+            const away = currentTeamsList[awayIdx];
+
+            if (home) {
+                document.getElementById('home-rating-badge').textContent = `Att: ${home.att} | Def: ${home.def}`;
             }
-
-            saveToLocalStorage() {
-                try {
-                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.state));
-                } catch (e) {
-                    this.showToast("Error", "No se pudo guardar en localStorage", "red");
-                }
+            if (away) {
+                document.getElementById('away-rating-badge').textContent = `Att: ${away.att} | Def: ${away.def}`;
             }
+        }
 
-            loadDefaultData() {
-                this.state = {
-                    activeLeagueId: 'brasileirao_2026',
-                    leagues: {
-                        'brasileirao_2026': {
-                            name: "Brasileirao 2026",
-                            homeTable: [
-                                { name: "Flamengo", gp: 17, gf: 35, ga: 13, pts: 42 },
-                                { name: "Palmeiras", gp: 16, gf: 30, ga: 10, pts: 39 },
-                                { name: "Fluminense", gp: 17, gf: 31, ga: 17, pts: 39 },
-                                { name: "Atletico Mineiro", gp: 17, gf: 27, ga: 18, pts: 35 },
-                                { name: "Sao Paulo", gp: 16, gf: 25, ga: 13, pts: 33 },
-                                { name: "Athletico PR", gp: 17, gf: 28, ga: 18, pts: 32 },
-                                { name: "Vitoria", gp: 16, gf: 23, ga: 13, pts: 32 },
-                                { name: "Cruzeiro", gp: 16, gf: 27, ga: 16, pts: 31 },
-                                { name: "Bragantino", gp: 17, gf: 29, ga: 18, pts: 30 },
-                                { name: "Bahia", gp: 17, gf: 26, ga: 19, pts: 30 },
-                                { name: "Gremio", gp: 17, gf: 27, ga: 21, pts: 29 },
-                                { name: "Mirassol", gp: 17, gf: 24, ga: 22, pts: 27 },
-                                { name: "Vasco da Gama", gp: 17, gf: 25, ga: 24, pts: 27 },
-                                { name: "Santos", gp: 17, gf: 23, ga: 21, pts: 25 },
-                                { name: "Botafogo", gp: 16, gf: 26, ga: 22, pts: 24 },
-                                { name: "Internacional", gp: 17, gf: 22, ga: 17, pts: 23 },
-                                { name: "Coritiba", gp: 17, gf: 22, ga: 21, pts: 23 },
-                                { name: "Corinthians", gp: 17, gf: 18, ga: 17, pts: 22 },
-                                { name: "Remo", gp: 17, gf: 22, ga: 22, pts: 19 },
-                                { name: "Chapecoense", gp: 16, gf: 22, ga: 36, pts: 14 }
-                            ],
-                            awayTable: [
-                                { name: "Flamengo", gp: 17, gf: 36, ga: 16, pts: 34 },
-                                { name: "Palmeiras", gp: 17, gf: 26, ga: 12, pts: 31 },
-                                { name: "Cruzeiro", gp: 17, gf: 25, ga: 30, pts: 26 },
-                                { name: "Bahia", gp: 16, gf: 22, ga: 23, pts: 23 },
-                                { name: "Santos", gp: 17, gf: 27, ga: 28, pts: 22 },
-                                { name: "Athletico PR", gp: 17, gf: 23, ga: 25, pts: 22 },
-                                { name: "Coritiba", gp: 17, gf: 18, ga: 30, pts: 19 },
-                                { name: "Bragantino", gp: 17, gf: 15, ga: 21, pts: 17 },
-                                { name: "Fluminense", gp: 16, gf: 21, ga: 25, pts: 15 },
-                                { name: "Atletico Mineiro", gp: 16, gf: 17, ga: 21, pts: 15 },
-                                { name: "Internacional", gp: 17, gf: 16, ga: 25, pts: 15 },
-                                { name: "Botafogo", gp: 17, gf: 19, ga: 31, pts: 15 },
-                                { name: "Corinthians", gp: 16, gf: 18, ga: 25, pts: 14 },
-                                { name: "Vasco da Gama", gp: 16, gf: 18, ga: 26, pts: 14 },
-                                { name: "Mirassol", gp: 17, gf: 15, ga: 26, pts: 13 },
-                                { name: "Sao Paulo", gp: 17, gf: 14, ga: 26, pts: 10 },
-                                { name: "Remo", gp: 16, gf: 14, ga: 29, pts: 10 },
-                                { name: "Gremio", gp: 17, gf: 11, ga: 26, pts: 8 },
-                                { name: "Chapecoense", gp: 17, gf: 11, ga: 32, pts: 7 },
-                                { name: "Vitoria", gp: 17, gf: 12, ga: 35, pts: 6 }
-                            ]
-                        }
-                    }
-                };
-            }
+        // --- IMPORTAR Y PARSEAR TABLAS ---
+        function openLeagueManagerModal() {
+            document.getElementById('league-manager-modal').classList.remove('hidden');
+            document.getElementById('league-manager-modal').classList.add('flex');
+        }
 
-            switchTab(tabId) {
-                this.currentTab = tabId;
-                document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-                const el = document.getElementById('tab-' + tabId);
-                if (el) el.classList.remove('hidden');
+        function closeLeagueManagerModal() {
+            document.getElementById('league-manager-modal').classList.add('hidden');
+            document.getElementById('league-manager-modal').classList.remove('flex');
+        }
 
-                document.querySelectorAll('.nav-btn').forEach(btn => {
-                    if (btn.getAttribute('data-tab') === tabId) btn.classList.add('text-neonBlue');
-                    else btn.classList.remove('text-neonBlue');
-                });
+        function parseTableText(text) {
+            const lines = text.trim().split('\n');
+            const map = {};
+            lines.forEach(line => {
+                const parts = line.trim().split(/\s+/);
+                if (parts.length >= 10) {
+                    // Formato: Pos | Equipo (puede tener espacios) | PJ | G | E | P | GF | GA | SG | PTS | PPG
+                    // Vamos a unir el nombre del equipo si tiene espacios
+                    const nameParts = parts.slice(1, parts.length - 9);
+                    const teamName = nameParts.join(' ');
+                    const pj = parseFloat(parts[parts.length - 9]) || 1;
+                    const gf = parseFloat(parts[parts.length - 5]) || 0;
+                    const ga = parseFloat(parts[parts.length - 4]) || 0;
 
-                if (tabId === 'analyzer') this.populateTeamSelects();
-                if (tabId === 'leagues') {
-                    this.renderLeaguesManager();
-                    this.renderTeamsEditor();
-                }
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-
-            getActiveLeague() {
-                if (!this.state.leagues[this.state.activeLeagueId]) {
-                    const keys = Object.keys(this.state.leagues);
-                    if (keys.length > 0) this.state.activeLeagueId = keys[0];
-                }
-                return this.state.leagues[this.state.activeLeagueId];
-            }
-
-            switchActiveLeague(leagueId) {
-                if (this.state.leagues[leagueId]) {
-                    this.state.activeLeagueId = leagueId;
-                    this.saveToLocalStorage();
-                    this.populateLeagueSelects();
-                    this.populateTeamSelects();
-                    this.renderLeaguesManager();
-                    this.renderTeamsEditor();
-                    this.showToast("Cambiado", `Liga activa: ${this.getActiveLeague().name}`, "green");
-                }
-            }
-
-            populateLeagueSelects() {
-                const select = document.getElementById('headerLeagueSelect');
-                if (!select) return;
-                select.innerHTML = '';
-                for (let id in this.state.leagues) {
-                    const opt = document.createElement('option');
-                    opt.value = id;
-                    opt.innerText = this.state.leagues[id].name;
-                    if (id === this.state.activeLeagueId) opt.selected = true;
-                    select.appendChild(opt);
-                }
-                const badge = document.getElementById('activeLeagueBadge');
-                if (badge) badge.innerText = this.getActiveLeague().name;
-            }
-
-            renderLeaguesManager() {
-                const container = document.getElementById('leaguesListContainer');
-                if (!container) return;
-                container.innerHTML = '';
-                for (let id in this.state.leagues) {
-                    const l = this.state.leagues[id];
-                    const isActive = id === this.state.activeLeagueId;
-                    const card = document.createElement('div');
-                    card.className = `p-4 rounded-xl border bg-darkBg flex flex-col justify-between space-y-3 ${isActive ? 'neon-border-green' : 'border-cardBorder'}`;
-                    card.innerHTML = `
-                        <div>
-                            <h3 class="text-sm font-bold text-white">${escapeHtml(l.name)}</h3>
-                            <p class="text-[11px] text-slate-400 mt-1">Equipos (Local): ${l.homeTable.length} | (Visitante): ${l.awayTable.length}</p>
-                        </div>
-                        <div class="flex items-center gap-2 pt-2 border-t border-cardBorder">
-                            ${!isActive ? `<button onclick="app.switchActiveLeague('${id}')" class="px-3 py-1.5 rounded-lg bg-neonBlue/10 border border-neonBlue text-neonBlue text-xs font-bold">Seleccionar</button>` : '<span class="text-xs text-neonGreen font-mono font-bold">Activa</span>'}
-                            ${Object.keys(this.state.leagues).length > 1 ? `<button onclick="app.deleteLeague('${id}')" class="px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold">Eliminar</button>` : ''}
-                        </div>
-                    `;
-                    container.appendChild(card);
-                }
-            }
-
-            renderTeamsEditor() {
-                const league = this.getActiveLeague();
-                const tbody = document.getElementById('teamsEditorTableBody');
-                const title = document.getElementById('activeLeagueEditorTitle');
-                if (!tbody || !title) return;
-
-                title.innerText = `Editor de Tablas - ${league.name}`;
-                tbody.innerHTML = '';
-
-                league.homeTable.forEach((hTeam, index) => {
-                    const aTeam = league.awayTable.find(t => t.name === hTeam.name) || { gp: hTeam.gp, gf: hTeam.gf, ga: hTeam.ga };
-                    const tr = document.createElement('tr');
-                    tr.className = 'border-b border-cardBorder/30';
-                    tr.innerHTML = `
-                        <td class="py-2.5 px-2 text-white font-bold">${escapeHtml(hTeam.name)}</td>
-                        <td class="py-2.5 px-2 text-slate-300 font-mono">H:${hTeam.gp} / A:${aTeam.gp}</td>
-                        <td class="py-2.5 px-2 text-neonGreen font-mono">H:${hTeam.gf} / A:${aTeam.gf}</td>
-                        <td class="py-2.5 px-2 text-neonPink font-mono">H:${hTeam.ga} / A:${aTeam.ga}</td>
-                        <td class="py-2.5 px-2 text-right">
-                            <button onclick="app.deleteTeam(${index})" class="px-2.5 py-1 bg-red-500/10 border border-red-500/30 text-red-400 rounded text-[10px]">Borrar</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }
-
-            openNewLeagueModal() {
-                const modal = document.getElementById('leagueModal');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
-
-            closeLeagueModal() {
-                const modal = document.getElementById('leagueModal');
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }
-
-            submitLeagueModal() {
-                const nameInput = document.getElementById('modalLeagueNameInput');
-                const name = nameInput.value.trim();
-                if (!name) return;
-                const id = 'league_' + Date.now();
-                
-                this.state.leagues[id] = {
-                    name: name,
-                    homeTable: [
-                        { name: "Equipo Local A", gp: 10, gf: 16, ga: 10, pts: 21 },
-                        { name: "Equipo Local B", gp: 10, gf: 12, ga: 12, pts: 16 }
-                    ],
-                    awayTable: [
-                        { name: "Equipo Local A", gp: 10, gf: 13, ga: 11, pts: 17 },
-                        { name: "Equipo Local B", gp: 10, gf: 10, ga: 14, pts: 11 }
-                    ]
-                };
-                this.state.activeLeagueId = id;
-                this.saveToLocalStorage();
-                this.closeLeagueModal();
-                nameInput.value = '';
-                this.populateLeagueSelects();
-                this.populateTeamSelects();
-                this.renderLeaguesManager();
-                this.renderTeamsEditor();
-                this.showToast("Éxito", `Liga "${name}" creada correctamente`, "green");
-            }
-
-            openAddTeamModal() {
-                const modal = document.getElementById('teamModal');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
-
-            closeTeamModal() {
-                const modal = document.getElementById('teamModal');
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }
-
-            submitTeamModal() {
-                const name = document.getElementById('modalTeamName').value.trim();
-                const gp = parseInt(document.getElementById('modalTeamGP').value) || 10;
-                const gf = parseInt(document.getElementById('modalTeamGF').value) || 15;
-                const ga = parseInt(document.getElementById('modalTeamGA').value) || 10;
-
-                if (!name) return;
-                const league = this.getActiveLeague();
-
-                // Evitar duplicados exactos
-                if (!league.homeTable.some(t => t.name === name)) {
-                    league.homeTable.push({ name, gp, gf, ga, pts: Math.floor(gp * 1.5) });
-                }
-                if (!league.awayTable.some(t => t.name === name)) {
-                    league.awayTable.push({ name, gp, gf: Math.max(1, gf - 3), ga: ga + 3, pts: Math.floor(gp * 1.2) });
-                }
-
-                this.saveToLocalStorage();
-                this.closeTeamModal();
-                document.getElementById('modalTeamName').value = '';
-                this.populateTeamSelects();
-                this.renderTeamsEditor();
-                this.showToast("Éxito", `Equipo ${name} guardado en Local y Visitante`, "green");
-            }
-
-            deleteTeam(index) {
-                const league = this.getActiveLeague();
-                if (league.homeTable.length <= 2) {
-                    this.showToast("Aviso", "Debe haber al menos 2 equipos", "red");
-                    return;
-                }
-                const teamName = league.homeTable[index].name;
-                league.homeTable.splice(index, 1);
-                league.awayTable = league.awayTable.filter(t => t.name !== teamName);
-
-                this.saveToLocalStorage();
-                this.populateTeamSelects();
-                this.renderTeamsEditor();
-                this.showToast("Eliminado", "Equipo borrado de ambas tablas", "red");
-            }
-
-            deleteLeague(id) {
-                if (Object.keys(this.state.leagues).length <= 1) return;
-                delete this.state.leagues[id];
-                this.state.activeLeagueId = Object.keys(this.state.leagues)[0];
-                this.saveToLocalStorage();
-                this.populateLeagueSelects();
-                this.populateTeamSelects();
-                this.renderLeaguesManager();
-                this.renderTeamsEditor();
-                this.showToast("Eliminado", "Competición borrada", "red");
-            }
-
-            populateTeamSelects() {
-                const league = this.getActiveLeague();
-                const homeSelect = document.getElementById('selectHomeTeam');
-                const awaySelect = document.getElementById('selectAwayTeam');
-                if (!homeSelect || !awaySelect) return;
-
-                const curH = homeSelect.value;
-                const curA = awaySelect.value;
-
-                homeSelect.innerHTML = '<option value="">-- Seleccionar Local --</option>';
-                awaySelect.innerHTML = '<option value="">-- Seleccionar Visitante --</option>';
-
-                league.homeTable.forEach(t => {
-                    const opt = document.createElement('option');
-                    opt.value = t.name; opt.innerText = t.name;
-                    if (t.name === curH) opt.selected = true;
-                    homeSelect.appendChild(opt);
-                });
-
-                league.awayTable.forEach(t => {
-                    const opt = document.createElement('option');
-                    opt.value = t.name; opt.innerText = t.name;
-                    if (t.name === curA) opt.selected = true;
-                    awaySelect.appendChild(opt);
-                });
-
-                if (curH && curA) this.runAnalysis();
-            }
-
-            // --- MOTOR RELATIVISTA DE EINSTEIN (1X2, O/U & BTTS) ---
-            runAnalysis() {
-                const homeName = document.getElementById('selectHomeTeam').value;
-                const awayName = document.getElementById('selectAwayTeam').value;
-                const container = document.getElementById('analysisResultsContainer');
-                const emptyState = document.getElementById('analysisEmptyState');
-
-                if (!homeName || !awayName || homeName === awayName) {
-                    container.classList.add('hidden');
-                    emptyState.classList.remove('hidden');
-                    return;
-                }
-
-                const league = this.getActiveLeague();
-                const hStats = league.homeTable.find(t => t.name === homeName);
-                const aStats = league.awayTable.find(t => t.name === awayName);
-
-                if (!hStats || !aStats) return;
-
-                const avgHomeGF = league.homeTable.reduce((acc, t) => acc + (t.gf / t.gp), 0) / league.homeTable.length;
-                const avgAwayGF = league.awayTable.reduce((acc, t) => acc + (t.gf / t.gp), 0) / league.awayTable.length;
-
-                const homeAttack = (hStats.gf / hStats.gp) / avgHomeGF;
-                const awayDefense = (aStats.ga / aStats.gp) / avgHomeGF;
-                const awayAttack = (aStats.gf / aStats.gp) / avgAwayGF;
-                const homeDefense = (hStats.ga / hStats.gp) / avgAwayGF;
-
-                const lambdaHome = homeAttack * awayDefense * avgHomeGF;
-                const lambdaAway = awayAttack * homeDefense * avgAwayGF;
-
-                const poisson = (k, lambda) => {
-                    let fact = 1;
-                    for (let i = 2; i <= k; i++) fact *= i;
-                    return (Math.pow(lambda, k) * Math.exp(-lambda)) / fact;
-                };
-
-                let p1 = 0, pX = 0, p2 = 0;
-                let pUnder15 = 0, pUnder25 = 0, pUnder35 = 0;
-                let pBttsYes = 0;
-                let scoreProbs = [];
-
-                for (let h = 0; h <= 6; h++) {
-                    for (let a = 0; a <= 6; a++) {
-                        const prob = poisson(h, lambdaHome) * poisson(a, lambdaAway);
-                        scoreProbs.push({ score: `${h}-${a}`, prob: prob });
-
-                        if (h > a) p1 += prob;
-                        else if (h === a) pX += prob;
-                        else p2 += prob;
-
-                        const totalGoals = h + a;
-                        if (totalGoals <= 1.5) pUnder15 += prob;
-                        if (totalGoals <= 2.5) pUnder25 += prob;
-                        if (totalGoals <= 3.5) pUnder35 += prob;
-
-                        if (h > 0 && a > 0) pBttsYes += prob;
-                    }
-                }
-
-                const prob1 = p1 * 100;
-                const probX = pX * 100;
-                const prob2 = p2 * 100;
-
-                const over15 = (1 - pUnder15) * 100;
-                const over25 = (1 - pUnder25) * 100;
-                const over35 = (1 - pUnder35) * 100;
-                const bttsYes = pBttsYes * 100;
-                const bttsNo = 100 - bttsYes;
-
-                scoreProbs.sort((a, b) => b.prob - a.prob);
-
-                const scoresContainer = document.getElementById('correctScoresContainer');
-                scoresContainer.innerHTML = '';
-                scoreProbs.slice(0, 4).forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = 'bg-darkBg border border-cardBorder rounded-lg p-2.5 text-center';
-                    card.innerHTML = `
-                        <span class="text-[10px] text-slate-400 font-mono block">Resultado</span>
-                        <span class="text-base font-black text-white font-mono my-0.5 block">${item.score}</span>
-                        <span class="text-[11px] font-bold text-neonGreen font-mono">${(item.prob * 100).toFixed(1)}%</span>
-                    `;
-                    scoresContainer.appendChild(card);
-                });
-
-                let recommendation = `xG Local: ${lambdaHome.toFixed(2)} | xG Visitante: ${lambdaAway.toFixed(2)}. `;
-                if (prob1 > 55) {
-                    recommendation += `El equipo local (${homeName}) ejerce una fuerte atracción gravitacional en su estadio. Alta probabilidad de victoria local.`;
-                } else if (prob2 > 45) {
-                    recommendation += `El visitante (${awayName}) muestra gran eficiencia fuera de casa. Excelente valor en cuotas de no favoritos.`;
-                } else {
-                    recommendation += `Encuentro de alta simetría y paridad táctica en el espacio-tiempo. Mercado de Over 2.5 u Over 1.5 recomendado.`;
-                }
-
-                document.getElementById('resProb1').innerText = `${prob1.toFixed(1)}%`;
-                document.getElementById('resOdds1').innerText = `Cuota: ${(100 / prob1).toFixed(2)}`;
-
-                document.getElementById('resProbX').innerText = `${probX.toFixed(1)}%`;
-                document.getElementById('resOddsX').innerText = `Cuota: ${(100 / probX).toFixed(2)}`;
-
-                document.getElementById('resProb2').innerText = `${prob2.toFixed(1)}%`;
-                document.getElementById('resOdds2').innerText = `Cuota: ${(100 / prob2).toFixed(2)}`;
-
-                document.getElementById('resOver15').innerText = `${over15.toFixed(1)}%`;
-                document.getElementById('resOddsOver15').innerText = `Cuota: ${(100 / over15).toFixed(2)}`;
-
-                document.getElementById('resOver25').innerText = `${over25.toFixed(1)}%`;
-                document.getElementById('resOddsOver25').innerText = `Cuota: ${(100 / over25).toFixed(2)}`;
-
-                document.getElementById('resOver35').innerText = `${over35.toFixed(1)}%`;
-                document.getElementById('resOddsOver35').innerText = `Cuota: ${(100 / over35).toFixed(2)}`;
-
-                document.getElementById('resBtts').innerText = `Sí: ${bttsYes.toFixed(1)}%`;
-                document.getElementById('resOddsBtts').innerText = `No: ${bttsNo.toFixed(1)}%`;
-
-                document.getElementById('resRecommendation').innerText = recommendation;
-
-                container.classList.remove('hidden');
-                emptyState.classList.add('hidden');
-            }
-
-            showToast(title, message, type = 'green') {
-                const toast = document.getElementById('toast');
-                document.getElementById('toastTitle').innerText = title;
-                document.getElementById('toastMessage').innerText = message;
-                toast.className = `fixed top-20 right-4 z-50 transform transition-transform duration-300 max-w-sm px-4 py-3 rounded-xl border bg-cardBg shadow-2xl flex items-center space-x-3 ${type === 'red' ? 'border-red-500/50 text-red-400' : 'border-neonGreen/50 text-neonGreen'}`;
-                toast.classList.remove('translate-x-full');
-                setTimeout(() => toast.classList.add('translate-x-full'), 3500);
-            }
-
-            exportJSON() {
-                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.state, null, 2));
-                const dl = document.createElement('a');
-                dl.href = dataStr; dl.download = `betags_einstein_leagues_${Date.now()}.json`;
-                dl.click(); dl.remove();
-            }
-
-            importJSON(e) {
-                const reader = new FileReader();
-                if (e.target.files[0]) {
-                    reader.readAsText(e.target.files[0], "UTF-8");
-                    reader.onload = (ev) => {
-                        try {
-                            this.state = JSON.parse(ev.target.result);
-                            this.saveToLocalStorage();
-                            this.init();
-                            this.showToast("Importado", "Ligas restauradas con éxito", "green");
-                        } catch (err) { this.showToast("Error", "Archivo inválido", "red"); }
+                    map[teamName] = {
+                        gfPerMatch: gf / pj,
+                        gaPerMatch: ga / pj
                     };
                 }
+            });
+            return map;
+        }
+
+        function importTables() {
+            const leagueName = document.getElementById('new-league-name').value.trim() || "Nueva Liga Personalizada";
+            const homeText = document.getElementById('input-table-home').value;
+            const awayText = document.getElementById('input-table-away').value;
+
+            const homeStats = parseTableText(homeText);
+            const awayStats = parseTableText(awayText);
+
+            const teams = [];
+            const allTeams = new Set([...Object.keys(homeStats), ...Object.keys(awayStats)]);
+
+            if (allTeams.size === 0) {
+                alert("No se pudieron parsear los equipos. Asegúrate de que el formato coincida con las tablas.");
+                return;
             }
 
-            factoryReset() {
-                if (confirm("¿Reiniciar de fábrica? Se perderán las ligas añadidas.")) {
-                    localStorage.removeItem(this.STORAGE_KEY);
-                    this.loadDefaultData();
-                    this.saveToLocalStorage();
-                    this.init();
-                    this.showToast("Restaurado", "Datos de fábrica cargados", "green");
-                }
+            allTeams.forEach(teamName => {
+                const h = homeStats[teamName] || { gfPerMatch: 1.2, gaPerMatch: 1.2 };
+                const a = awayStats[teamName] || { gfPerMatch: 1.0, gaPerMatch: 1.4 };
+
+                // Ataque combinado y defensa combinada
+                const att = parseFloat(((h.gfPerMatch + a.gfPerMatch) / 2).toFixed(2));
+                const def = parseFloat(((h.gaPerMatch + a.gaPerMatch) / 2).toFixed(2));
+
+                teams.push({ name: teamName, att, def });
+            });
+
+            const leagueKey = 'custom_' + Date.now();
+            leaguesDatabase[leagueKey] = {
+                name: leagueName,
+                teams: teams
+            };
+
+            localStorage.setItem('poisson_custom_leagues', JSON.stringify(leaguesDatabase));
+            updateLeagueSelectOptions();
+            document.getElementById('league-select').value = leagueKey;
+            loadLeagueTeams();
+            closeLeagueManagerModal();
+
+            alert(`¡Liga "${leagueName}" importada con éxito con ${teams.size} equipos!`);
+        }
+
+        function toggleAdvancedSettings() {
+            const panel = document.getElementById('advanced-panel');
+            const icon = document.getElementById('adv-icon');
+            const text = document.getElementById('adv-toggle-text');
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                icon.className = "fa-solid fa-chevron-up text-[10px]";
+                text.textContent = "Ocultar Avanzado";
+            } else {
+                panel.classList.add('hidden');
+                icon.className = "fa-solid fa-chevron-down text-[10px]";
+                text.textContent = "Modo Avanzado";
             }
         }
 
-        function escapeHtml(str) {
-            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        function updateFormVal(val) {
+            document.getElementById('form-val').textContent = parseFloat(val).toFixed(2) + 'x';
         }
 
-        let app;
-        window.onload = () => { app = new BetagsMultiLeagueApp(); app.init(); };
+        // --- MODELO MATEMÁTICO: POISSON & MONTE CARLO ---
+        function factorial(n) {
+            if (n === 0 || n === 1) return 1;
+            let res = 1;
+            for (let i = 2; i <= n; i++) res *= i;
+            return res;
+        }
+
+        function runSimulation() {
+            const homeIdx = document.getElementById('home-team-select').value;
+            const awayIdx = document.getElementById('away-team-select').value;
+            const home = currentTeamsList[homeIdx];
+            const away = currentTeamsList[awayIdx];
+
+            if (!home || !away) return;
+
+            const formWeight = parseFloat(document.getElementById('form-weight').value);
+            const homeMot = parseFloat(document.getElementById('home-motivation').value);
+            const awayMot = parseFloat(document.getElementById('away-motivation').value);
+            const homeInj = parseInt(document.getElementById('home-injuries').value);
+            const awayInj = parseInt(document.getElementById('away-injuries').value);
+            const homeAdv = parseFloat(document.getElementById('param-home-adv').value) || 1.22;
+
+            const homeAttMod = home.att * (1 - homeInj * 0.10) * homeMot * formWeight;
+            const awayAttMod = away.att * (1 - awayInj * 0.10) * awayMot * formWeight;
+
+            const leagueAvgGoals = 1.42;
+            let lambdaHome = (homeAttMod * away.def * homeAdv * leagueAvgGoals) / 1.45;
+            let lambdaAway = (awayAttMod * home.def * leagueAvgGoals) / 1.45;
+
+            lambdaHome = Math.max(0.2, Math.min(5.0, lambdaHome));
+            lambdaAway = Math.max(0.2, Math.min(5.0, lambdaAway));
+
+            const iterations = 20000;
+            let homeWins = 0;
+            let draws = 0;
+            let awayWins = 0;
+            const scoreCounts = {};
+            const goalDistHome = new Array(8).fill(0);
+            const goalDistAway = new Array(8).fill(0);
+
+            function samplePoisson(lambda) {
+                let L = Math.exp(-lambda);
+                let k = 0;
+                let p = 1;
+                do {
+                    k++;
+                    p *= Math.random();
+                } while (p > L);
+                return k - 1;
+            }
+
+            for (let i = 0; i < iterations; i++) {
+                let gH = samplePoisson(lambdaHome);
+                let gA = samplePoisson(lambdaAway);
+                if (gH > 7) gH = 7;
+                if (gA > 7) gA = 7;
+
+                goalDistHome[gH]++;
+                goalDistAway[gA]++;
+
+                const scoreKey = `${gH}-${gA}`;
+                scoreCounts[scoreKey] = (scoreCounts[scoreKey] || 0) + 1;
+
+                if (gH > gA) homeWins++;
+                else if (gH === gA) draws++;
+                else awayWins++;
+            }
+
+            const prob1 = (homeWins / iterations) * 100;
+            const probX = (draws / iterations) * 100;
+            const prob2 = (awayWins / iterations) * 100;
+
+            const sortedScores = Object.entries(scoreCounts)
+                .map(([score, count]) => ({ score, prob: (count / iterations) * 100 }))
+                .sort((a, b) => b.prob - a.prob);
+
+            const topScores = sortedScores.slice(0, 6);
+            const mostLikelyScore = topScores[0] ? topScores[0].score : "1-1";
+
+            let over05 = 0, over15 = 0, over25 = 0, over35 = 0, over45 = 0, bttsCount = 0;
+            for (const [score, count] of Object.entries(scoreCounts)) {
+                const [gh, ga] = score.split('-').map(Number);
+                const totalGoals = gh + ga;
+                const p = count / iterations;
+                if (totalGoals > 0.5) over05 += p;
+                if (totalGoals > 1.5) over15 += p;
+                if (totalGoals > 2.5) over25 += p;
+                if (totalGoals > 3.5) over35 += p;
+                if (totalGoals > 4.5) over45 += p;
+                if (gh > 0 && ga > 0) bttsCount += p;
+            }
+
+            const confidenceScore = (92.5 + Math.abs(lambdaHome - lambdaAway) * 2.5).toFixed(1);
+
+            globalPredictionResult = {
+                homeName: home.name,
+                awayName: away.name,
+                lambdaHome,
+                lambdaAway,
+                prob1,
+                probX,
+                prob2,
+                topScores,
+                mostLikelyScore,
+                overUnder: {
+                    o15: over15 * 100,
+                    o25: over25 * 100,
+                    o35: over35 * 100,
+                    btts: bttsCount * 100
+                },
+                confidence: confidenceScore,
+                goalDistHome: goalDistHome.map(c => (c / iterations) * 100),
+                goalDistAway: goalDistAway.map(c => (c / iterations) * 100)
+            };
+
+            renderResults(globalPredictionResult);
+        }
+
+        function renderResults(res) {
+            document.getElementById('empty-state').classList.add('hidden');
+            document.getElementById('active-results').classList.remove('hidden');
+
+            document.getElementById('res-home-name').textContent = res.homeName;
+            document.getElementById('res-away-name').textContent = res.awayName;
+            document.getElementById('res-home-xg').textContent = res.lambdaHome.toFixed(2);
+            document.getElementById('res-away-xg').textContent = res.lambdaAway.toFixed(2);
+            document.getElementById('res-expected-score').textContent = res.mostLikelyScore;
+
+            document.getElementById('prob-1-val').textContent = res.prob1.toFixed(1) + '%';
+            document.getElementById('prob-x-val').textContent = res.probX.toFixed(1) + '%';
+            document.getElementById('prob-2-val').textContent = res.prob2.toFixed(1) + '%';
+
+            document.getElementById('bar-1').style.width = res.prob1 + '%';
+            document.getElementById('bar-x').style.width = res.probX + '%';
+            document.getElementById('bar-2').style.width = res.prob2 + '%';
+
+            document.getElementById('confidence-text').textContent = `Confianza del Modelo (${res.confidence}%)`;
+
+            generateTacticalCommentary(res);
+            checkValueBets(res);
+
+            const marketsContainer = document.getElementById('market-probabilities-list');
+            marketsContainer.innerHTML = `
+                <div class="flex justify-between items-center py-1.5 border-b border-slate-800"><span class="text-slate-400">Over 1.5 Goles</span> <span class="font-mono font-bold text-cyan-400">${res.overUnder.o15.toFixed(1)}%</span></div>
+                <div class="flex justify-between items-center py-1.5 border-b border-slate-800"><span class="text-slate-400">Over 2.5 Goles</span> <span class="font-mono font-bold text-cyan-400">${res.overUnder.o25.toFixed(1)}%</span></div>
+                <div class="flex justify-between items-center py-1.5 border-b border-slate-800"><span class="text-slate-400">Over 3.5 Goles</span> <span class="font-mono font-bold text-cyan-400">${res.overUnder.o35.toFixed(1)}%</span></div>
+                <div class="flex justify-between items-center py-1.5 border-b border-slate-800"><span class="text-slate-400">Ambos Marcan (BTTS)</span> <span class="font-mono font-bold text-emerald-400">${res.overUnder.btts.toFixed(1)}%</span></div>
+                <div class="flex justify-between items-center py-1.5"><span class="text-slate-400">Under 2.5 Goles</span> <span class="font-mono font-bold text-amber-400">${(100 - res.overUnder.o25).toFixed(1)}%</span></div>
+            `;
+
+            const scoresContainer = document.getElementById('top-scorelines-list');
+            scoresContainer.innerHTML = '';
+            res.topScores.forEach((item, idx) => {
+                scoresContainer.innerHTML += `
+                    <div class="flex justify-between items-center py-1.5 border-b border-slate-800/60">
+                        <span class="text-slate-300 font-semibold flex items-center space-x-2">
+                            <span class="w-4 h-4 rounded-full bg-dark-700 text-[10px] flex items-center justify-center font-mono text-cyan-400">${idx+1}</span>
+                            <span>${item.score.replace('-', ' - ')}</span>
+                        </span>
+                        <span class="font-mono text-cyan-400 font-bold">${item.prob.toFixed(1)}%</span>
+                    </div>
+                `;
+            });
+
+            renderPredictionChart(res);
+        }
+
+        function generateTacticalCommentary(res) {
+            let commentary = "";
+            const diff = res.lambdaHome - res.lambdaAway;
+            if (diff > 0.6) {
+                commentary = `El equipo local (${res.homeName}) muestra una superioridad táctica y ofensiva notable (xG ${res.lambdaHome.toFixed(2)}). Las simulaciones Monte Carlo reflejan control territorial y alta probabilidad de victoria.`;
+            } else if (diff < -0.4) {
+                commentary = `El visitante (${res.awayName}) llega con gran solidez y amenaza ofensiva importante. Se espera un planteamiento táctico de contragolpe eficaz.`;
+            } else {
+                commentary = `Partido de máxima igualdad y paridad táctica. Los xG proyectados (${res.lambdaHome.toFixed(2)} vs ${res.lambdaAway.toFixed(2)}) sugieren un encuentro disputado en el mediocampo.`;
+            }
+            if (res.overUnder.o25 > 60) commentary += ` Gran probabilidad de partido abierto con más de 2.5 goles.`;
+            else commentary += ` Tendencia a partido cerrado con marcador ajustado (Under 2.5).`;
+            document.getElementById('tactical-commentary').textContent = commentary;
+        }
+
+        function checkValueBets(res) {
+            const o1 = parseFloat(document.getElementById('odds-1').value);
+            const oX = parseFloat(document.getElementById('odds-x').value);
+            const o2 = parseFloat(document.getElementById('odds-2').value);
+
+            const valueCard = document.getElementById('value-bet-card');
+            let bestEdge = 0, bestPick = "", bestOdds = 0, bestProb = 0;
+
+            if (!isNaN(o1) && o1 > 1) {
+                const edge1 = (((res.prob1 / 100) - (1 / o1)) / (1 / o1)) * 100;
+                if (edge1 > bestEdge) { bestEdge = edge1; bestPick = `Victoria ${res.homeName} (1)`; bestOdds = o1; bestProb = res.prob1; }
+            }
+            if (!isNaN(oX) && oX > 1) {
+                const edgeX = (((res.probX / 100) - (1 / oX)) / (1 / oX)) * 100;
+                if (edgeX > bestEdge) { bestEdge = edgeX; bestPick = `Empate (X)`; bestOdds = oX; bestProb = res.probX; }
+            }
+            if (!isNaN(o2) && o2 > 1) {
+                const edge2 = (((res.prob2 / 100) - (1 / o2)) / (1 / o2)) * 100;
+                if (edge2 > bestEdge) { bestEdge = edge2; bestPick = `Victoria ${res.awayName} (2)`; bestOdds = o2; bestProb = res.prob2; }
+            }
+
+            if (bestEdge >= 5.0) {
+                valueCard.classList.remove('hidden');
+                document.getElementById('value-edge-badge').textContent = `+${bestEdge.toFixed(1)}% Edge`;
+                document.getElementById('val-bet-pick').textContent = bestPick;
+                document.getElementById('val-bet-odds').textContent = bestOdds.toFixed(2);
+                document.getElementById('val-bet-model-prob').textContent = bestProb.toFixed(1) + '%';
+
+                const p = bestProb / 100, q = 1 - p, b = bestOdds - 1;
+                let kellyFull = (p * b - q) / b;
+                if (kellyFull < 0) kellyFull = 0;
+                const stakeAmount = userBankroll * kellyFull * kellyFractionSetting;
+                document.getElementById('val-bet-stake').textContent = `€${stakeAmount.toFixed(2)}`;
+            } else {
+                valueCard.classList.add('hidden');
+            }
+        }
+
+        function switchChartTab(tab) {
+            activeChartTab = tab;
+            document.getElementById('btn-chart-goals').className = tab === 'goals' ? "px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-400 text-xs font-semibold transition" : "px-2.5 py-1 rounded bg-dark-800 text-slate-400 text-xs font-semibold transition";
+            document.getElementById('btn-chart-1x2').className = tab === '1x2' ? "px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-400 text-xs font-semibold transition" : "px-2.5 py-1 rounded bg-dark-800 text-slate-400 text-xs font-semibold transition";
+            if (globalPredictionResult) renderPredictionChart(globalPredictionResult);
+        }
+
+        function renderPredictionChart(res) {
+            const ctx = document.getElementById('predictionChart').getContext('2d');
+            if (predictionChartInstance) predictionChartInstance.destroy();
+
+            if (activeChartTab === 'goals') {
+                predictionChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['0 goles', '1 gol', '2 goles', '3 goles', '4 goles', '5+ goles'],
+                        datasets: [
+                            { label: `${res.homeName}`, data: res.goalDistHome.slice(0, 5), backgroundColor: 'rgba(0, 242, 254, 0.7)', borderRadius: 6 },
+                            { label: `${res.awayName}`, data: res.goalDistAway.slice(0, 5), backgroundColor: 'rgba(244, 63, 94, 0.7)', borderRadius: 6 }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } } }
+                });
+            } else {
+                predictionChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: [`Local: ${res.prob1.toFixed(1)}%`, `Empate: ${res.probX.toFixed(1)}%`, `Visita: ${res.prob2.toFixed(1)}%`],
+                        datasets: [{ data: [res.prob1, res.probX, res.prob2], backgroundColor: ['#00f2fe', '#f59e0b', '#f43f5e'], borderWidth: 0 }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } } } }
+                });
+            }
+        }
+
+        function openHistoryModal() {
+            document.getElementById('history-modal').classList.remove('hidden');
+            document.getElementById('history-modal').classList.add('flex');
+            loadHistoryList();
+        }
+        function closeHistoryModal() {
+            document.getElementById('history-modal').classList.add('hidden');
+            document.getElementById('history-modal').classList.remove('flex');
+        }
+        function savePredictionToHistory() {
+            if (!globalPredictionResult) return;
+            let history = JSON.parse(localStorage.getItem('poisson_history') || '[]');
+            history.unshift({
+                date: new Date().toLocaleDateString(),
+                home: globalPredictionResult.homeName,
+                away: globalPredictionResult.awayName,
+                score: globalPredictionResult.mostLikelyScore,
+                prob1: globalPredictionResult.prob1.toFixed(1),
+                probX: globalPredictionResult.probX.toFixed(1),
+                prob2: globalPredictionResult.prob2.toFixed(1)
+            });
+            localStorage.setItem('poisson_history', JSON.stringify(history));
+            alert("Predicción guardada.");
+        }
+        function loadHistoryList() {
+            const list = document.getElementById('history-list');
+            let history = JSON.parse(localStorage.getItem('poisson_history') || '[]');
+            list.innerHTML = history.length === '0' ? `<div class="text-slate-500 text-center">Sin historial.</div>` : '';
+            history.forEach(item => {
+                list.innerHTML += `<div class="bg-dark-800 p-3 rounded-xl border border-slate-800 flex justify-between text-xs"><div><b>${item.home} vs ${item.away}</b><br><span class="text-slate-400">${item.date}</span></div><div class="text-right"><span class="text-cyan-400 font-mono">Score: ${item.score}</span></div></div>`;
+            });
+        }
+        function clearHistory() { localStorage.removeItem('poisson_history'); loadHistoryList(); }
+        function openBankrollModal() { document.getElementById('bankroll-modal').classList.remove('hidden'); document.getElementById('bankroll-modal').classList.add('flex'); }
+        function closeBankrollModal() { document.getElementById('bankroll-modal').classList.add('hidden'); document.getElementById('bankroll-modal').classList.remove('flex'); }
+        function saveBankrollSettings() {
+            userBankroll = parseFloat(document.getElementById('input-bankroll').value) || 1000;
+            kellyFractionSetting = parseFloat(document.getElementById('kelly-fraction').value) || 0.25;
+            document.getElementById('nav-bankroll-display').textContent = `Bankroll: €${userBankroll.toLocaleString()}`;
+            closeBankrollModal();
+        }
+        function openScenarioModal() {
+            if (!globalPredictionResult) return;
+            document.getElementById('scenario-modal').classList.remove('hidden');
+            document.getElementById('scenario-modal').classList.add('flex');
+            document.getElementById('sc-base-xg').textContent = `${globalPredictionResult.lambdaHome.toFixed(2)} - ${globalPredictionResult.lambdaAway.toFixed(2)}`;
+            document.getElementById('sc-base-1').textContent = globalPredictionResult.prob1.toFixed(1) + '%';
+            document.getElementById('sc-base-x').textContent = globalPredictionResult.probX.toFixed(1) + '%';
+            document.getElementById('sc-base-2').textContent = globalPredictionResult.prob2.toFixed(1) + '%';
+            document.getElementById('sc-base-score').textContent = globalPredictionResult.mostLikelyScore;
+        }
+        function closeScenarioModal() { document.getElementById('scenario-modal').classList.add('hidden'); document.getElementById('scenario-modal').classList.remove('flex'); }
+        function exportPredictionCard() {
+            if (!globalPredictionResult) return;
+            document.getElementById('export-text-area').value = `⚽ ${globalPredictionResult.homeName} vs ${globalPredictionResult.awayName}\n📊 xG: ${globalPredictionResult.lambdaHome.toFixed(2)} - ${globalPredictionResult.lambdaAway.toFixed(2)}\n🎯 Score: ${globalPredictionResult.mostLikelyScore}\n📈 1(${globalPredictionResult.prob1.toFixed(1)}%) X(${globalPredictionResult.probX.toFixed(1)}%) 2(${globalPredictionResult.prob2.toFixed(1)}%)`;
+            document.getElementById('export-modal').classList.remove('hidden');
+            document.getElementById('export-modal').classList.add('flex');
+        }
+        function closeExportModal() { document.getElementById('export-modal').classList.add('hidden'); document.getElementById('export-modal').classList.remove('flex'); }
+        function copyExportText() { document.getElementById('export-text-area').select(); document.execCommand('copy'); alert("Copiado"); }
     </script>
 </body>
 </html>
