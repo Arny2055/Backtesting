@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>BETAGS EINSTEIN RELATIVISTIC VIP – Over 0.5 & 1.5 HT</title>
+    <title>BETAGS EINSTEIN RELATIVISTIC VIP – Match Analyzer 1X2, O/U & BTTS</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -73,7 +73,7 @@
         </div>
         <div class="flex items-center space-x-2">
             <span id="activeLeagueBadge" class="text-xs font-mono bg-cardBg border border-cardBorder text-neonBlue px-2.5 py-1 rounded-full truncate max-w-[120px] sm:max-w-[180px]">
-                Sin Liga Activa
+                Brasileirao 2026
             </span>
             <button onclick="app.switchTab('config')" class="p-2 rounded-xl bg-cardBg border border-cardBorder text-neonPurple hover:border-neonPurple transition-all">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
@@ -98,132 +98,22 @@
             <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-cardBg via-cardBorder/30 to-cardBg border border-cardBorder p-6 neon-glow-blue">
                 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-neonBlue/10 rounded-full blur-3xl pointer-events-none"></div>
                 <div class="relative z-10">
-                    <span class="text-xs font-mono uppercase tracking-widest text-neonBlue px-3 py-1 rounded-full bg-neonBlue/10 border border-neonBlue/30">Motor Relativista ETGR-0.5 & 1.5</span>
-                    <h2 class="text-2xl sm:text-3xl font-black mt-3 text-white">Análisis Termodinámico HT & Mercados Over</h2>
-                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Campo unificado extendido para cálculo de Over 0.5 HT y Over 1.5 HT con tensores de curvatura temporal.</p>
+                    <span class="text-xs font-mono uppercase tracking-widest text-neonBlue px-3 py-1 rounded-full bg-neonBlue/10 border border-neonBlue/30">Motor Relativista 1X2, O/U & BTTS</span>
+                    <h2 class="text-2xl sm:text-3xl font-black mt-3 text-white">Análisis Termodinámico de Partidos</h2>
+                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Modelo predictivo avanzado basado en tablas de rendimiento Local/Visitante y corrección de tensores de Einstein.</p>
                     <div class="mt-6 flex flex-wrap gap-3">
-                        <button onclick="app.switchTab('leagues')" class="px-5 py-2.5 rounded-xl bg-neonBlue text-black font-bold text-xs uppercase tracking-wider hover:bg-neonBlue/90 transition-all shadow-lg shadow-neonBlue/20">Gestionar Ligas</button>
-                        <button onclick="app.switchTab('analyzer')" class="px-5 py-2.5 rounded-xl bg-cardBg border border-neonGreen text-neonGreen font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/10 transition-all">Analizar Ecuación</button>
+                        <button onclick="app.switchTab('analyzer')" class="px-5 py-2.5 rounded-xl bg-neonGreen text-black font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/90 transition-all shadow-lg shadow-neonGreen/20">Iniciar Analizador</button>
                     </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div class="bg-cardBg border border-cardBorder rounded-xl p-4 flex flex-col justify-between">
-                    <span class="text-xs text-slate-400 uppercase font-mono">Ligas Guardadas</span>
-                    <span id="statLeaguesCount" class="text-2xl font-black text-neonBlue font-mono mt-2">0</span>
-                </div>
-                <div class="bg-cardBg border border-cardBorder rounded-xl p-4 flex flex-col justify-between">
-                    <span class="text-xs text-slate-400 uppercase font-mono">Liga Activa</span>
-                    <span id="statActiveLeagueName" class="text-sm font-bold text-neonGreen truncate mt-2">Ninguna</span>
-                </div>
-                <div class="bg-cardBg border border-cardBorder rounded-xl p-4 flex flex-col justify-between">
-                    <span class="text-xs text-slate-400 uppercase font-mono">Equipos (Local)</span>
-                    <span id="statHomeTeamsCount" class="text-2xl font-black text-neonPurple font-mono mt-2">0</span>
-                </div>
-                <div class="bg-cardBg border border-cardBorder rounded-xl p-4 flex flex-col justify-between">
-                    <span class="text-xs text-slate-400 uppercase font-mono">Equipos (Visitante)</span>
-                    <span id="statAwayTeamsCount" class="text-2xl font-black text-neonPink font-mono mt-2">0</span>
                 </div>
             </div>
         </section>
 
-        <!-- ================= 2. MIS LIGAS ================= -->
-        <section id="tab-leagues" class="tab-content hidden space-y-6">
-            <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <div>
-                        <h2 class="text-lg font-bold text-white uppercase tracking-wider">Gestión de Ligas</h2>
-                        <p class="text-xs text-slate-400">Crea o edita competiciones.</p>
-                    </div>
-                    <button onclick="app.openNewLeagueModal()" class="px-4 py-2.5 rounded-xl bg-neonGreen text-black font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/90 transition-all shadow-lg shadow-neonGreen/20">Nueva Liga</button>
-                </div>
-                <div id="leaguesListContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"></div>
-            </div>
-        </section>
-
-        <!-- ================= 3. TABLA LOCAL (15 MIN) ================= -->
-        <section id="tab-home-table" class="tab-content hidden space-y-6">
-            <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <div>
-                        <h2 class="text-lg font-bold text-white uppercase tracking-wider">Tabla Local - Goles por 15 Min (Home)</h2>
-                        <p class="text-xs text-slate-400">Pega la tabla completa tal cual desde la fuente.</p>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <button onclick="app.clearTableData('home')" class="px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold">Limpiar</button>
-                        <button onclick="app.saveTableData('home')" class="px-4 py-2 rounded-xl bg-neonBlue text-black font-bold text-xs uppercase">Guardar</button>
-                    </div>
-                </div>
-                <div class="space-y-2">
-                    <textarea id="pasteHomeInput" rows="6" placeholder="Pega aquí la tabla completa de Local..." class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-xs font-mono text-slate-200 focus:outline-none focus:border-neonBlue"></textarea>
-                    <button onclick="app.parsePastedIntervalTable('home')" class="w-full py-2.5 rounded-xl bg-cardBorder border border-neonBlue/40 text-neonBlue text-xs font-bold uppercase tracking-wider hover:bg-neonBlue/10 transition-all">Procesar Tabla Local de Intervalos</button>
-                </div>
-                <div class="overflow-x-auto rounded-xl border border-cardBorder">
-                    <table class="w-full text-left border-collapse text-xs font-mono">
-                        <thead>
-                            <tr class="bg-darkBg border-b border-cardBorder text-slate-400">
-                                <th class="p-3">Equipo</th>
-                                <th class="p-3 text-center">GP</th>
-                                <th class="p-3 text-center">0-15</th>
-                                <th class="p-3 text-center">16-30</th>
-                                <th class="p-3 text-center">31-45</th>
-                                <th class="p-3 text-center">1st Half</th>
-                                <th class="p-3 text-center">Avg min GF</th>
-                                <th class="p-3 text-center">Avg min GA</th>
-                                <th class="p-3 text-center">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="homeTableRowsBody" class="divide-y divide-cardBorder/50"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= 4. TABLA VISITANTE (15 MIN) ================= -->
-        <section id="tab-away-table" class="tab-content hidden space-y-6">
-            <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <div>
-                        <h2 class="text-lg font-bold text-white uppercase tracking-wider">Tabla Visitante - Goles por 15 Min (Away)</h2>
-                        <p class="text-xs text-slate-400">Pega la tabla completa de visitantes con sus intervalos.</p>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <button onclick="app.clearTableData('away')" class="px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold">Limpiar</button>
-                        <button onclick="app.saveTableData('away')" class="px-4 py-2 rounded-xl bg-neonPurple text-black font-bold text-xs uppercase">Guardar</button>
-                    </div>
-                </div>
-                <div class="space-y-2">
-                    <textarea id="pasteAwayInput" rows="6" placeholder="Pega aquí la tabla completa de Visitante..." class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-xs font-mono text-slate-200 focus:outline-none focus:border-neonPurple"></textarea>
-                    <button onclick="app.parsePastedIntervalTable('away')" class="w-full py-2.5 rounded-xl bg-cardBorder border border-neonPurple/40 text-neonPurple text-xs font-bold uppercase tracking-wider hover:bg-neonPurple/10 transition-all">Procesar Tabla Visitante de Intervalos</button>
-                </div>
-                <div class="overflow-x-auto rounded-xl border border-cardBorder">
-                    <table class="w-full text-left border-collapse text-xs font-mono">
-                        <thead>
-                            <tr class="bg-darkBg border-b border-cardBorder text-slate-400">
-                                <th class="p-3">Equipo</th>
-                                <th class="p-3 text-center">GP</th>
-                                <th class="p-3 text-center">0-15</th>
-                                <th class="p-3 text-center">16-30</th>
-                                <th class="p-3 text-center">31-45</th>
-                                <th class="p-3 text-center">1st Half</th>
-                                <th class="p-3 text-center">Avg min GF</th>
-                                <th class="p-3 text-center">Avg min GA</th>
-                                <th class="p-3 text-center">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="awayTableRowsBody" class="divide-y divide-cardBorder/50"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= 5. ANALIZADOR RELATIVISTA ETGR-0.5 & 1.5 ================= -->
-        <section id="tab-analyzer" class="tab-content hidden space-y-6">
+        <!-- ================= 2. ANALIZADOR RELATIVISTA PRINCIPAL ================= -->
+        <section id="tab-analyzer" class="tab-content space-y-6">
             <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-5">
                 <div>
-                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Analizador Relativista Over 0.5 & 1.5 HT</h2>
-                    <p class="text-xs text-slate-400">Cálculo termodinámico avanzado para mercados de 1ª mitad con corrección de tensores relativistas.</p>
+                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Predictor de Partidos 1X2, O/U & BTTS</h2>
+                    <p class="text-xs text-slate-400">Selecciona los equipos para calcular las cuotas justas mediante el campo unificado relativista.</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
@@ -241,94 +131,75 @@
                 </div>
 
                 <div id="analysisResultsContainer" class="space-y-6 hidden">
-                    <!-- Tarjetas de Resultados Relativistas Over 0.5 y Over 1.5 HT -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonBlue/40 rounded-xl p-5 neon-glow-blue">
-                            <span class="text-xs font-mono text-neonBlue uppercase block font-bold">Over 0.5 HT (Relativista)</span>
-                            <div class="flex items-baseline space-x-3 mt-2">
-                                <span id="resRelativisticOver05" class="text-3xl font-black text-white font-mono">0.0%</span>
-                                <span id="resRelativisticOdds05" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
-                            </div>
-                            <p class="text-[11px] text-slate-300 mt-2">1 - P(0 goles al descanso)</p>
+                    <!-- Mercado 1X2 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
+                            <span class="text-xs font-mono text-neonGreen uppercase font-bold block">1 (Local Win)</span>
+                            <span id="resProb1" class="text-2xl font-black text-white font-mono mt-1 block">0.0%</span>
+                            <span id="resOdds1" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
                         </div>
-                        <div class="bg-gradient-to-br from-cardBg via-darkBg to-cardBg border border-neonPink/40 rounded-xl p-5 neon-glow-pink">
-                            <span class="text-xs font-mono text-neonPink uppercase block font-bold">Over 1.5 HT (Relativista)</span>
-                            <div class="flex items-baseline space-x-3 mt-2">
-                                <span id="resRelativisticOver15" class="text-3xl font-black text-white font-mono">0.0%</span>
-                                <span id="resRelativisticOdds15" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
-                            </div>
-                            <p class="text-[11px] text-slate-300 mt-2">1 - [P(0) + P(1) gol al descanso]</p>
+                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
+                            <span class="text-xs font-mono text-neonBlue uppercase font-bold block">X (Empate)</span>
+                            <span id="resProbX" class="text-2xl font-black text-white font-mono mt-1 block">0.0%</span>
+                            <span id="resOddsX" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
                         </div>
-                    </div>
-
-                    <!-- Métricas de Tensores -->
-                    <div class="grid grid-cols-2 sm:grid-cols-2 gap-4">
-                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4">
-                            <span class="text-[11px] font-mono text-neonGreen uppercase block font-bold">Tensor Agresividad ($\kappa$)</span>
-                            <span id="resKappaTensor" class="text-xl font-black text-white font-mono mt-1 block">0.00</span>
-                        </div>
-                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4">
-                            <span class="text-[11px] font-mono text-neonPurple uppercase block font-bold">Dilatación Temporal ($\tau$)</span>
-                            <span id="resTauTempo" class="text-xl font-black text-white font-mono mt-1 block">0.00</span>
+                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
+                            <span class="text-xs font-mono text-neonPink uppercase font-bold block">2 (Visitante Win)</span>
+                            <span id="resProb2" class="text-2xl font-black text-white font-mono mt-1 block">0.0%</span>
+                            <span id="resOdds2" class="text-xs text-slate-400 font-mono">Cuota: 0.00</span>
                         </div>
                     </div>
 
-                    <!-- Marcadores Exactos Más Probables HT -->
+                    <!-- Mercados Over / Under y BTTS -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
+                            <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block">Over 1.5 Goles</span>
+                            <span id="resOver15" class="text-xl font-black text-neonGreen font-mono mt-1 block">0.0%</span>
+                            <span id="resOddsOver15" class="text-[11px] text-slate-400 font-mono">Cuota: 0.00</span>
+                        </div>
+                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
+                            <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block">Over 2.5 Goles</span>
+                            <span id="resOver25" class="text-xl font-black text-neonBlue font-mono mt-1 block">0.0%</span>
+                            <span id="resOddsOver25" class="text-[11px] text-slate-400 font-mono">Cuota: 0.00</span>
+                        </div>
+                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
+                            <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block">Over 3.5 Goles</span>
+                            <span id="resOver35" class="text-xl font-black text-neonPurple font-mono mt-1 block">0.0%</span>
+                            <span id="resOddsOver35" class="text-[11px] text-slate-400 font-mono">Cuota: 0.00</span>
+                        </div>
+                        <div class="bg-darkBg border border-cardBorder rounded-xl p-4 text-center">
+                            <span class="text-[11px] font-mono text-slate-400 uppercase font-bold block">BTTS (Sí / No)</span>
+                            <span id="resBtts" class="text-xl font-black text-amber-400 font-mono mt-1 block">0.0%</span>
+                            <span id="resOddsBtts" class="text-[11px] text-slate-400 font-mono">Cuota: 0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Marcadores Exactos Más Probables -->
                     <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
-                        <span class="text-xs font-mono uppercase text-neonPurple block font-bold">Top Marcadores Exactos al Descanso (Corregidos por Relatividad)</span>
+                        <span class="text-xs font-mono uppercase text-neonPurple block font-bold">Top Marcadores Exactos del Partido (Modelo Relativista)</span>
                         <div id="correctScoresContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
                     </div>
 
                     <!-- Recomendación Táctica -->
                     <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-2">
                         <span class="text-xs font-mono text-amber-400 uppercase font-bold block">Dictamen del Campo Unificado de Einstein</span>
-                        <p id="resRelativisticRecommendation" class="text-xs text-slate-300">Calculando recomendación táctica...</p>
-                    </div>
-
-                    <!-- Interval Breakdown Table -->
-                    <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
-                        <span class="text-xs font-mono uppercase text-slate-400 block font-bold">Desglose de Goles por Franja de 15 Minutos (1er Tiempo)</span>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-xs font-mono text-center border-collapse">
-                                <thead>
-                                    <tr class="border-b border-cardBorder text-slate-500">
-                                        <th class="p-2 text-left">Franja</th>
-                                        <th class="p-2">Local GF (70%) / GA (30%)</th>
-                                        <th class="p-2">Visitante GF (70%) / GA (30%)</th>
-                                        <th class="p-2">xG Franja</th>
-                                        <th class="p-2">Prob. Gol Franja</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="intervalsTableBody" class="divide-y divide-cardBorder/50"></tbody>
-                            </table>
-                        </div>
+                        <p id="resRecommendation" class="text-xs text-slate-300">Calculando recomendación táctica...</p>
                     </div>
                 </div>
 
                 <div id="analysisEmptyState" class="text-center py-12 text-slate-500 font-mono text-xs">
-                    Selecciona ambos equipos para ejecutar el campo unificado relativista.
+                    Selecciona ambos equipos para ejecutar el análisis completo 1X2, O/U y BTTS.
                 </div>
             </div>
         </section>
 
-        <!-- ================= 6. CONFIGURACIÓN ================= -->
+        <!-- ================= 3. CONFIGURACIÓN ================= -->
         <section id="tab-config" class="tab-content hidden space-y-6">
             <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-5">
-                <h2 class="text-lg font-bold text-white uppercase tracking-wider">Configuración & Respaldos</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
-                        <span class="text-xs font-mono uppercase text-neonBlue font-bold block">Exportar / Importar JSON</span>
-                        <div class="flex flex-wrap gap-2 pt-2">
-                            <button onclick="app.exportJSON()" class="px-4 py-2 rounded-xl bg-neonBlue/10 border border-neonBlue text-neonBlue text-xs font-bold uppercase">Exportar</button>
-                            <label class="px-4 py-2 rounded-xl bg-neonPurple/10 border border-neonPurple text-neonPurple text-xs font-bold uppercase cursor-pointer">
-                                Importar <input type="file" accept=".json" onchange="app.importJSON(event)" class="hidden">
-                            </label>
-                        </div>
-                    </div>
-                    <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
-                        <span class="text-xs font-mono uppercase text-red-400 font-bold block">Zona de Peligro</span>
-                        <button onclick="app.factoryReset()" class="px-4 py-2 rounded-xl bg-red-500/10 border border-red-500 text-red-400 text-xs font-bold uppercase">Restaurar Fábrica</button>
-                    </div>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider">Configuración & Datos</h2>
+                <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
+                    <span class="text-xs font-mono uppercase text-neonBlue font-bold block">Base de Datos Brasileirao 2026</span>
+                    <p class="text-xs text-slate-400">Tablas de Local y Visitante cargadas e indexadas correctamente en el motor de cálculo.</p>
                 </div>
             </div>
         </section>
@@ -340,88 +211,77 @@
         <button onclick="app.switchTab('dashboard')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="dashboard">
             <span class="text-[9px] font-mono uppercase tracking-wider">Dash</span>
         </button>
-        <button onclick="app.switchTab('leagues')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="leagues">
-            <span class="text-[9px] font-mono uppercase tracking-wider">Ligas</span>
-        </button>
-        <button onclick="app.switchTab('home-table')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="home-table">
-            <span class="text-[9px] font-mono uppercase tracking-wider">Local (15m)</span>
-        </button>
-        <button onclick="app.switchTab('away-table')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="away-table">
-            <span class="text-[9px] font-mono uppercase tracking-wider">Visita (15m)</span>
-        </button>
         <button onclick="app.switchTab('analyzer')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="analyzer">
-            <span class="text-[9px] font-mono uppercase tracking-wider">ETGR-0.5/1.5</span>
+            <span class="text-[9px] font-mono uppercase tracking-wider">Analizador</span>
         </button>
         <button onclick="app.switchTab('config')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="config">
             <span class="text-[9px] font-mono uppercase tracking-wider">Config</span>
         </button>
     </nav>
 
-    <!-- MODAL -->
-    <div id="leagueModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-cardBg border border-cardBorder rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
-            <h3 id="leagueModalTitle" class="text-base font-bold text-white uppercase tracking-wider">Nueva Liga</h3>
-            <input type="text" id="modalLeagueNameInput" placeholder="Ej. Brasileirao 2026" class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-neonGreen font-mono">
-            <div class="flex justify-end space-x-3 pt-2">
-                <button onclick="app.closeLeagueModal()" class="px-4 py-2 rounded-xl bg-darkBg border border-cardBorder text-slate-300 text-xs font-bold uppercase">Cancelar</button>
-                <button onclick="app.submitLeagueModal()" class="px-4 py-2 rounded-xl bg-neonGreen text-black text-xs font-bold uppercase">Guardar</button>
-            </div>
-        </div>
-    </div>
-
     <!-- SCRIPT CORE -->
     <script>
-        class BetagsRelativisticApp {
+        class BetagsEinsteinFullApp {
             constructor() {
-                this.STORAGE_KEY = 'betags_relativistic_vip_data';
-                this.STORAGE_VERSION = 1;
-                this.state = { version: this.STORAGE_VERSION, activeLeagueId: null, leagues: {} };
+                this.STORAGE_KEY = 'betags_einstein_full_data';
+                this.state = { activeLeagueId: 'brasileirao_2026', leagues: {} };
                 this.currentTab = 'dashboard';
-                this.editingLeagueId = null;
             }
 
             init() {
-                this.loadFromLocalStorage();
-                this.renderLeagues();
-                this.updateDashboardStats();
+                this.loadDefaultData();
+                this.populateTeamSelects();
                 this.switchTab('dashboard');
             }
 
-            loadFromLocalStorage() {
-                try {
-                    const raw = localStorage.getItem(this.STORAGE_KEY);
-                    if (!raw) { this.createDefaultLeague(); return; }
-                    this.state = JSON.parse(raw);
-                    if (!this.state.activeLeagueId && Object.keys(this.state.leagues).length > 0) {
-                        this.state.activeLeagueId = Object.keys(this.state.leagues)[0];
-                    }
-                } catch (e) { this.createDefaultLeague(); }
-            }
-
-            saveToLocalStorage() {
-                try {
-                    this.state.version = this.STORAGE_VERSION;
-                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.state));
-                } catch (e) { this.showToast("Error", "No se pudo guardar", "red"); }
-            }
-
-            createDefaultLeague() {
-                const id = 'league_' + Date.now();
-                this.state.leagues[id] = {
-                    id: id,
-                    name: 'Brasileirao 2026 (Ejemplo)',
-                    updatedAt: new Date().toISOString(),
+            loadDefaultData() {
+                this.state.leagues['brasileirao_2026'] = {
+                    name: "Brasileirao 2026",
                     homeTable: [
-                        { name: "Athletico PR", gp: 16, i0_15: "6-2", i16_30: "2-5", i31_45: "4-2", i46_60: "5-1", i61_75: "2-2", i76_90: "8-3", h1: "12-9", h2: "15-6", avgGF: 50, avgGA: 43 },
-                        { name: "Flamengo", gp: 16, i0_15: "7-1", i16_30: "2-0", i31_45: "3-2", i46_60: "6-3", i61_75: "6-1", i76_90: "8-5", h1: "12-3", h2: "20-9", avgGF: 52, avgGA: 63 }
+                        { name: "Flamengo", gp: 17, gf: 35, ga: 13 },
+                        { name: "Palmeiras", gp: 16, gf: 30, ga: 10 },
+                        { name: "Fluminense", gp: 17, gf: 31, ga: 17 },
+                        { name: "Atletico Mineiro", gp: 17, gf: 27, ga: 18 },
+                        { name: "Sao Paulo", gp: 16, gf: 25, ga: 13 },
+                        { name: "Athletico PR", gp: 17, gf: 28, ga: 18 },
+                        { name: "Vitoria", gp: 16, gf: 23, ga: 13 },
+                        { name: "Cruzeiro", gp: 16, gf: 27, ga: 16 },
+                        { name: "Bragantino", gp: 17, gf: 29, ga: 18 },
+                        { name: "Bahia", gp: 17, gf: 26, ga: 19 },
+                        { name: "Gremio", gp: 17, gf: 27, ga: 21 },
+                        { name: "Mirassol", gp: 17, gf: 24, ga: 22 },
+                        { name: "Vasco da Gama", gp: 17, gf: 25, ga: 24 },
+                        { name: "Santos", gp: 17, gf: 23, ga: 21 },
+                        { name: "Botafogo", gp: 16, gf: 26, ga: 22 },
+                        { name: "Internacional", gp: 17, gf: 22, ga: 17 },
+                        { name: "Coritiba", gp: 17, gf: 22, ga: 21 },
+                        { name: "Corinthians", gp: 17, gf: 18, ga: 17 },
+                        { name: "Remo", gp: 17, gf: 22, ga: 22 },
+                        { name: "Chapecoense", gp: 16, gf: 22, ga: 36 }
                     ],
                     awayTable: [
-                        { name: "Athletico PR", gp: 17, i0_15: "7-5", i16_30: "4-3", i31_45: "3-6", i46_60: "3-1", i61_75: "2-2", i76_90: "4-8", h1: "14-14", h2: "9-11", avgGF: 40, avgGA: 50 },
-                        { name: "Flamengo", gp: 17, i0_15: "6-2", i16_30: "3-3", i31_45: "8-1", i46_60: "7-3", i61_75: "6-2", i76_90: "6-5", h1: "17-6", h2: "19-10", avgGF: 48, avgGA: 52 }
+                        { name: "Flamengo", gp: 17, gf: 36, ga: 16 },
+                        { name: "Palmeiras", gp: 17, gf: 26, ga: 12 },
+                        { name: "Cruzeiro", gp: 17, gf: 25, ga: 30 },
+                        { name: "Bahia", gp: 16, gf: 22, ga: 23 },
+                        { name: "Santos", gp: 17, gf: 27, ga: 28 },
+                        { name: "Athletico PR", gp: 17, gf: 23, ga: 25 },
+                        { name: "Coritiba", gp: 17, gf: 18, ga: 30 },
+                        { name: "Bragantino", gp: 17, gf: 15, ga: 21 },
+                        { name: "Fluminense", gp: 16, gf: 21, ga: 25 },
+                        { name: "Atletico Mineiro", gp: 16, gf: 17, ga: 21 },
+                        { name: "Internacional", gp: 17, gf: 16, ga: 25 },
+                        { name: "Botafogo", gp: 17, gf: 19, ga: 31 },
+                        { name: "Corinthians", gp: 16, gf: 18, ga: 25 },
+                        { name: "Vasco da Gama", gp: 16, gf: 18, ga: 26 },
+                        { name: "Mirassol", gp: 17, gf: 15, ga: 26 },
+                        { name: "Sao Paulo", gp: 17, gf: 14, ga: 26 },
+                        { name: "Remo", gp: 16, gf: 14, ga: 29 },
+                        { name: "Gremio", gp: 17, gf: 11, ga: 26 },
+                        { name: "Chapecoense", gp: 17, gf: 11, ga: 32 },
+                        { name: "Vitoria", gp: 17, gf: 12, ga: 35 }
                     ]
                 };
-                this.state.activeLeagueId = id;
-                this.saveToLocalStorage();
             }
 
             switchTab(tabId) {
@@ -435,206 +295,12 @@
                     else btn.classList.remove('text-neonBlue');
                 });
 
-                if (tabId === 'home-table') this.renderTableViewer('home');
-                if (tabId === 'away-table') this.renderTableViewer('away');
                 if (tabId === 'analyzer') this.populateTeamSelects();
-                if (tabId === 'dashboard') this.updateDashboardStats();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
-            showToast(title, message, type = 'green') {
-                const toast = document.getElementById('toast');
-                document.getElementById('toastTitle').innerText = title;
-                document.getElementById('toastMessage').innerText = message;
-                toast.className = `fixed top-20 right-4 z-50 transform transition-transform duration-300 max-w-sm px-4 py-3 rounded-xl border bg-cardBg shadow-2xl flex items-center space-x-3 ${type === 'red' ? 'border-red-500/50 text-red-400' : 'border-neonGreen/50 text-neonGreen'}`;
-                toast.classList.remove('translate-x-full');
-                setTimeout(() => toast.classList.add('translate-x-full'), 3500);
-            }
-
-            getActiveLeague() {
-                if (!this.state.activeLeagueId || !this.state.leagues[this.state.activeLeagueId]) {
-                    const keys = Object.keys(this.state.leagues);
-                    if (keys.length > 0) this.state.activeLeagueId = keys[0];
-                    else this.createDefaultLeague();
-                }
-                return this.state.leagues[this.state.activeLeagueId];
-            }
-
-            renderLeagues() {
-                const container = document.getElementById('leaguesListContainer');
-                container.innerHTML = '';
-                for (let id in this.state.leagues) {
-                    const l = this.state.leagues[id];
-                    const isActive = id === this.state.activeLeagueId;
-                    const card = document.createElement('div');
-                    card.className = `p-4 rounded-xl border bg-darkBg flex flex-col justify-between space-y-3 ${isActive ? 'neon-border-green' : 'border-cardBorder'}`;
-                    card.innerHTML = `
-                        <div>
-                            <h3 class="text-sm font-bold text-white">${escapeHtml(l.name)}</h3>
-                            <p class="text-[11px] text-slate-400 mt-1">Local: ${l.homeTable.length} | Visitante: ${l.awayTable.length}</p>
-                        </div>
-                        <div class="flex items-center gap-2 pt-2 border-t border-cardBorder">
-                            ${!isActive ? `<button onclick="app.setActiveLeague('${id}')" class="px-3 py-1.5 rounded-lg bg-neonBlue/10 border border-neonBlue text-neonBlue text-xs font-bold">Seleccionar</button>` : ''}
-                            <button onclick="app.deleteLeague('${id}')" class="px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold">Eliminar</button>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                }
-                this.updateDashboardStats();
-            }
-
-            setActiveLeague(id) {
-                this.state.activeLeagueId = id;
-                this.saveToLocalStorage();
-                this.renderLeagues();
-                this.showToast("Cambiado", "Liga activa actualizada", "green");
-            }
-
-            openNewLeagueModal() {
-                document.getElementById('leagueModal').classList.remove('hidden');
-                document.getElementById('leagueModal').classList.add('flex');
-            }
-
-            closeLeagueModal() {
-                document.getElementById('leagueModal').classList.remove('flex');
-                document.getElementById('leagueModal').classList.add('hidden');
-            }
-
-            submitLeagueModal() {
-                const name = document.getElementById('modalLeagueNameInput').value.trim();
-                if (!name) return;
-                const id = 'league_' + Date.now();
-                this.state.leagues[id] = { id, name, homeTable: [], awayTable: [] };
-                this.state.activeLeagueId = id;
-                this.saveToLocalStorage();
-                this.closeLeagueModal();
-                this.renderLeagues();
-            }
-
-            deleteLeague(id) {
-                if (Object.keys(this.state.leagues).length <= 1) return;
-                delete this.state.leagues[id];
-                this.state.activeLeagueId = Object.keys(this.state.leagues)[0];
-                this.saveToLocalStorage();
-                this.renderLeagues();
-            }
-
-            updateDashboardStats() {
-                const l = this.getActiveLeague();
-                document.getElementById('statLeaguesCount').innerText = Object.keys(this.state.leagues).length;
-                document.getElementById('statActiveLeagueName').innerText = l ? l.name : 'Ninguna';
-                document.getElementById('statHomeTeamsCount').innerText = l ? l.homeTable.length : 0;
-                document.getElementById('statAwayTeamsCount').innerText = l ? l.awayTable.length : 0;
-                document.getElementById('activeLeagueBadge').innerText = l ? l.name : 'Sin Liga';
-            }
-
-            parsePastedIntervalTable(type) {
-                const inputId = type === 'home' ? 'pasteHomeInput' : 'pasteAwayInput';
-                const text = document.getElementById(inputId).value.trim();
-                if (!text) return;
-
-                const lines = text.split('\n');
-                const rows = [];
-
-                for (let line of lines) {
-                    const cols = line.split(/\t+|\s{2,}/).map(c => c.trim()).filter(c => c.length > 0);
-                    if (cols.length >= 10) {
-                        if (cols[0].toLowerCase().includes('home') || cols[0].toLowerCase().includes('away') || cols[0].toLowerCase().includes('goals')) continue;
-
-                        let numIdx = cols.findIndex(c => /^\d+$/.test(c));
-                        if (numIdx < 1) continue;
-
-                        let teamName = cols.slice(0, numIdx).join(' ');
-                        let data = cols.slice(numIdx);
-
-                        if (data.length >= 9) {
-                            let avgGfStr = data[9] ? data[9].replace(/[^0-9]/g, '') : "50";
-                            let avgGaStr = data[10] ? data[10].replace(/[^0-9]/g, '') : "50";
-
-                            rows.push({
-                                name: teamName,
-                                gp: parseInt(data[0]) || 0,
-                                i0_15: data[1] || "0-0",
-                                i16_30: data[2] || "0-0",
-                                i31_45: data[3] || "0-0",
-                                i46_60: data[4] || "0-0",
-                                i61_75: data[5] || "0-0",
-                                i76_90: data[6] || "0-0",
-                                h1: data[7] || "0-0",
-                                h2: data[8] || "0-0",
-                                avgGF: parseInt(avgGfStr) || 50,
-                                avgGA: parseInt(avgGaStr) || 50
-                            });
-                        }
-                    }
-                }
-
-                if (rows.length === 0) {
-                    this.showToast("Error", "No se reconocieron equipos. Verifica el formato.", "red");
-                    return;
-                }
-
-                const league = this.getActiveLeague();
-                if (type === 'home') league.homeTable = rows;
-                else league.awayTable = rows;
-                this.saveToLocalStorage();
-                this.renderTableViewer(type);
-                document.getElementById(inputId).value = '';
-                this.showToast("Éxito", `${rows.length} equipos cargados correctamente`, "green");
-            }
-
-            renderTableViewer(type) {
-                const league = this.getActiveLeague();
-                const tbody = document.getElementById(type === 'home' ? 'homeTableRowsBody' : 'awayTableRowsBody');
-                tbody.innerHTML = '';
-                const data = type === 'home' ? league.homeTable : league.awayTable;
-
-                if (data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="9" class="p-6 text-center text-slate-500">Sin datos cargados.</td></tr>`;
-                    return;
-                }
-
-                data.forEach((row, index) => {
-                    const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-cardBorder/30 transition-all';
-                    tr.innerHTML = `
-                        <td class="p-3 font-bold text-white">${escapeHtml(row.name)}</td>
-                        <td class="p-3 text-center">${row.gp}</td>
-                        <td class="p-3 text-center text-neonGreen">${row.i0_15}</td>
-                        <td class="p-3 text-center text-neonBlue">${row.i16_30}</td>
-                        <td class="p-3 text-center text-neonPurple">${row.i31_45}</td>
-                        <td class="p-3 text-center font-bold text-white">${row.h1}</td>
-                        <td class="p-3 text-center text-amber-400">${row.avgGF} min</td>
-                        <td class="p-3 text-center text-red-400">${row.avgGA} min</td>
-                        <td class="p-3 text-center"><button onclick="app.removeIntervalRow('${type}', ${index})" class="text-red-400">X</button></td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }
-
-            removeIntervalRow(type, index) {
-                const league = this.getActiveLeague();
-                const data = type === 'home' ? league.homeTable : league.awayTable;
-                data.splice(index, 1);
-                this.saveToLocalStorage();
-                this.renderTableViewer(type);
-            }
-
-            clearTableData(type) {
-                const league = this.getActiveLeague();
-                if (type === 'home') league.homeTable = [];
-                else league.awayTable = [];
-                this.saveToLocalStorage();
-                this.renderTableViewer(type);
-            }
-
-            saveTableData(type) {
-                this.saveToLocalStorage();
-                this.showToast("Guardado", `Tabla ${type} guardada`, "green");
-            }
-
             populateTeamSelects() {
-                const league = this.getActiveLeague();
+                const league = this.state.leagues['brasileirao_2026'];
                 const homeSelect = document.getElementById('selectHomeTeam');
                 const awaySelect = document.getElementById('selectAwayTeam');
 
@@ -661,7 +327,7 @@
                 if (curH && curA) this.runAnalysis();
             }
 
-            // --- MOTOR RELATIVISTA ETGR-0.5 & 1.5 DE EINSTEIN ---
+            // --- MOTOR DE CÁLCULO 1X2, O/U & BTTS ---
             runAnalysis() {
                 const homeName = document.getElementById('selectHomeTeam').value;
                 const awayName = document.getElementById('selectAwayTeam').value;
@@ -674,181 +340,124 @@
                     return;
                 }
 
-                const league = this.getActiveLeague();
+                const league = this.state.leagues['brasileirao_2026'];
                 const hStats = league.homeTable.find(t => t.name === homeName);
                 const aStats = league.awayTable.find(t => t.name === awayName);
 
                 if (!hStats || !aStats) return;
 
-                const parsePair = (str) => {
-                    if (!str || !str.includes('-')) return [0, 0];
-                    const parts = str.split('-').map(n => parseInt(n) || 0);
-                    return [parts[0], parts[1]];
-                };
+                // Promedios ofensivos y defensivos de la liga
+                const avgHomeGF = league.homeTable.reduce((acc, t) => acc + (t.gf / t.gp), 0) / league.homeTable.length;
+                const avgAwayGF = league.awayTable.reduce((acc, t) => acc + (t.gf / t.gp), 0) / league.awayTable.length;
 
-                const intervalsKeys = ['0-15', '16-30', '31-45'];
-                let combinedIntervals = [];
-                let lambdaHomeHT = 0;
-                let lambdaAwayHT = 0;
-                let xgEarlySum = 0;
-                let xgLateSum = 0;
-                let totalHtXg = 0;
+                // Fuerzas de ataque y defensa
+                const homeAttack = (hStats.gf / hStats.gp) / avgHomeGF;
+                const awayDefense = (aStats.ga / aStats.gp) / avgHomeGF;
+                const awayAttack = (aStats.gf / aStats.gp) / avgAwayGF;
+                const homeDefense = (hStats.ga / hStats.gp) / avgAwayGF;
 
-                intervalsKeys.forEach((key, idx) => {
-                    const propKey = idx === 0 ? 'i0_15' : idx === 1 ? 'i16_30' : 'i31_45';
-                    
-                    const [hGF, hGA] = parsePair(hStats[propKey]);
-                    const [aGF, aGA] = parsePair(aStats[propKey]);
+                // Expectativas de gol (xG) ajustadas por Einstein (fuerza cruzada)
+                const lambdaHome = homeAttack * awayDefense * avgHomeGF;
+                const lambdaAway = awayAttack * homeDefense * avgAwayGF;
 
-                    const hWeighted = (0.70 * (hGF / (hStats.gp || 1))) + (0.30 * (hGA / (hStats.gp || 1)));
-                    const aWeighted = (0.70 * (aGF / (aStats.gp || 1))) + (0.30 * (aGA / (aStats.gp || 1)));
-
-                    lambdaHomeHT += hWeighted;
-                    lambdaAwayHT += aWeighted;
-
-                    const xgFranja = hWeighted + aWeighted;
-                    totalHtXg += xgFranja;
-
-                    if (key === '0-15' || key === '16-30') xgEarlySum += xgFranja;
-                    if (key === '31-45') xgLateSum += xgFranja;
-
-                    const probFranja = (1 - Math.exp(-xgFranja)) * 100;
-
-                    combinedIntervals.push({
-                        interval: key,
-                        hVal: `${hGF}GF / ${hGA}GA`,
-                        aVal: `${aGF}GA / ${aGA}GF`,
-                        xg: xgFranja.toFixed(2),
-                        prob: probFranja.toFixed(1)
-                    });
-                });
-
-                // --- TENSORES DE EINSTEIN ---
-                const kappaEarly = xgEarlySum / (xgLateSum + 0.05); 
-                const tauTempo = Math.max(0.5, ((hStats.avgGF + aStats.avgGF) / 2) / 90); 
-
-                // Lambda Efectiva Relativista total HT
-                const lambdaEffective = (lambdaHomeHT + lambdaAwayHT) * (1 + (kappaEarly / (tauTempo * 10)));
-                
-                // 1. Over 0.5 HT Relativista: 1 - P(0)
-                const p0 = Math.exp(-lambdaEffective);
-                const relativisticOver05 = (1 - p0) * 100;
-                const relativisticOdds05 = relativisticOver05 > 0 ? (100 / relativisticOver05) : 99;
-
-                // 2. Over 1.5 HT Relativista: 1 - [P(0) + P(1)]
-                const p1 = lambdaEffective * Math.exp(-lambdaEffective);
-                const relativisticOver15 = (1 - (p0 + p1)) * 100;
-                const relativisticOdds15 = relativisticOver15 > 0 ? (100 / relativisticOver15) : 99;
-
-                // Poisson auxiliar para marcadores exactos
-                const poissonProb = (k, lambda) => {
+                // Función auxiliar de Poisson P(k; lambda)
+                const poisson = (k, lambda) => {
                     let fact = 1;
                     for (let i = 2; i <= k; i++) fact *= i;
                     return (Math.pow(lambda, k) * Math.exp(-lambda)) / fact;
                 };
 
+                let p1 = 0, pX = 0, p2 = 0;
+                let pUnder15 = 0, pUnder25 = 0, pUnder35 = 0;
+                let pBttsYes = 0;
                 let scoreProbs = [];
-                for (let h = 0; h <= 3; h++) {
-                    for (let a = 0; a <= 3; a++) {
-                        const p = poissonProb(h, lambdaHomeHT * Math.sqrt(kappaEarly)) * poissonProb(a, lambdaAwayHT * Math.sqrt(kappaEarly)) * 100;
-                        scoreProbs.push({ score: `${h} - ${a}`, prob: p });
+
+                for (let h = 0; h <= 6; h++) {
+                    for (let a = 0; a <= 6; a++) {
+                        const prob = poisson(h, lambdaHome) * poisson(a, lambdaAway);
+                        scoreProbs.push({ score: `${h}-${a}`, prob: prob });
+
+                        if (h > a) p1 += prob;
+                        else if (h === a) pX += prob;
+                        else p2 += prob;
+
+                        const totalGoals = h + a;
+                        if (totalGoals <= 1.5) pUnder15 += prob;
+                        if (totalGoals <= 2.5) pUnder25 += prob;
+                        if (totalGoals <= 3.5) pUnder35 += prob;
+
+                        if (h > 0 && a > 0) pBttsYes += prob;
                     }
                 }
+
+                const prob1 = p1 * 100;
+                const probX = pX * 100;
+                const prob2 = p2 * 100;
+
+                const over15 = (1 - pUnder15) * 100;
+                const over25 = (1 - pUnder25) * 100;
+                const over35 = (1 - pUnder35) * 100;
+                const bttsYes = pBttsYes * 100;
+                const bttsNo = 100 - bttsYes;
+
                 scoreProbs.sort((a, b) => b.prob - a.prob);
 
+                // Renderizar Top Marcadores Exactos
                 const scoresContainer = document.getElementById('correctScoresContainer');
                 scoresContainer.innerHTML = '';
                 scoreProbs.slice(0, 4).forEach(item => {
                     const card = document.createElement('div');
                     card.className = 'bg-darkBg border border-cardBorder rounded-lg p-2.5 text-center';
                     card.innerHTML = `
-                        <span class="text-[10px] text-slate-400 font-mono block">Resultado HT</span>
+                        <span class="text-[10px] text-slate-400 font-mono block">Resultado</span>
                         <span class="text-base font-black text-white font-mono my-0.5 block">${item.score}</span>
-                        <span class="text-[11px] font-bold text-neonGreen font-mono">${item.prob.toFixed(1)}%</span>
+                        <span class="text-[11px] font-bold text-neonGreen font-mono">${(item.prob * 100).toFixed(1)}%</span>
                     `;
                     scoresContainer.appendChild(card);
                 });
 
-                let recommendation = `Tensor $\\kappa$: ${kappaEarly.toFixed(2)} | Dilatación $\\tau$: ${tauTempo.toFixed(2)}. `;
-                if (relativisticOver15 >= 40) {
-                    recommendation += `¡Alta densidad energética! El mercado Over 1.5 HT muestra una probabilidad del ${relativisticOver15.toFixed(1)}%, excelente valor para búsqueda de goles múltiples en la primera mitad.`;
-                } else if (relativisticOver05 >= 70) {
-                    recommendation += `Escenario propicio para Over 0.5 HT (${relativisticOver05.toFixed(1)}%), pero precaución con el segundo gol antes del descanso.`;
+                // Recomendación
+                let recommendation = `xG Local: ${lambdaHome.toFixed(2)} | xG Visitante: ${lambdaAway.toFixed(2)}. `;
+                if (prob1 > 55) {
+                    recommendation += `El equipo local (${homeName}) muestra superioridad gravitacional clara en su estadio. Alta probabilidad de victoria local.`;
+                } else if (prob2 > 45) {
+                    recommendation += `El visitante (${awayName}) posee un rendimiento visitante muy sólido. Oportunidad de valor en cuotas de no favoritos.`;
                 } else {
-                    recommendation += `Curvatura de baja energía. Partido con tendencia al estudio y pocos goles tempranos.`;
+                    recommendation += `Encuentro de alta entropía y paridad táctica. Mercado de Over 2.5 o BTTS recomendado según evolución en directo.`;
                 }
 
-                // Renderizar en UI
-                document.getElementById('resKappaTensor').innerText = kappaEarly.toFixed(2);
-                document.getElementById('resTauTempo').innerText = tauTempo.toFixed(2);
-                
-                document.getElementById('resRelativisticOver05').innerText = `${relativisticOver05.toFixed(1)}%`;
-                document.getElementById('resRelativisticOdds05').innerText = `Cuota: ${relativisticOdds05.toFixed(2)}`;
+                // Renderizar UI 1X2
+                document.getElementById('resProb1').innerText = `${prob1.toFixed(1)}%`;
+                document.getElementById('resOdds1').innerText = `Cuota: ${(100 / prob1).toFixed(2)}`;
 
-                document.getElementById('resRelativisticOver15').innerText = `${relativisticOver15.toFixed(1)}%`;
-                document.getElementById('resRelativisticOdds15').innerText = `Cuota: ${relativisticOdds15.toFixed(2)}`;
+                document.getElementById('resProbX').innerText = `${probX.toFixed(1)}%`;
+                document.getElementById('resOddsX').innerText = `Cuota: ${(100 / probX).toFixed(2)}`;
 
-                document.getElementById('resRelativisticRecommendation').innerText = recommendation;
+                document.getElementById('resProb2').innerText = `${prob2.toFixed(1)}%`;
+                document.getElementById('resOdds2').innerText = `Cuota: ${(100 / prob2).toFixed(2)}`;
 
-                const tbody = document.getElementById('intervalsTableBody');
-                tbody.innerHTML = '';
-                combinedIntervals.forEach(item => {
-                    const tr = document.createElement('tr');
-                    tr.className = 'border-b border-cardBorder/30';
-                    tr.innerHTML = `
-                        <td class="p-2 text-left font-bold text-neonBlue">${item.interval} min</td>
-                        <td class="p-2 text-neonGreen">${item.hVal}</td>
-                        <td class="p-2 text-neonPink">${item.aVal}</td>
-                        <td class="p-2 font-bold text-white">${item.xg}</td>
-                        <td class="p-2 font-bold text-neonGreen">${item.prob}%</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
+                // Renderizar O/U y BTTS
+                document.getElementById('resOver15').innerText = `${over15.toFixed(1)}%`;
+                document.getElementById('resOddsOver15').innerText = `Cuota: ${(100 / over15).toFixed(2)}`;
+
+                document.getElementById('resOver25').innerText = `${over25.toFixed(1)}%`;
+                document.getElementById('resOddsOver25').innerText = `Cuota: ${(100 / over25).toFixed(2)}`;
+
+                document.getElementById('resOver35').innerText = `${over35.toFixed(1)}%`;
+                document.getElementById('resOddsOver35').innerText = `Cuota: ${(100 / over35).toFixed(2)}`;
+
+                document.getElementById('resBtts').innerText = `Sí: ${bttsYes.toFixed(1)}%`;
+                document.getElementById('resOddsBtts').innerText = `No: ${bttsNo.toFixed(1)}%`;
+
+                document.getElementById('resRecommendation').innerText = recommendation;
 
                 container.classList.remove('hidden');
                 emptyState.classList.add('hidden');
             }
-
-            exportJSON() {
-                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.state, null, 2));
-                const dl = document.createElement('a');
-                dl.href = dataStr; dl.download = `betags_relativistic_backup_${Date.now()}.json`;
-                dl.click(); dl.remove();
-            }
-
-            importJSON(e) {
-                const reader = new FileReader();
-                if (e.target.files[0]) {
-                    reader.readAsText(e.target.files[0], "UTF-8");
-                    reader.onload = (ev) => {
-                        try {
-                            this.state = JSON.parse(ev.target.result);
-                            this.saveToLocalStorage();
-                            this.renderLeagues();
-                            this.updateDashboardStats();
-                            this.showToast("Importado", "Datos restaurados con éxito", "green");
-                        } catch (err) { this.showToast("Error", "Archivo inválido", "red"); }
-                    };
-                }
-            }
-
-            factoryReset() {
-                if (confirm("¿Reiniciar de fábrica?")) {
-                    localStorage.removeItem(this.STORAGE_KEY);
-                    this.createDefaultLeague();
-                    this.renderLeagues();
-                    this.updateDashboardStats();
-                    this.switchTab('dashboard');
-                }
-            }
-        }
-
-        function escapeHtml(str) {
-            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
         let app;
-        window.onload = () => { app = new BetagsRelativisticApp(); app.init(); };
+        window.onload = () => { app = new BetagsEinsteinFullApp(); app.init(); };
     </script>
 </body>
 </html>
