@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>BETAGS EINSTEIN RELATIVISTIC VIP – Match Analyzer 1X2, O/U & BTTS</title>
+    <title>BETAGS EINSTEIN RELATIVISTIC VIP – Multi-League Analyzer 1X2, O/U & BTTS</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -72,9 +72,8 @@
             </h1>
         </div>
         <div class="flex items-center space-x-2">
-            <span id="activeLeagueBadge" class="text-xs font-mono bg-cardBg border border-cardBorder text-neonBlue px-2.5 py-1 rounded-full truncate max-w-[120px] sm:max-w-[180px]">
-                Brasileirao 2026
-            </span>
+            <select id="headerLeagueSelect" onchange="app.switchActiveLeague(this.value)" class="text-xs font-mono bg-cardBg border border-cardBorder text-neonBlue px-2.5 py-1.5 rounded-xl truncate max-w-[140px] sm:max-w-[180px] focus:outline-none focus:border-neonBlue">
+            </select>
             <button onclick="app.switchTab('config')" class="p-2 rounded-xl bg-cardBg border border-cardBorder text-neonPurple hover:border-neonPurple transition-all">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
             </button>
@@ -100,9 +99,10 @@
                 <div class="relative z-10">
                     <span class="text-xs font-mono uppercase tracking-widest text-neonBlue px-3 py-1 rounded-full bg-neonBlue/10 border border-neonBlue/30">Motor Relativista 1X2, O/U & BTTS</span>
                     <h2 class="text-2xl sm:text-3xl font-black mt-3 text-white">Análisis Termodinámico de Partidos</h2>
-                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Modelo predictivo basado en tablas de rendimiento Local/Visitante y corrección de tensores de curvatura de Einstein.</p>
+                    <p class="text-slate-400 text-sm mt-2 max-w-xl">Modelo predictivo basado en múltiples ligas, rendimiento Local/Visitante y tensores de curvatura de Einstein.</p>
                     <div class="mt-6 flex flex-wrap gap-3">
                         <button onclick="app.switchTab('analyzer')" class="px-5 py-2.5 rounded-xl bg-neonGreen text-black font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/90 transition-all shadow-lg shadow-neonGreen/20">Iniciar Analizador</button>
+                        <button onclick="app.switchTab('leagues')" class="px-5 py-2.5 rounded-xl bg-cardBg border border-neonBlue text-neonBlue font-bold text-xs uppercase tracking-wider hover:bg-neonBlue/10 transition-all">Gestionar Ligas</button>
                     </div>
                 </div>
             </div>
@@ -113,7 +113,7 @@
             <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-5">
                 <div>
                     <h2 class="text-lg font-bold text-white uppercase tracking-wider">Predictor de Partidos 1X2, O/U & BTTS</h2>
-                    <p class="text-xs text-slate-400">Selecciona los equipos para calcular las probabilidades y cuotas justas mediante el campo unificado relativista.</p>
+                    <p class="text-xs text-slate-400">Selecciona los equipos de la liga activa para calcular las probabilidades y cuotas justas.</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1.5">
@@ -193,13 +193,38 @@
             </div>
         </section>
 
-        <!-- ================= 3. CONFIGURACIÓN ================= -->
+        <!-- ================= 3. GESTIÓN DE LIGAS ================= -->
+        <section id="tab-leagues" class="tab-content hidden space-y-6">
+            <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div>
+                        <h2 class="text-lg font-bold text-white uppercase tracking-wider">Gestión de Competiciones</h2>
+                        <p class="text-xs text-slate-400">Crea nuevas ligas o selecciona la competición activa.</p>
+                    </div>
+                    <button onclick="app.openNewLeagueModal()" class="px-4 py-2.5 rounded-xl bg-neonGreen text-black font-bold text-xs uppercase tracking-wider hover:bg-neonGreen/90 transition-all shadow-lg shadow-neonGreen/20">Nueva Liga</button>
+                </div>
+                <div id="leaguesListContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"></div>
+            </div>
+        </section>
+
+        <!-- ================= 4. CONFIGURACIÓN ================= -->
         <section id="tab-config" class="tab-content hidden space-y-6">
             <div class="bg-cardBg border border-cardBorder rounded-2xl p-5 space-y-5">
-                <h2 class="text-lg font-bold text-white uppercase tracking-wider">Configuración & Datos</h2>
-                <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
-                    <span class="text-xs font-mono uppercase text-neonBlue font-bold block">Base de Datos Brasileirao 2026</span>
-                    <p class="text-xs text-slate-400">Tablas oficiales de Local y Visitante indexadas con éxito en el motor de cálculo relativista.</p>
+                <h2 class="text-lg font-bold text-white uppercase tracking-wider">Configuración & Respaldos</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
+                        <span class="text-xs font-mono uppercase text-neonBlue font-bold block">Exportar / Importar JSON</span>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <button onclick="app.exportJSON()" class="px-4 py-2 rounded-xl bg-neonBlue/10 border border-neonBlue text-neonBlue text-xs font-bold uppercase">Exportar</button>
+                            <label class="px-4 py-2 rounded-xl bg-neonPurple/10 border border-neonPurple text-neonPurple text-xs font-bold uppercase cursor-pointer">
+                                Importar <input type="file" accept=".json" onchange="app.importJSON(event)" class="hidden">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="bg-darkBg border border-cardBorder rounded-xl p-4 space-y-3">
+                        <span class="text-xs font-mono uppercase text-red-400 font-bold block">Zona de Peligro</span>
+                        <button onclick="app.factoryReset()" class="px-4 py-2 rounded-xl bg-red-500/10 border border-red-500 text-red-400 text-xs font-bold uppercase">Restaurar Fábrica</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -214,73 +239,117 @@
         <button onclick="app.switchTab('analyzer')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="analyzer">
             <span class="text-[9px] font-mono uppercase tracking-wider">Analizador</span>
         </button>
+        <button onclick="app.switchTab('leagues')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="leagues">
+            <span class="text-[9px] font-mono uppercase tracking-wider">Ligas</span>
+        </button>
         <button onclick="app.switchTab('config')" class="nav-btn flex flex-col items-center space-y-1 px-2 py-1 text-slate-400 hover:text-neonBlue transition-all" data-tab="config">
             <span class="text-[9px] font-mono uppercase tracking-wider">Config</span>
         </button>
     </nav>
 
+    <!-- MODAL NUEVA LIGA -->
+    <div id="leagueModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-cardBg border border-cardBorder rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
+            <h3 class="text-base font-bold text-white uppercase tracking-wider">Crear Nueva Competición</h3>
+            <input type="text" id="modalLeagueNameInput" placeholder="Ej. Premier League 2026" class="w-full bg-darkBg border border-cardBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-neonGreen font-mono">
+            <div class="flex justify-end space-x-3 pt-2">
+                <button onclick="app.closeLeagueModal()" class="px-4 py-2 rounded-xl bg-darkBg border border-cardBorder text-slate-300 text-xs font-bold uppercase">Cancelar</button>
+                <button onclick="app.submitLeagueModal()" class="px-4 py-2 rounded-xl bg-neonGreen text-black text-xs font-bold uppercase">Crear</button>
+            </div>
+        </div>
+    </div>
+
     <!-- SCRIPT CORE -->
     <script>
-        class BetagsEinsteinFullApp {
+        class BetagsMultiLeagueApp {
             constructor() {
-                this.STORAGE_KEY = 'betags_einstein_full_data';
+                this.STORAGE_KEY = 'betags_einstein_multileague_data';
                 this.state = { activeLeagueId: 'brasileirao_2026', leagues: {} };
                 this.currentTab = 'dashboard';
             }
 
             init() {
-                this.loadDefaultData();
+                this.loadFromLocalStorage();
+                this.populateLeagueSelects();
                 this.populateTeamSelects();
+                this.renderLeaguesManager();
                 this.switchTab('dashboard');
             }
 
+            loadFromLocalStorage() {
+                try {
+                    const raw = localStorage.getItem(this.STORAGE_KEY);
+                    if (!raw) {
+                        this.loadDefaultData();
+                        this.saveToLocalStorage();
+                    } else {
+                        this.state = JSON.parse(raw);
+                    }
+                } catch (e) {
+                    this.loadDefaultData();
+                }
+            }
+
+            saveToLocalStorage() {
+                try {
+                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.state));
+                } catch (e) {
+                    this.showToast("Error", "No se pudo guardar en localStorage", "red");
+                }
+            }
+
             loadDefaultData() {
-                this.state.leagues['brasileirao_2026'] = {
-                    name: "Brasileirao 2026",
-                    homeTable: [
-                        { name: "Flamengo", gp: 17, gf: 35, ga: 13, pts: 42 },
-                        { name: "Palmeiras", gp: 16, gf: 30, ga: 10, pts: 39 },
-                        { name: "Fluminense", gp: 17, gf: 31, ga: 17, pts: 39 },
-                        { name: "Atletico Mineiro", gp: 17, gf: 27, ga: 18, pts: 35 },
-                        { name: "Sao Paulo", gp: 16, gf: 25, ga: 13, pts: 33 },
-                        { name: "Athletico PR", gp: 17, gf: 28, ga: 18, pts: 32 },
-                        { name: "Vitoria", gp: 16, gf: 23, ga: 13, pts: 32 },
-                        { name: "Cruzeiro", gp: 16, gf: 27, ga: 16, pts: 31 },
-                        { name: "Bragantino", gp: 17, gf: 29, ga: 18, pts: 30 },
-                        { name: "Bahia", gp: 17, gf: 26, ga: 19, pts: 30 },
-                        { name: "Gremio", gp: 17, gf: 27, ga: 21, pts: 29 },
-                        { name: "Mirassol", gp: 17, gf: 24, ga: 22, pts: 27 },
-                        { name: "Vasco da Gama", gp: 17, gf: 25, ga: 24, pts: 27 },
-                        { name: "Santos", gp: 17, gf: 23, ga: 21, pts: 25 },
-                        { name: "Botafogo", gp: 16, gf: 26, ga: 22, pts: 24 },
-                        { name: "Internacional", gp: 17, gf: 22, ga: 17, pts: 23 },
-                        { name: "Coritiba", gp: 17, gf: 22, ga: 21, pts: 23 },
-                        { name: "Corinthians", gp: 17, gf: 18, ga: 17, pts: 22 },
-                        { name: "Remo", gp: 17, gf: 22, ga: 22, pts: 19 },
-                        { name: "Chapecoense", gp: 16, gf: 22, ga: 36, pts: 14 }
-                    ],
-                    awayTable: [
-                        { name: "Flamengo", gp: 17, gf: 36, ga: 16, pts: 34 },
-                        { name: "Palmeiras", gp: 17, gf: 26, ga: 12, pts: 31 },
-                        { name: "Cruzeiro", gp: 17, gf: 25, ga: 30, pts: 26 },
-                        { name: "Bahia", gp: 16, gf: 22, ga: 23, pts: 23 },
-                        { name: "Santos", gp: 17, gf: 27, ga: 28, pts: 22 },
-                        { name: "Athletico PR", gp: 17, gf: 23, ga: 25, pts: 22 },
-                        { name: "Coritiba", gp: 17, gf: 18, ga: 30, pts: 19 },
-                        { name: "Bragantino", gp: 17, gf: 15, ga: 21, pts: 17 },
-                        { name: "Fluminense", gp: 16, gf: 21, ga: 25, pts: 15 },
-                        { name: "Atletico Mineiro", gp: 16, gf: 17, ga: 21, pts: 15 },
-                        { name: "Internacional", gp: 17, gf: 16, ga: 25, pts: 15 },
-                        { name: "Botafogo", gp: 17, gf: 19, ga: 31, pts: 15 },
-                        { name: "Corinthians", gp: 16, gf: 18, ga: 25, pts: 14 },
-                        { name: "Vasco da Gama", gp: 16, gf: 18, ga: 26, pts: 14 },
-                        { name: "Mirassol", gp: 17, gf: 15, ga: 26, pts: 13 },
-                        { name: "Sao Paulo", gp: 17, gf: 14, ga: 26, pts: 10 },
-                        { name: "Remo", gp: 16, gf: 14, ga: 29, pts: 10 },
-                        { name: "Gremio", gp: 17, gf: 11, ga: 26, pts: 8 },
-                        { name: "Chapecoense", gp: 17, gf: 11, ga: 32, pts: 7 },
-                        { name: "Vitoria", gp: 17, gf: 12, ga: 35, pts: 6 }
-                    ]
+                this.state = {
+                    activeLeagueId: 'brasileirao_2026',
+                    leagues: {
+                        'brasileirao_2026': {
+                            name: "Brasileirao 2026",
+                            homeTable: [
+                                { name: "Flamengo", gp: 17, gf: 35, ga: 13, pts: 42 },
+                                { name: "Palmeiras", gp: 16, gf: 30, ga: 10, pts: 39 },
+                                { name: "Fluminense", gp: 17, gf: 31, ga: 17, pts: 39 },
+                                { name: "Atletico Mineiro", gp: 17, gf: 27, ga: 18, pts: 35 },
+                                { name: "Sao Paulo", gp: 16, gf: 25, ga: 13, pts: 33 },
+                                { name: "Athletico PR", gp: 17, gf: 28, ga: 18, pts: 32 },
+                                { name: "Vitoria", gp: 16, gf: 23, ga: 13, pts: 32 },
+                                { name: "Cruzeiro", gp: 16, gf: 27, ga: 16, pts: 31 },
+                                { name: "Bragantino", gp: 17, gf: 29, ga: 18, pts: 30 },
+                                { name: "Bahia", gp: 17, gf: 26, ga: 19, pts: 30 },
+                                { name: "Gremio", gp: 17, gf: 27, ga: 21, pts: 29 },
+                                { name: "Mirassol", gp: 17, gf: 24, ga: 22, pts: 27 },
+                                { name: "Vasco da Gama", gp: 17, gf: 25, ga: 24, pts: 27 },
+                                { name: "Santos", gp: 17, gf: 23, ga: 21, pts: 25 },
+                                { name: "Botafogo", gp: 16, gf: 26, ga: 22, pts: 24 },
+                                { name: "Internacional", gp: 17, gf: 22, ga: 17, pts: 23 },
+                                { name: "Coritiba", gp: 17, gf: 22, ga: 21, pts: 23 },
+                                { name: "Corinthians", gp: 17, gf: 18, ga: 17, pts: 22 },
+                                { name: "Remo", gp: 17, gf: 22, ga: 22, pts: 19 },
+                                { name: "Chapecoense", gp: 16, gf: 22, ga: 36, pts: 14 }
+                            ],
+                            awayTable: [
+                                { name: "Flamengo", gp: 17, gf: 36, ga: 16, pts: 34 },
+                                { name: "Palmeiras", gp: 17, gf: 26, ga: 12, pts: 31 },
+                                { name: "Cruzeiro", gp: 17, gf: 25, ga: 30, pts: 26 },
+                                { name: "Bahia", gp: 16, gf: 22, ga: 23, pts: 23 },
+                                { name: "Santos", gp: 17, gf: 27, ga: 28, pts: 22 },
+                                { name: "Athletico PR", gp: 17, gf: 23, ga: 25, pts: 22 },
+                                { name: "Coritiba", gp: 17, gf: 18, ga: 30, pts: 19 },
+                                { name: "Bragantino", gp: 17, gf: 15, ga: 21, pts: 17 },
+                                { name: "Fluminense", gp: 16, gf: 21, ga: 25, pts: 15 },
+                                { name: "Atletico Mineiro", gp: 16, gf: 17, ga: 21, pts: 15 },
+                                { name: "Internacional", gp: 17, gf: 16, ga: 25, pts: 15 },
+                                { name: "Botafogo", gp: 17, gf: 19, ga: 31, pts: 15 },
+                                { name: "Corinthians", gp: 16, gf: 18, ga: 25, pts: 14 },
+                                { name: "Vasco da Gama", gp: 16, gf: 18, ga: 26, pts: 14 },
+                                { name: "Mirassol", gp: 17, gf: 15, ga: 26, pts: 13 },
+                                { name: "Sao Paulo", gp: 17, gf: 14, ga: 26, pts: 10 },
+                                { name: "Remo", gp: 16, gf: 14, ga: 29, pts: 10 },
+                                { name: "Gremio", gp: 17, gf: 11, ga: 26, pts: 8 },
+                                { name: "Chapecoense", gp: 17, gf: 11, ga: 32, pts: 7 },
+                                { name: "Vitoria", gp: 17, gf: 12, ga: 35, pts: 6 }
+                            ]
+                        }
+                    }
                 };
             }
 
@@ -296,11 +365,108 @@
                 });
 
                 if (tabId === 'analyzer') this.populateTeamSelects();
+                if (tabId === 'leagues') this.renderLeaguesManager();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
+            getActiveLeague() {
+                if (!this.state.leagues[this.state.activeLeagueId]) {
+                    const keys = Object.keys(this.state.leagues);
+                    if (keys.length > 0) this.state.activeLeagueId = keys[0];
+                }
+                return this.state.leagues[this.state.activeLeagueId];
+            }
+
+            switchActiveLeague(leagueId) {
+                if (this.state.leagues[leagueId]) {
+                    this.state.activeLeagueId = leagueId;
+                    this.saveToLocalStorage();
+                    this.populateLeagueSelects();
+                    this.populateTeamSelects();
+                    this.renderLeaguesManager();
+                    this.showToast("Cambiado", `Liga activa: ${this.getActiveLeague().name}`, "green");
+                }
+            }
+
+            populateLeagueSelects() {
+                const select = document.getElementById('headerLeagueSelect');
+                select.innerHTML = '';
+                for (let id in this.state.leagues) {
+                    const opt = document.createElement('option');
+                    opt.value = id;
+                    opt.innerText = this.state.leagues[id].name;
+                    if (id === this.state.activeLeagueId) opt.selected = true;
+                    select.appendChild(opt);
+                }
+                document.getElementById('activeLeagueBadge').innerText = this.getActiveLeague().name;
+            }
+
+            renderLeaguesManager() {
+                const container = document.getElementById('leaguesListContainer');
+                container.innerHTML = '';
+                for (let id in this.state.leagues) {
+                    const l = this.state.leagues[id];
+                    const isActive = id === this.state.activeLeagueId;
+                    const card = document.createElement('div');
+                    card.className = `p-4 rounded-xl border bg-darkBg flex flex-col justify-between space-y-3 ${isActive ? 'neon-border-green' : 'border-cardBorder'}`;
+                    card.innerHTML = `
+                        <div>
+                            <h3 class="text-sm font-bold text-white">${escapeHtml(l.name)}</h3>
+                            <p class="text-[11px] text-slate-400 mt-1">Equipos Local: ${l.homeTable.length} | Visitante: ${l.awayTable.length}</p>
+                        </div>
+                        <div class="flex items-center gap-2 pt-2 border-t border-cardBorder">
+                            ${!isActive ? `<button onclick="app.switchActiveLeague('${id}')" class="px-3 py-1.5 rounded-lg bg-neonBlue/10 border border-neonBlue text-neonBlue text-xs font-bold">Seleccionar</button>` : '<span class="text-xs text-neonGreen font-mono font-bold">Activa</span>'}
+                            ${Object.keys(this.state.leagues).length > 1 ? `<button onclick="app.deleteLeague('${id}')" class="px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold">Eliminar</button>` : ''}
+                        </div>
+                    `;
+                    container.appendChild(card);
+                }
+            }
+
+            openNewLeagueModal() {
+                document.getElementById('leagueModal').classList.remove('hidden');
+                document.getElementById('leagueModal').classList.add('flex');
+            }
+
+            closeLeagueModal() {
+                document.getElementById('leagueModal').classList.remove('flex');
+                document.getElementById('leagueModal').classList.add('hidden');
+            }
+
+            submitLeagueModal() {
+                const name = document.getElementById('modalLeagueNameInput').value.trim();
+                if (!name) return;
+                const id = 'league_' + Date.now();
+                // Clonamos la estructura base del Brasileirao para que tenga equipos de ejemplo listos para editar
+                const template = this.state.leagues['brasileirao_2026'] || Object.values(this.state.leagues)[0];
+                this.state.leagues[id] = {
+                    name: name,
+                    homeTable: JSON.parse(JSON.stringify(template.homeTable)),
+                    awayTable: JSON.parse(JSON.stringify(template.awayTable))
+                };
+                this.state.activeLeagueId = id;
+                this.saveToLocalStorage();
+                this.closeLeagueModal();
+                document.getElementById('modalLeagueNameInput').value = '';
+                this.populateLeagueSelects();
+                this.populateTeamSelects();
+                this.renderLeaguesManager();
+                this.showToast("Éxito", `Liga "${name}" creada`, "green");
+            }
+
+            deleteLeague(id) {
+                if (Object.keys(this.state.leagues).length <= 1) return;
+                delete this.state.leagues[id];
+                this.state.activeLeagueId = Object.keys(this.state.leagues)[0];
+                this.saveToLocalStorage();
+                this.populateLeagueSelects();
+                this.populateTeamSelects();
+                this.renderLeaguesManager();
+                this.showToast("Eliminado", "Competición borrada", "red");
+            }
+
             populateTeamSelects() {
-                const league = this.state.leagues['brasileirao_2026'];
+                const league = this.getActiveLeague();
                 const homeSelect = document.getElementById('selectHomeTeam');
                 const awaySelect = document.getElementById('selectAwayTeam');
 
@@ -340,13 +506,13 @@
                     return;
                 }
 
-                const league = this.state.leagues['brasileirao_2026'];
+                const league = this.getActiveLeague();
                 const hStats = league.homeTable.find(t => t.name === homeName);
                 const aStats = league.awayTable.find(t => t.name === awayName);
 
                 if (!hStats || !aStats) return;
 
-                // Promedios de la liga
+                // Promedios de la liga activa
                 const avgHomeGF = league.homeTable.reduce((acc, t) => acc + (t.gf / t.gp), 0) / league.homeTable.length;
                 const avgAwayGF = league.awayTable.reduce((acc, t) => acc + (t.gf / t.gp), 0) / league.awayTable.length;
 
@@ -454,10 +620,55 @@
                 container.classList.remove('hidden');
                 emptyState.classList.add('hidden');
             }
+
+            showToast(title, message, type = 'green') {
+                const toast = document.getElementById('toast');
+                document.getElementById('toastTitle').innerText = title;
+                document.getElementById('toastMessage').innerText = message;
+                toast.className = `fixed top-20 right-4 z-50 transform transition-transform duration-300 max-w-sm px-4 py-3 rounded-xl border bg-cardBg shadow-2xl flex items-center space-x-3 ${type === 'red' ? 'border-red-500/50 text-red-400' : 'border-neonGreen/50 text-neonGreen'}`;
+                toast.classList.remove('translate-x-full');
+                setTimeout(() => toast.classList.add('translate-x-full'), 3500);
+            }
+
+            exportJSON() {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.state, null, 2));
+                const dl = document.createElement('a');
+                dl.href = dataStr; dl.download = `betags_einstein_leagues_${Date.now()}.json`;
+                dl.click(); dl.remove();
+            }
+
+            importJSON(e) {
+                const reader = new FileReader();
+                if (e.target.files[0]) {
+                    reader.readAsText(e.target.files[0], "UTF-8");
+                    reader.onload = (ev) => {
+                        try {
+                            this.state = JSON.parse(ev.target.result);
+                            this.saveToLocalStorage();
+                            this.init();
+                            this.showToast("Importado", "Ligas restauradas con éxito", "green");
+                        } catch (err) { this.showToast("Error", "Archivo inválido", "red"); }
+                    };
+                }
+            }
+
+            factoryReset() {
+                if (confirm("¿Reiniciar de fábrica? Se perderán las ligas añadidas.")) {
+                    localStorage.removeItem(this.STORAGE_KEY);
+                    this.loadDefaultData();
+                    this.saveToLocalStorage();
+                    this.init();
+                    this.showToast("Restaurado", "Datos de fábrica cargados", "green");
+                }
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
         let app;
-        window.onload = () => { app = new BetagsEinsteinFullApp(); app.init(); };
+        window.onload = () => { app = new BetagsMultiLeagueApp(); app.init(); };
     </script>
 </body>
 </html>
