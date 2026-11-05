@@ -65,7 +65,7 @@
             </div>
             <div>
                 <h1 class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
-                    POISSON BETTING PRO <span class="text-xs uppercase px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono">Elite v3.8</span>
+                    POISSON BETTING PRO <span class="text-xs uppercase px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-mono">Elite v3.9</span>
                 </h1>
                 <p class="text-xs text-slate-400">Bivariate Dixon-Coles & Monte Carlo Simulation Engine</p>
             </div>
@@ -100,11 +100,7 @@
                         <span>Competición y Equipos</span>
                     </h2>
                     <select id="league-select" onchange="loadLeagueTeams()" class="bg-dark-800 text-xs border border-slate-700 rounded-lg px-3 py-1.5 text-slate-300 focus:outline-none focus:border-cyan-500">
-                        <option value="brasileirao">Brasileirão (Predeterminado)</option>
-                        <option value="premier">Premier League (Inglaterra)</option>
-                        <option value="laliga">La Liga (España)</option>
-                        <option value="seriea">Serie A (Italia)</option>
-                        <option value="bundesliga">Bundesliga (Alemania)</option>
+                        <!-- Populated dynamically -->
                     </select>
                 </div>
 
@@ -429,12 +425,20 @@
                 </div>
             </div>
 
+            <!-- Listado de Ligas Guardadas con opción de borrar -->
+            <div class="bg-dark-800/60 p-3 rounded-2xl border border-slate-800 space-y-2">
+                <div class="text-xs font-bold text-slate-300">Ligas Guardadas en Memoria:</div>
+                <div id="saved-leagues-list" class="flex flex-wrap gap-2 text-xs">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 overflow-y-auto">
                 <div class="space-y-1.5">
                     <label class="text-xs font-bold text-slate-300 flex items-center justify-between">
                         <span>Tabla Local (Pegar desde Excel o Web)</span>
                     </label>
-                    <textarea id="input-table-home" rows="10" placeholder="Pega aquí los datos de Local..." class="w-full bg-dark-800 text-[11px] font-mono border border-slate-700 rounded-xl p-3 text-slate-300 focus:outline-none focus:border-cyan-500">1	Flamengo	17	13	3	1	35	13	+22	42	2.47
+                    <textarea id="input-table-home" rows="8" placeholder="Pega aquí los datos de Local..." class="w-full bg-dark-800 text-[11px] font-mono border border-slate-700 rounded-xl p-3 text-slate-300 focus:outline-none focus:border-cyan-500">1	Flamengo	17	13	3	1	35	13	+22	42	2.47
 2	Palmeiras	16	12	3	1	30	10	+20	39	2.44
 3	Fluminense	17	12	3	2	31	17	+14	39	2.29
 4	Atletico Mineiro	17	10	5	2	27	18	+9	35	2.06
@@ -459,7 +463,7 @@
                     <label class="text-xs font-bold text-slate-300 flex items-center justify-between">
                         <span>Tabla Visitante (Pegar desde Excel o Web)</span>
                     </label>
-                    <textarea id="input-table-away" rows="10" placeholder="Pega aquí los datos de Visita..." class="w-full bg-dark-800 text-[11px] font-mono border border-slate-700 rounded-xl p-3 text-slate-300 focus:outline-none focus:border-cyan-500">1	Flamengo	17	10	4	3	36	16	+20	34	2.00
+                    <textarea id="input-table-away" rows="8" placeholder="Pega aquí los datos de Visita..." class="w-full bg-dark-800 text-[11px] font-mono border border-slate-700 rounded-xl p-3 text-slate-300 focus:outline-none focus:border-cyan-500">1	Flamengo	17	10	4	3	36	16	+20	34	2.00
 2	Palmeiras	17	8	7	2	26	12	+14	31	1.82
 3	Cruzeiro	17	8	2	7	25	30	-5	26	1.53
 4	Bahia	16	6	5	5	22	23	-1	23	1.44
@@ -483,7 +487,7 @@
             </div>
 
             <div class="pt-2 flex justify-between items-center border-t border-slate-800 text-xs">
-                <span class="text-slate-400">Las tablas se procesarán automáticamente calculando el ataque y defensa por partido.</span>
+                <span class="text-slate-400">Las tablas se guardan de forma persistente en tu navegador (localStorage).</span>
                 <button onclick="closeLeagueManagerModal()" class="px-4 py-2 rounded-xl bg-dark-700 hover:bg-dark-600 text-slate-300 font-semibold">Cerrar</button>
             </div>
         </div>
@@ -601,8 +605,8 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // --- BASE LIGAS Y DATOS ---
-        let leaguesDatabase = JSON.parse(localStorage.getItem('poisson_custom_leagues') || JSON.stringify({
+        // --- BASE LIGAS Y PERSISTENCIA ROBUSTA ---
+        const defaultLeagues = {
             brasileirao: {
                 name: "Brasileirão Serie A",
                 teams: [
@@ -628,19 +632,26 @@
                     { name: "Chapecoense", att: 0.95, def: 2.00 }
                 ]
             },
-            premier: [
-                { name: "Manchester City", att: 2.35, def: 0.75 },
-                { name: "Arsenal", att: 2.15, def: 0.70 },
-                { name: "Liverpool", att: 2.25, def: 0.85 },
-                { name: "Aston Villa", att: 1.75, def: 1.10 }
-            ],
-            laliga: [
-                { name: "Real Madrid", att: 2.30, def: 0.72 },
-                { name: "Barcelona", att: 2.20, def: 0.82 },
-                { name: "Atletico Madrid", att: 1.75, def: 0.78 }
-            ]
-        }));
+            premier: {
+                name: "Premier League (Inglaterra)",
+                teams: [
+                    { name: "Manchester City", att: 2.35, def: 0.75 },
+                    { name: "Arsenal", att: 2.15, def: 0.70 },
+                    { name: "Liverpool", att: 2.25, def: 0.85 },
+                    { name: "Aston Villa", att: 1.75, def: 1.10 }
+                ]
+            },
+            laliga: {
+                name: "La Liga (España)",
+                teams: [
+                    { name: "Real Madrid", att: 2.30, def: 0.72 },
+                    { name: "Barcelona", att: 2.20, def: 0.82 },
+                    { name: "Atletico Madrid", att: 1.75, def: 0.78 }
+                ]
+            }
+        };
 
+        let leaguesDatabase = JSON.parse(localStorage.getItem('poisson_custom_leagues')) || defaultLeagues;
         let currentTeamsList = [];
         let globalPredictionResult = null;
         let predictionChartInstance = null;
@@ -713,15 +724,40 @@
             }
         }
 
-        // --- IMPORTAR Y PARSEAR TABLAS ---
+        // --- IMPORTAR, PARSEAR Y GUARDAR LIGAS ---
         function openLeagueManagerModal() {
             document.getElementById('league-manager-modal').classList.remove('hidden');
             document.getElementById('league-manager-modal').classList.add('flex');
+            renderSavedLeaguesList();
         }
 
         function closeLeagueManagerModal() {
             document.getElementById('league-manager-modal').classList.add('hidden');
             document.getElementById('league-manager-modal').classList.remove('flex');
+        }
+
+        function renderSavedLeaguesList() {
+            const container = document.getElementById('saved-leagues-list');
+            container.innerHTML = '';
+            for (const key in leaguesDatabase) {
+                const isCustom = key.startsWith('custom_');
+                container.innerHTML += `
+                    <div class="bg-dark-700/80 px-3 py-1.5 rounded-lg border border-slate-700 flex items-center space-x-2">
+                        <span>${leaguesDatabase[key].name}</span>
+                        ${isCustom ? `<button onclick="deleteCustomLeague('${key}')" class="text-rose-400 hover:text-rose-300 ml-2"><i class="fa-solid fa-trash-can"></i></button>` : ''}
+                    </div>
+                `;
+            }
+        }
+
+        function deleteCustomLeague(key) {
+            if (confirm("¿Estás seguro de eliminar esta liga?")) {
+                delete leaguesDatabase[key];
+                localStorage.setItem('poisson_custom_leagues', JSON.stringify(leaguesDatabase));
+                updateLeagueSelectOptions();
+                loadLeagueTeams();
+                renderSavedLeaguesList();
+            }
         }
 
         function parseTableText(text) {
@@ -730,8 +766,6 @@
             lines.forEach(line => {
                 const parts = line.trim().split(/\s+/);
                 if (parts.length >= 10) {
-                    // Formato: Pos | Equipo (puede tener espacios) | PJ | G | E | P | GF | GA | SG | PTS | PPG
-                    // Vamos a unir el nombre del equipo si tiene espacios
                     const nameParts = parts.slice(1, parts.length - 9);
                     const teamName = nameParts.join(' ');
                     const pj = parseFloat(parts[parts.length - 9]) || 1;
@@ -748,7 +782,7 @@
         }
 
         function importTables() {
-            const leagueName = document.getElementById('new-league-name').value.trim() || "Nueva Liga Personalizada";
+            const leagueName = document.getElementById('new-league-name').value.trim() || "Nueva Competición";
             const homeText = document.getElementById('input-table-home').value;
             const awayText = document.getElementById('input-table-away').value;
 
@@ -759,7 +793,7 @@
             const allTeams = new Set([...Object.keys(homeStats), ...Object.keys(awayStats)]);
 
             if (allTeams.size === 0) {
-                alert("No se pudieron parsear los equipos. Asegúrate de que el formato coincida con las tablas.");
+                alert("No se pudieron parsear los equipos. Revisa el formato de las tablas.");
                 return;
             }
 
@@ -767,7 +801,6 @@
                 const h = homeStats[teamName] || { gfPerMatch: 1.2, gaPerMatch: 1.2 };
                 const a = awayStats[teamName] || { gfPerMatch: 1.0, gaPerMatch: 1.4 };
 
-                // Ataque combinado y defensa combinada
                 const att = parseFloat(((h.gfPerMatch + a.gfPerMatch) / 2).toFixed(2));
                 const def = parseFloat(((h.gaPerMatch + a.gaPerMatch) / 2).toFixed(2));
 
@@ -780,13 +813,15 @@
                 teams: teams
             };
 
+            // Guardar persistente en localStorage
             localStorage.setItem('poisson_custom_leagues', JSON.stringify(leaguesDatabase));
+            
             updateLeagueSelectOptions();
             document.getElementById('league-select').value = leagueKey;
             loadLeagueTeams();
             closeLeagueManagerModal();
 
-            alert(`¡Liga "${leagueName}" importada con éxito con ${teams.size} equipos!`);
+            alert(`¡Liga "${leagueName}" guardada e importada con éxito (${teams.size} equipos)!`);
         }
 
         function toggleAdvancedSettings() {
@@ -1091,7 +1126,7 @@
         function loadHistoryList() {
             const list = document.getElementById('history-list');
             let history = JSON.parse(localStorage.getItem('poisson_history') || '[]');
-            list.innerHTML = history.length === '0' ? `<div class="text-slate-500 text-center">Sin historial.</div>` : '';
+            list.innerHTML = history.length === 0 ? `<div class="text-slate-500 text-center text-xs py-4">Sin historial.</div>` : '';
             history.forEach(item => {
                 list.innerHTML += `<div class="bg-dark-800 p-3 rounded-xl border border-slate-800 flex justify-between text-xs"><div><b>${item.home} vs ${item.away}</b><br><span class="text-slate-400">${item.date}</span></div><div class="text-right"><span class="text-cyan-400 font-mono">Score: ${item.score}</span></div></div>`;
             });
