@@ -3719,55 +3719,40 @@
         }
 
         function autoFillTeamData(side) {
-            const selectActive = document.getElementById('activeLeagueSelect');
-            if (!selectActive) return;
-            const activeLeague = selectActive.value;
-            const leagues = getCurrentBankrollLeagues();
-            const teams = leagues[activeLeague] || [];
-            const selectEl = side === 'home' ? document.getElementById('selectHomeTeam') : document.getElementById('selectAwayTeam');
-            if (!selectEl) return;
-            const selectedName = selectEl.value;
+    const selectActive = document.getElementById('activeLeagueSelect');
+    if (!selectActive) return;
+    const activeLeague = selectActive.value;
+    const leagues = getCurrentBankrollLeagues();
+    const teams = leagues[activeLeague] || [];
+    const selectEl = side === 'home' ? document.getElementById('selectHomeTeam') : document.getElementById('selectAwayTeam');
+    if (!selectEl) return;
+    const selectedName = selectEl.value;
 
-            if (!selectedName) return;
+    if (!selectedName) return;
 
-            const team = teams.find(t => t.name === selectedName);
-            if (!team) return;
+    const team = teams.find(t => t.name === selectedName);
+    if (!team) return;
 
-            const xgNum = typeof team.xg === 'number' ? team.xg : (parseFloat(team.xg) || 1.30);
-            const xgaNum = typeof team.xga === 'number' ? team.xga : (parseFloat(team.xga) || 1.20);
-            const gfNum = typeof team.gf === 'number' ? team.gf : (parseFloat(team.gf) || xgNum);
-            const gaNum = typeof team.ga === 'number' ? team.ga : (parseFloat(team.ga) || xgaNum);
+    const xgNum = typeof team.xg === 'number' ? team.xg : (parseFloat(team.xg) || 1.30);
+    const gfNum = typeof team.gf === 'number' ? team.gf : (parseFloat(team.gf) || xgNum);
 
-            if (side === 'home') {
-                const nameEl = document.getElementById('homeName');
-                if (nameEl) nameEl.value = team.name;
-                const hXg = document.getElementById('homeXgFor');
-                if (hXg) hXg.value = xgNum.toFixed(2);
-                const hGf = document.getElementById('homeGf');
-                if (hGf) hGf.value = gfNum.toFixed(2);
-                const hXga = document.getElementById('homeXgAgainst');
-                if (hXga) hXga.value = xgaNum.toFixed(2);
-                const hGc = document.getElementById('homeGc');
-                if (hGc) hGc.value = gaNum.toFixed(2);
-                const directH = document.getElementById('directHomeXg');
-                if (directH) directH.value = xgNum.toFixed(2);
-            } else {
-                const nameEl = document.getElementById('awayName');
-                if (nameEl) nameEl.value = team.name;
-                const aXg = document.getElementById('awayXgFor');
-                if (aXg) aXg.value = xgNum.toFixed(2);
-                const aGf = document.getElementById('awayGf');
-                if (aGf) aGf.value = gfNum.toFixed(2);
-                const aXga = document.getElementById('awayXgAgainst');
-                if (aXga) aXga.value = xgaNum.toFixed(2);
-                const aGc = document.getElementById('awayGc');
-                if (aGc) aGc.value = gaNum.toFixed(2);
-                const directA = document.getElementById('directAwayXg');
-                if (directA) directA.value = xgNum.toFixed(2);
-            }
+    if (side === 'home') {
+        const nameEl = document.getElementById('homeName');
+        if (nameEl) nameEl.value = team.name;
+        document.getElementById('homeXgFor').value = xgNum.toFixed(2);
+        document.getElementById('homeGf').value = gfNum.toFixed(2);
+        document.getElementById('directHomeXg').value = xgNum.toFixed(2);
+    } else {
+        const nameEl = document.getElementById('awayName');
+        if (nameEl) nameEl.value = team.name;
+        document.getElementById('awayXgFor').value = xgNum.toFixed(2);
+        document.getElementById('awayGf').value = gfNum.toFixed(2);
+        document.getElementById('directAwayXg').value = xgNum.toFixed(2);
+    }
 
-            calculatePoisson();
-        }
+    calculatePoisson();
+}
+
 
         function clearAllData() {
             document.getElementById('homeName').value = "";
