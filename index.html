@@ -13,7 +13,7 @@
   <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <script>
     tailwind.config = {
@@ -21,19 +21,19 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'sans-serif'],
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
             mono: ['JetBrains Mono', 'monospace'],
           },
           colors: {
             quant: {
-              bg: '#080c14',
-              panel: '#0f1623',
-              card: '#131c2e',
-              border: '#1e293b',
-              cyan: '#06b6d4',
-              emerald: '#10b981',
-              amber: '#f59e0b',
-              rose: '#f43f5e'
+              bg: '#070b12',
+              panel: '#0c1320',
+              card: '#111a2c',
+              border: 'rgba(148, 163, 184, 0.13)',
+              cyan: '#22d3ee',
+              emerald: '#34d399',
+              amber: '#fbbf24',
+              rose: '#fb7185'
             }
           }
         }
@@ -43,284 +43,311 @@
 
   <style>
     body {
-      background-color: #080c14;
+      background-color: #070b12;
+      background-image: radial-gradient(circle at 50% -15%, rgba(34, 211, 238, 0.06), transparent 55%);
       color: #f1f5f9;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
     .mono-num {
       font-family: 'JetBrains Mono', monospace;
       font-variant-numeric: tabular-nums;
+    }
+    .surface-card {
+      background-color: #0c1320;
+      border: 1px solid rgba(148, 163, 184, 0.13);
+      box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.55);
+    }
+    .surface-inset {
+      background-color: #070b12;
+      border: 1px solid rgba(148, 163, 184, 0.11);
+    }
+    .prob-track {
+      position: relative;
+      overflow: hidden;
+    }
+    .prob-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.11), rgba(34, 211, 238, 0.02));
+      pointer-events: none;
+      transition: width 0.3s ease;
     }
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #080c14;
+      background: #070b12;
     }
     ::-webkit-scrollbar-thumb {
-      background: #1e293b;
+      background: rgba(148, 163, 184, 0.22);
       border-radius: 9999px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #06b6d4;
+      background: #22d3ee;
     }
     input[type="range"] {
-      accent-color: #06b6d4;
+      accent-color: #22d3ee;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      opacity: 0.45;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-cyan-500/30 selection:text-cyan-200">
+<body class="min-h-screen flex flex-col selection:bg-cyan-400/20 selection:text-cyan-200">
 
   <!-- Notificaciones Toast -->
-  <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
 
-  <!-- CABECERA COMPACTA -->
-  <header class="border-b border-quant-border bg-quant-panel/95 backdrop-blur-md sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
-      <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
-          <i class="fa-solid fa-bolt text-sm"></i>
+  <!-- CABECERA LIMPIA -->
+  <header class="border-b border-quant-border bg-[#070b12]/85 backdrop-blur-xl sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-8 h-8 rounded-lg bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center text-cyan-300 shrink-0">
+          <i class="fa-solid fa-bolt text-xs"></i>
         </div>
-        <div class="flex items-center gap-2">
-          <h1 class="text-sm sm:text-base font-extrabold tracking-tight text-white">
-            BETAGS QUANT <span class="text-cyan-400">// MERCADOS</span>
-          </h1>
-          <span class="hidden md:inline-block px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+        <div class="flex items-center gap-2.5 truncate">
+          <span class="text-sm sm:text-[15px] font-extrabold tracking-tight text-white">
+            BETAGS QUANT
+          </span>
+          <span class="text-slate-600 font-light">/</span>
+          <span class="text-xs font-semibold tracking-wide uppercase text-cyan-300/90 truncate">
+            Mercados
+          </span>
+          <span class="hidden lg:inline-flex items-center gap-1.5 ml-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-emerald-400/10 text-emerald-300 border border-emerald-400/20">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
             POISSON GEOMÉTRICO &bull; DIXON-COLES
           </span>
         </div>
       </div>
 
-      <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
-        <button id="btn-copy-report" onclick="copyFullReport()" disabled
-          class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:pointer-events-none text-gray-200 border border-slate-700 transition flex items-center gap-1.5">
-          <i class="fa-regular fa-copy text-emerald-400"></i>
-          <span>Copiar Reporte</span>
-        </button>
-      </div>
+      <button id="btn-copy-report" onclick="copyFullReport()" disabled
+        class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-quant-card hover:bg-slate-800 disabled:opacity-35 disabled:pointer-events-none text-slate-100 border border-quant-border transition flex items-center gap-2 shrink-0">
+        <i class="fa-regular fa-copy text-emerald-300"></i>
+        <span>Copiar Reporte</span>
+      </button>
     </div>
   </header>
 
-  <!-- WORKSPACE PRINCIPAL: CAJA DE INGESTA + SOLO MERCADOS RESULTANTES -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-4 space-y-4">
+  <!-- WORKSPACE PRINCIPAL -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
 
-    <!-- CAJA VISIBLE DONDE SE PEGA LA ESTADÍSTICA -->
-    <section class="bg-quant-panel border border-quant-border rounded-xl p-3.5 sm:p-4 space-y-2.5 shadow-lg">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-terminal text-cyan-400 text-xs"></i>
-          <span class="text-xs font-extrabold uppercase tracking-wider text-white">
-            Pegar Estadística Cruda del Partido
+    <!-- CAJA DE INGESTA DE ESTADÍSTICA -->
+    <section class="surface-card rounded-2xl p-4 sm:p-5 space-y-3">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <div class="flex items-center gap-2.5">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-file-lines text-cyan-300 text-xs"></i>
+            <span>Estadística del Partido</span>
           </span>
-          <span id="parse-status-badge" class="px-2 py-0.5 rounded bg-quant-bg border border-quant-border font-mono text-[10px] text-gray-400">
+          <span id="parse-status-badge" class="px-2.5 py-0.5 rounded-full surface-inset font-mono text-[11px] text-slate-400">
             Esperando datos...
           </span>
         </div>
 
         <div class="flex flex-wrap items-center gap-1.5">
           <button onclick="pasteFromClipboardDirect()"
-            class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition flex items-center gap-1.5">
-            <i class="fa-solid fa-paste"></i>
-            <span>Pegar Portapapeles</span>
+            class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-quant-card hover:bg-slate-800 text-cyan-300 border border-quant-border transition flex items-center gap-1.5">
+            <i class="fa-solid fa-paste text-[11px]"></i>
+            <span>Pegar</span>
           </button>
           <button onclick="loadExampleData()"
-            class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 transition flex items-center gap-1">
-            <i class="fa-solid fa-flask"></i>
+            class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-emerald-400/10 hover:bg-emerald-400/20 text-emerald-300 border border-emerald-400/25 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-flask text-[11px]"></i>
             <span>Ejemplo</span>
           </button>
           <button onclick="clearAll()"
-            class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-rose-950/60 text-gray-400 hover:text-rose-300 border border-slate-700 transition flex items-center gap-1">
-            <i class="fa-solid fa-trash-can"></i>
+            class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-quant-card hover:bg-rose-950/50 text-slate-400 hover:text-rose-300 border border-quant-border transition flex items-center gap-1.5">
+            <i class="fa-solid fa-eraser text-[11px]"></i>
             <span>Limpiar</span>
           </button>
           <button onclick="runFullPipeline()"
-            class="px-3.5 py-1 rounded-lg text-xs font-extrabold bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 transition flex items-center gap-1.5 shadow">
-            <i class="fa-solid fa-bolt"></i>
+            class="px-4 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 hover:brightness-105 text-slate-950 transition flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-bolt text-[11px]"></i>
             <span>Analizar Mercados</span>
           </button>
         </div>
       </div>
 
-      <textarea id="raw-stats-input" rows="5"
-        placeholder="Pega aquí las estadísticas crudas del partido (SoccerStats / tablas de equipos) y pulsa Analizar Mercados..."
-        class="w-full rounded-xl bg-quant-bg border border-quant-border focus:border-cyan-500 text-xs font-mono text-gray-200 p-3 placeholder-gray-600 transition outline-none resize-y"></textarea>
+      <textarea id="raw-stats-input" rows="4"
+        placeholder="Pega aquí las estadísticas crudas del partido y pulsa Analizar Mercados..."
+        class="w-full rounded-xl surface-inset focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/10 text-xs font-mono text-slate-200 p-3.5 placeholder-slate-600 transition outline-none resize-y leading-relaxed"></textarea>
     </section>
 
-    <!-- CONTENEDOR DE RESULTADOS (SOLO MERCADOS QUE SURGIERON DEL ANÁLISIS) -->
-    <div id="results-wrapper" class="hidden space-y-4">
+    <!-- RESULTADOS: ÚNICAMENTE LOS MERCADOS QUE SURGIERON DEL ANÁLISIS -->
+    <div id="results-wrapper" class="hidden space-y-6">
 
-      <!-- ENCABEZADO COMPACTO DEL PARTIDO ANALIZADO -->
-      <section class="bg-quant-panel border border-quant-border rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2">
-        <div class="flex items-center gap-2.5">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <h2 id="match-header-title" class="text-base sm:text-lg font-extrabold tracking-tight text-white">
+      <!-- CABECERA DEL PARTIDO -->
+      <div class="flex flex-wrap items-center justify-between gap-2 px-1">
+        <div class="flex items-center gap-3">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <h2 id="match-header-title" class="text-lg sm:text-xl font-extrabold tracking-tight text-white">
             -- vs --
           </h2>
-          <span id="match-header-ppi" class="px-2 py-0.5 rounded bg-quant-bg border border-quant-border font-mono text-[11px] text-gray-400">
+          <span id="match-header-ppi" class="px-2.5 py-0.5 rounded-md surface-card font-mono text-xs text-slate-300">
             PPI --
           </span>
         </div>
-        <span class="text-[11px] font-mono text-emerald-400 font-semibold uppercase">
-          Mercados Generados del Análisis
+        <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400">
+          Mercados del Análisis
         </span>
-      </section>
+      </div>
 
-      <!-- VEREDICTO TOP 3 SELECCIONES (+EV / QUARTER-KELLY) -->
-      <section class="bg-quant-panel border border-emerald-500/35 rounded-xl p-3.5 sm:p-4">
-        <div class="flex items-center justify-between mb-2.5">
-          <h3 class="text-xs font-extrabold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+      <!-- 1. VEREDICTO TOP 3 SELECCIONES (+EV / QUARTER-KELLY) -->
+      <section class="surface-card rounded-2xl p-4 sm:p-5 space-y-4">
+        <div class="flex items-center justify-between gap-2">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-300 flex items-center gap-2">
             <i class="fa-solid fa-trophy"></i>
-            <span>Veredicto Top 3 Selecciones (+EV / Quarter-Kelly)</span>
+            <span>Top 3 Selecciones Destacadas</span>
           </h3>
-          <span class="text-[11px] font-mono text-gray-500 hidden sm:inline">Introduce cuota bookie para calcular edge y stake</span>
+          <span class="text-[11px] font-mono text-slate-400 hidden sm:inline">Cuota bookie &rarr; Edge +EV% &amp; 1/4 Kelly</span>
         </div>
-        <div id="syndicate-top3-grid" class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div id="syndicate-top3-grid" class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
           <!-- Generado dinámicamente -->
         </div>
       </section>
 
-      <!-- MATRIZ COMPLETA DE MERCADOS -->
-      <section class="bg-quant-panel border border-quant-border rounded-xl p-3.5 sm:p-4 space-y-3.5">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <!-- 2. TABLAS DE MERCADOS PRINCIPALES -->
+      <section class="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
-          <!-- Tabla 1: Resultado y Hándicaps (1X2, Doble Oportunidad 1X/X2/12, DNB) -->
-          <div class="lg:col-span-6 bg-quant-bg border border-quant-border rounded-xl overflow-hidden">
-            <div class="px-3 py-2 bg-slate-900/90 border-b border-quant-border flex items-center justify-between">
-              <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Resultado &bull; Doble Oportunidad &bull; DNB</span>
-              <span class="text-[10px] font-mono text-gray-500">1X2 / 1X-X2-12 / DNB</span>
-            </div>
-            <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr class="border-b border-gray-800/80 text-gray-400 text-[10px] uppercase">
-                    <th class="py-2 px-2.5">Mercado / Selección</th>
-                    <th class="py-2 px-1.5 text-right">Prob%</th>
-                    <th class="py-2 px-1.5 text-right">Justa</th>
-                    <th class="py-2 px-1.5 text-center w-20">Bookie</th>
-                    <th class="py-2 px-2.5 text-right">+EV / 1/4K</th>
-                  </tr>
-                </thead>
-                <tbody id="table-1x2-body" class="divide-y divide-gray-800/60">
-                  <!-- Generado dinámicamente -->
-                </tbody>
-              </table>
-            </div>
+        <!-- Tabla 1: Resultado, Doble Oportunidad y DNB -->
+        <div class="surface-card rounded-2xl overflow-hidden flex flex-col">
+          <div class="px-4 py-3 border-b border-quant-border bg-quant-card/50 flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-cyan-300">Resultado &bull; Doble Oportunidad &bull; DNB</span>
+            <span class="text-[10px] font-mono text-slate-500">1X2 / 1X-X2-12 / DNB</span>
           </div>
-
-          <!-- Tabla 2: Goles y Ambos Anotan (O/U 1.5, O/U 2.5, O/U 3.5, BTTS Sí/No) -->
-          <div class="lg:col-span-6 bg-quant-bg border border-quant-border rounded-xl overflow-hidden">
-            <div class="px-3 py-2 bg-slate-900/90 border-b border-quant-border flex items-center justify-between">
-              <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Goles Totales &bull; Ambos Anotan (BTTS)</span>
-              <span class="text-[10px] font-mono text-gray-500">O/U 1.5 - 3.5 / BTTS</span>
-            </div>
-            <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr class="border-b border-gray-800/80 text-gray-400 text-[10px] uppercase">
-                    <th class="py-2 px-2.5">Mercado / Selección</th>
-                    <th class="py-2 px-1.5 text-right">Prob%</th>
-                    <th class="py-2 px-1.5 text-right">Justa</th>
-                    <th class="py-2 px-1.5 text-center w-20">Bookie</th>
-                    <th class="py-2 px-2.5 text-right">+EV / 1/4K</th>
-                  </tr>
-                </thead>
-                <tbody id="table-goals-body" class="divide-y divide-gray-800/60">
-                  <!-- Generado dinámicamente -->
-                </tbody>
-              </table>
-            </div>
+          <div class="overflow-x-auto flex-1">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="border-b border-quant-border text-slate-400 text-[10px] uppercase tracking-wider font-semibold">
+                  <th class="py-2.5 px-3.5">Selección</th>
+                  <th class="py-2.5 px-2 text-right">Prob%</th>
+                  <th class="py-2.5 px-2 text-right">Justa</th>
+                  <th class="py-2.5 px-2 text-center w-20">Bookie</th>
+                  <th class="py-2.5 px-3.5 text-right">+EV / 1/4K</th>
+                </tr>
+              </thead>
+              <tbody id="table-1x2-body" class="divide-y divide-slate-800/50">
+                <!-- Generado dinámicamente -->
+              </tbody>
+            </table>
           </div>
-
         </div>
 
-        <!-- Fila Inferior de Mercados Secundarios: Top 4 Marcadores Exactos + Derivados (Córners y Mitades) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 pt-1">
-          <div class="lg:col-span-7 bg-quant-bg border border-quant-border rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1.5">
-              <i class="fa-solid fa-crosshairs text-cyan-400"></i>
-              <span>Top 4 Marcadores:</span>
-            </span>
-            <div id="top-scorelines-chips" class="flex flex-wrap items-center gap-1.5">
-              <!-- Generado dinámicamente -->
-            </div>
+        <!-- Tabla 2: Goles Totales y Ambos Anotan (BTTS) -->
+        <div class="surface-card rounded-2xl overflow-hidden flex flex-col">
+          <div class="px-4 py-3 border-b border-quant-border bg-quant-card/50 flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-300">Goles Totales &bull; Ambos Anotan</span>
+            <span class="text-[10px] font-mono text-slate-500">O/U 1.5 - 3.5 / BTTS</span>
           </div>
+          <div class="overflow-x-auto flex-1">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="border-b border-quant-border text-slate-400 text-[10px] uppercase tracking-wider font-semibold">
+                  <th class="py-2.5 px-3.5">Selección</th>
+                  <th class="py-2.5 px-2 text-right">Prob%</th>
+                  <th class="py-2.5 px-2 text-right">Justa</th>
+                  <th class="py-2.5 px-2 text-center w-20">Bookie</th>
+                  <th class="py-2.5 px-3.5 text-right">+EV / 1/4K</th>
+                </tr>
+              </thead>
+              <tbody id="table-goals-body" class="divide-y divide-slate-800/50">
+                <!-- Generado dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-          <div id="derived-markets-box" class="lg:col-span-5 bg-quant-bg border border-quant-border rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
-            <!-- Generado dinámicamente: Línea Óptima Córners y Mercado de Mitades con cuota justa -->
+      </section>
+
+      <!-- 3. MARCADORES EXACTOS Y MERCADOS DERIVADOS -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-7 surface-card rounded-2xl p-3.5 sm:px-4 flex flex-wrap items-center justify-between gap-2.5">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+            <i class="fa-solid fa-crosshairs text-cyan-300"></i>
+            <span>Top 4 Marcadores</span>
+          </span>
+          <div id="top-scorelines-chips" class="flex flex-wrap items-center gap-2">
+            <!-- Generado dinámicamente -->
           </div>
+        </div>
+
+        <div id="derived-markets-box" class="lg:col-span-5 surface-card rounded-2xl p-3.5 sm:px-4 flex flex-wrap items-center justify-between gap-2">
+          <!-- Generado dinámicamente -->
         </div>
       </section>
 
       <!-- ===================================================================== -->
       <!-- 3 CAJONES COLAPSADOS AL PIE (CERRADOS POR DEFECTO)                    -->
       <!-- ===================================================================== -->
-      <section class="pt-1 space-y-2.5">
+      <section class="pt-1 space-y-3">
         <div class="flex flex-wrap items-center gap-2">
           <button id="btn-tab-tactical" onclick="toggleBottomDrawer('drawer-tactical', 'btn-tab-tactical')"
-            class="px-3.5 py-2 rounded-xl text-xs font-bold bg-quant-panel hover:bg-slate-800 text-gray-300 border border-quant-border transition flex items-center gap-2">
-            <i class="fa-solid fa-plus text-amber-400"></i>
+            class="px-3.5 py-2 rounded-xl text-xs font-semibold surface-card hover:bg-quant-card text-slate-300 transition flex items-center gap-2">
+            <i class="fa-solid fa-plus text-amber-300 text-[11px]"></i>
             <span>Radiografía Táctica</span>
           </button>
 
           <button id="btn-tab-charts" onclick="toggleBottomDrawer('drawer-charts', 'btn-tab-charts')"
-            class="px-3.5 py-2 rounded-xl text-xs font-bold bg-quant-panel hover:bg-slate-800 text-gray-300 border border-quant-border transition flex items-center gap-2">
-            <i class="fa-solid fa-plus text-cyan-400"></i>
+            class="px-3.5 py-2 rounded-xl text-xs font-semibold surface-card hover:bg-quant-card text-slate-300 transition flex items-center gap-2">
+            <i class="fa-solid fa-plus text-cyan-300 text-[11px]"></i>
             <span>Matriz 0-4 y Gráficos</span>
           </button>
 
           <button id="btn-tab-calibration" onclick="toggleBottomDrawer('drawer-calibration', 'btn-tab-calibration')"
-            class="px-3.5 py-2 rounded-xl text-xs font-bold bg-quant-panel hover:bg-slate-800 text-gray-300 border border-quant-border transition flex items-center gap-2">
-            <i class="fa-solid fa-plus text-emerald-400"></i>
+            class="px-3.5 py-2 rounded-xl text-xs font-semibold surface-card hover:bg-quant-card text-slate-300 transition flex items-center gap-2">
+            <i class="fa-solid fa-plus text-emerald-300 text-[11px]"></i>
             <span>Calibración del Modelo</span>
           </button>
         </div>
 
         <!-- CAJÓN 1: RADIOGRAFÍA TÁCTICA -->
-        <div id="drawer-tactical" class="hidden bg-quant-panel border border-quant-border rounded-xl p-4">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div class="bg-quant-bg border border-quant-border rounded-lg p-3.5">
-              <div class="text-[11px] font-bold uppercase text-cyan-400 mb-1.5 flex items-center gap-1.5">
+        <div id="drawer-tactical" class="hidden surface-card rounded-2xl p-4 sm:p-5">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="surface-inset rounded-xl p-4">
+              <div class="text-[11px] font-bold uppercase tracking-wider text-cyan-300 mb-2 flex items-center gap-1.5">
                 <i class="fa-solid fa-stopwatch"></i>
                 <span>1. Asimetría Temporal &amp; Game State</span>
               </div>
-              <p id="edge-first-goal" class="text-xs text-gray-300 leading-relaxed"></p>
-              <div id="edge-first-goal-tags" class="mt-2.5 flex flex-wrap gap-1.5"></div>
+              <p id="edge-first-goal" class="text-xs text-slate-300 leading-relaxed"></p>
+              <div id="edge-first-goal-tags" class="mt-3 flex flex-wrap gap-1.5"></div>
             </div>
 
-            <div class="bg-quant-bg border border-quant-border rounded-lg p-3.5">
-              <div class="text-[11px] font-bold uppercase text-emerald-400 mb-1.5 flex items-center gap-1.5">
+            <div class="surface-inset rounded-xl p-4">
+              <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-300 mb-2 flex items-center gap-1.5">
                 <i class="fa-solid fa-flag"></i>
                 <span>2. Filtro de Córners &amp; Mitades</span>
               </div>
-              <p id="edge-derivatives" class="text-xs text-gray-300 leading-relaxed"></p>
-              <div id="edge-derivatives-tags" class="mt-2.5 flex flex-wrap gap-1.5"></div>
+              <p id="edge-derivatives" class="text-xs text-slate-300 leading-relaxed"></p>
+              <div id="edge-derivatives-tags" class="mt-3 flex flex-wrap gap-1.5"></div>
             </div>
 
-            <div class="bg-quant-bg border border-quant-border rounded-lg p-3.5">
-              <div class="text-[11px] font-bold uppercase text-amber-400 mb-1.5 flex items-center gap-1.5">
+            <div class="surface-inset rounded-xl p-4">
+              <div class="text-[11px] font-bold uppercase tracking-wider text-amber-300 mb-2 flex items-center gap-1.5">
                 <i class="fa-solid fa-scale-unbalanced"></i>
                 <span>3. Regresión PPI vs Puntos Reales</span>
               </div>
-              <p id="edge-regression" class="text-xs text-gray-300 leading-relaxed"></p>
-              <div id="edge-regression-tags" class="mt-2.5 flex flex-wrap gap-1.5"></div>
+              <p id="edge-regression" class="text-xs text-slate-300 leading-relaxed"></p>
+              <div id="edge-regression-tags" class="mt-3 flex flex-wrap gap-1.5"></div>
             </div>
           </div>
         </div>
 
         <!-- CAJÓN 2: MATRIZ 0-4 Y GRÁFICOS -->
-        <div id="drawer-charts" class="hidden bg-quant-panel border border-quant-border rounded-xl p-4">
+        <div id="drawer-charts" class="hidden surface-card rounded-2xl p-4 sm:p-5">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-            <div class="lg:col-span-7 bg-quant-bg border border-quant-border rounded-lg p-3">
-              <div class="text-xs font-bold text-gray-300 mb-2">Actividad de Goles por Segmento Temporal (GF + GA)</div>
+            <div class="lg:col-span-7 surface-inset rounded-xl p-4">
+              <div class="text-xs font-bold text-slate-200 mb-3">Actividad de Goles por Segmento Temporal (GF + GA)</div>
               <div class="relative h-52 w-full">
                 <canvas id="time-segments-chart"></canvas>
               </div>
             </div>
-            <div class="lg:col-span-5 bg-quant-bg border border-quant-border rounded-lg p-3 flex flex-col justify-between">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-gray-300">Mapa de Calor Bivariado (0-4 Goles)</span>
-                <span class="text-[10px] font-mono text-gray-500">Filas: Local | Cols: Visit.</span>
+            <div class="lg:col-span-5 surface-inset rounded-xl p-4 flex flex-col justify-between">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold text-slate-200">Mapa de Calor Bivariado (0-4 Goles)</span>
+                <span class="text-[10px] font-mono text-slate-500">Filas: Local | Cols: Visit.</span>
               </div>
               <div id="score-heatmap-container" class="overflow-x-auto">
                 <!-- Generado dinámicamente -->
@@ -330,25 +357,25 @@
         </div>
 
         <!-- CAJÓN 3: CALIBRACIÓN MANUAL DEL MODELO -->
-        <div id="drawer-calibration" class="hidden bg-quant-panel border border-amber-500/35 rounded-xl p-4 space-y-4">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 p-3 rounded-lg bg-quant-bg border border-quant-border text-xs">
+        <div id="drawer-calibration" class="hidden surface-card rounded-2xl p-4 sm:p-5 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-3.5 rounded-xl surface-inset text-xs">
             <div>
-              <div class="flex justify-between mb-1">
-                <span class="text-gray-300">Peso Forma Reciente (Last 8)</span>
-                <span id="lbl-weight-l8" class="font-mono font-bold text-cyan-400">35%</span>
+              <div class="flex justify-between mb-1.5">
+                <span class="text-slate-300 font-medium">Peso Forma Reciente (Last 8)</span>
+                <span id="lbl-weight-l8" class="font-mono font-bold text-cyan-300">35%</span>
               </div>
               <input id="inp-weight-l8" type="range" min="0" max="70" step="5" value="35"
                 oninput="document.getElementById('lbl-weight-l8').textContent = this.value + '%'; document.getElementById('lbl-weight-ctx').textContent = (100 - this.value) + '%';"
                 class="w-full cursor-pointer" />
-              <div class="text-[10px] text-gray-500 mt-0.5">Contexto Casa/Fuera: <strong id="lbl-weight-ctx" class="text-gray-300">65%</strong></div>
+              <div class="text-[10px] text-slate-400 mt-1">Contexto Casa/Fuera: <strong id="lbl-weight-ctx" class="text-slate-200">65%</strong></div>
             </div>
 
             <div>
-              <div class="flex justify-between mb-1">
-                <span class="text-gray-300">Dispersión Geométrica (θ)</span>
-                <span class="font-mono text-amber-400 text-[11px]">Colas</span>
+              <div class="flex justify-between mb-1.5">
+                <span class="text-slate-300 font-medium">Dispersión Geométrica (θ)</span>
+                <span class="font-mono text-amber-300 text-[11px]">Colas</span>
               </div>
-              <select id="inp-theta-mode" class="w-full rounded bg-quant-panel border border-quant-border text-xs text-gray-200 px-2 py-1 outline-none focus:border-cyan-500">
+              <select id="inp-theta-mode" class="w-full rounded-lg bg-quant-card border border-quant-border text-xs text-slate-200 px-2.5 py-1.5 outline-none focus:border-cyan-400">
                 <option value="auto" selected>Automático (CS, BTTS y Mitades)</option>
                 <option value="low">Forzar Baja Dispersión</option>
                 <option value="medium">Forzar Dispersión Media</option>
@@ -357,71 +384,71 @@
             </div>
 
             <div>
-              <div class="flex justify-between mb-1">
-                <span class="text-gray-300">Corrección Dixon-Coles (ρ)</span>
-                <span id="lbl-rho-val" class="font-mono font-bold text-emerald-400">-0.08</span>
+              <div class="flex justify-between mb-1.5">
+                <span class="text-slate-300 font-medium">Corrección Dixon-Coles (ρ)</span>
+                <span id="lbl-rho-val" class="font-mono font-bold text-emerald-300">-0.08</span>
               </div>
               <input id="inp-rho" type="range" min="-0.18" max="0.05" step="0.01" value="-0.08"
                 oninput="document.getElementById('lbl-rho-val').textContent = parseFloat(this.value).toFixed(2);"
                 class="w-full cursor-pointer" />
-              <div class="text-[10px] text-gray-500 mt-0.5">Ajuste marcadores 0-0, 1-0, 0-1, 1-1</div>
+              <div class="text-[10px] text-slate-400 mt-1">Ajuste marcadores 0-0, 1-0, 0-1, 1-1</div>
             </div>
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2.5 text-xs">
-            <div class="bg-quant-bg p-2 rounded-lg border border-quant-border">
-              <label class="block text-[10px] text-gray-400 mb-0.5">Local</label>
-              <input id="cal-home-name" type="text" value="Local" class="w-full bg-quant-panel border border-gray-700 rounded px-2 py-1 text-white font-semibold" />
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">Local</label>
+              <input id="cal-home-name" type="text" value="Local" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-white font-semibold outline-none focus:border-cyan-400" />
             </div>
-            <div class="bg-quant-bg p-2 rounded-lg border border-quant-border">
-              <label class="block text-[10px] text-gray-400 mb-0.5">Visitante</label>
-              <input id="cal-away-name" type="text" value="Visitante" class="w-full bg-quant-panel border border-gray-700 rounded px-2 py-1 text-white font-semibold" />
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">Visitante</label>
+              <input id="cal-away-name" type="text" value="Visitante" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-white font-semibold outline-none focus:border-cyan-400" />
             </div>
-            <div class="bg-quant-bg p-2 rounded-lg border border-quant-border">
-              <label class="block text-[10px] text-gray-400 mb-0.5">GF Local (Casa)</label>
-              <input id="cal-home-gf" type="number" step="0.01" value="1.66" class="w-full bg-quant-panel border border-gray-700 rounded px-2 py-1 text-cyan-300 font-mono" />
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GF Local (Casa)</label>
+              <input id="cal-home-gf" type="number" step="0.01" value="1.66" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-cyan-300 font-mono outline-none focus:border-cyan-400" />
             </div>
-            <div class="bg-quant-bg p-2 rounded-lg border border-quant-border">
-              <label class="block text-[10px] text-gray-400 mb-0.5">GC Local (Casa)</label>
-              <input id="cal-home-ga" type="number" step="0.01" value="1.50" class="w-full bg-quant-panel border border-gray-700 rounded px-2 py-1 text-rose-300 font-mono" />
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GC Local (Casa)</label>
+              <input id="cal-home-ga" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-rose-300 font-mono outline-none focus:border-cyan-400" />
             </div>
-            <div class="bg-quant-bg p-2 rounded-lg border border-quant-border">
-              <label class="block text-[10px] text-gray-400 mb-0.5">GF Visit. (Fuera)</label>
-              <input id="cal-away-gf" type="number" step="0.01" value="1.50" class="w-full bg-quant-panel border border-gray-700 rounded px-2 py-1 text-cyan-300 font-mono" />
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GF Visit. (Fuera)</label>
+              <input id="cal-away-gf" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-cyan-300 font-mono outline-none focus:border-cyan-400" />
             </div>
-            <div class="bg-quant-bg p-2 rounded-lg border border-quant-border">
-              <label class="block text-[10px] text-gray-400 mb-0.5">GC Visit. (Fuera)</label>
-              <input id="cal-away-ga" type="number" step="0.01" value="1.66" class="w-full bg-quant-panel border border-gray-700 rounded px-2 py-1 text-rose-300 font-mono" />
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GC Visit. (Fuera)</label>
+              <input id="cal-away-ga" type="number" step="0.01" value="1.66" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-rose-300 font-mono outline-none focus:border-cyan-400" />
             </div>
-            <div class="bg-quant-bg p-2 rounded-lg border border-quant-border">
-              <label class="block text-[10px] text-gray-400 mb-0.5">GF Local (Last 8)</label>
-              <input id="cal-home-l8-gf" type="number" step="0.01" value="1.50" class="w-full bg-quant-panel border border-gray-700 rounded px-2 py-1 text-gray-200 font-mono" />
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GF Local (Last 8)</label>
+              <input id="cal-home-l8-gf" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-slate-200 font-mono outline-none focus:border-cyan-400" />
             </div>
-            <div class="bg-quant-bg p-2 rounded-lg border border-quant-border">
-              <label class="block text-[10px] text-gray-400 mb-0.5">GC Local (Last 8)</label>
-              <input id="cal-home-l8-ga" type="number" step="0.01" value="1.50" class="w-full bg-quant-panel border border-gray-700 rounded px-2 py-1 text-gray-200 font-mono" />
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GC Local (Last 8)</label>
+              <input id="cal-home-l8-ga" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-slate-200 font-mono outline-none focus:border-cyan-400" />
             </div>
-            <div class="bg-quant-bg p-2 rounded-lg border border-quant-border">
-              <label class="block text-[10px] text-gray-400 mb-0.5">GF Visit. (Last 8)</label>
-              <input id="cal-away-l8-gf" type="number" step="0.01" value="1.50" class="w-full bg-quant-panel border border-gray-700 rounded px-2 py-1 text-gray-200 font-mono" />
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GF Visit. (Last 8)</label>
+              <input id="cal-away-l8-gf" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-slate-200 font-mono outline-none focus:border-cyan-400" />
             </div>
-            <div class="bg-quant-bg p-2 rounded-lg border border-quant-border">
-              <label class="block text-[10px] text-gray-400 mb-0.5">GC Visit. (Last 8)</label>
-              <input id="cal-away-l8-ga" type="number" step="0.01" value="1.50" class="w-full bg-quant-panel border border-gray-700 rounded px-2 py-1 text-gray-200 font-mono" />
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GC Visit. (Last 8)</label>
+              <input id="cal-away-l8-ga" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-slate-200 font-mono outline-none focus:border-cyan-400" />
             </div>
-            <div class="bg-quant-bg p-2 rounded-lg border border-quant-border">
-              <label class="block text-[10px] text-gray-400 mb-0.5">Media Liga Local</label>
-              <input id="cal-league-home" type="number" step="0.01" value="1.66" class="w-full bg-quant-panel border border-gray-700 rounded px-2 py-1 text-amber-300 font-mono" />
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">Media Liga Local</label>
+              <input id="cal-league-home" type="number" step="0.01" value="1.66" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-amber-300 font-mono outline-none focus:border-cyan-400" />
             </div>
-            <div class="bg-quant-bg p-2 rounded-lg border border-quant-border">
-              <label class="block text-[10px] text-gray-400 mb-0.5">Media Liga Visit.</label>
-              <input id="cal-league-away" type="number" step="0.01" value="1.50" class="w-full bg-quant-panel border border-gray-700 rounded px-2 py-1 text-amber-300 font-mono" />
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">Media Liga Visit.</label>
+              <input id="cal-league-away" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-amber-300 font-mono outline-none focus:border-cyan-400" />
             </div>
           </div>
 
           <div class="flex justify-end">
             <button onclick="recalculateFromCalibration()"
-              class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition flex items-center gap-1.5">
+              class="px-4 py-1.5 rounded-lg text-xs font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 transition flex items-center gap-1.5">
               <i class="fa-solid fa-rotate"></i>
               <span>Recalcular Mercados</span>
             </button>
@@ -432,8 +459,8 @@
     </div>
   </main>
 
-  <!-- FOOTER DISCRETO -->
-  <footer class="border-t border-quant-border py-2.5 px-4 text-center text-[11px] text-gray-500 font-mono">
+  <!-- FOOTER -->
+  <footer class="border-t border-quant-border py-3 px-4 text-center text-[11px] text-slate-500 font-mono">
     BETAGS QUANT // POISSON GEOMÉTRICO &bull; Ejecución 100% Local
   </footer>
 
@@ -1581,24 +1608,23 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
     let currentModelOutput = null;
     let timeSegmentsChartInstance = null;
 
-    // Notificaciones Toast (Sin alert)
     function showToast(message, type = 'info') {
       const container = document.getElementById('toast-container');
       const colors = {
-        success: 'bg-emerald-950/95 border-emerald-500/50 text-emerald-200',
-        error: 'bg-rose-950/95 border-rose-500/50 text-rose-200',
-        warning: 'bg-amber-950/95 border-amber-500/50 text-amber-200',
-        info: 'bg-slate-900/95 border-cyan-500/50 text-cyan-200'
+        success: 'bg-emerald-950/95 border-emerald-400/40 text-emerald-200',
+        error: 'bg-rose-950/95 border-rose-400/40 text-rose-200',
+        warning: 'bg-amber-950/95 border-amber-400/40 text-amber-200',
+        info: 'bg-quant-card/95 border-cyan-400/40 text-cyan-200'
       };
       const icons = {
-        success: 'fa-circle-check text-emerald-400',
-        error: 'fa-triangle-exclamation text-rose-400',
-        warning: 'fa-circle-exclamation text-amber-400',
-        info: 'fa-circle-info text-cyan-400'
+        success: 'fa-circle-check text-emerald-300',
+        error: 'fa-triangle-exclamation text-rose-300',
+        warning: 'fa-circle-exclamation text-amber-300',
+        info: 'fa-circle-info text-cyan-300'
       };
 
       const toast = document.createElement('div');
-      toast.className = `pointer-events-auto flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border text-xs font-medium shadow-2xl backdrop-blur-md transition-all duration-300 ${colors[type] || colors.info}`;
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-2.5 rounded-xl border text-xs font-medium shadow-xl backdrop-blur-md transition-all duration-300 ${colors[type] || colors.info}`;
       toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}"></i><span>${message}</span>`;
       container.appendChild(toast);
 
@@ -1609,7 +1635,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
       }, 3000);
     }
 
-    // Control de Cajones Colapsados al Pie
     function toggleBottomDrawer(drawerId, btnId) {
       const drawers = ['drawer-tactical', 'drawer-charts', 'drawer-calibration'];
       const buttons = ['btn-tab-tactical', 'btn-tab-charts', 'btn-tab-calibration'];
@@ -1619,8 +1644,8 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
       drawers.forEach((dId, i) => {
         document.getElementById(dId).classList.add('hidden');
         const btn = document.getElementById(buttons[i]);
-        btn.classList.remove('border-cyan-500', 'bg-slate-800', 'text-white');
-        btn.classList.add('border-quant-border', 'text-gray-300');
+        btn.classList.remove('ring-1', 'ring-cyan-400/50', 'bg-quant-card', 'text-white');
+        btn.classList.add('text-slate-300');
         const icon = btn.querySelector('i');
         if (icon) {
           icon.classList.remove('fa-minus');
@@ -1631,8 +1656,8 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
       if (isOpening) {
         target.classList.remove('hidden');
         const activeBtn = document.getElementById(btnId);
-        activeBtn.classList.remove('border-quant-border', 'text-gray-300');
-        activeBtn.classList.add('border-cyan-500', 'bg-slate-800', 'text-white');
+        activeBtn.classList.remove('text-slate-300');
+        activeBtn.classList.add('ring-1', 'ring-cyan-400/50', 'bg-quant-card', 'text-white');
         const icon = activeBtn.querySelector('i');
         if (icon) {
           icon.classList.remove('fa-plus');
@@ -1644,7 +1669,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
       }
     }
 
-    // Pegar desde portapapeles directamente en la caja
     async function pasteFromClipboardDirect() {
       const box = document.getElementById('raw-stats-input');
       try {
@@ -1657,21 +1681,19 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
           }
         }
         box.focus();
-        showToast('Portapapeles vacío o restringido: pega el texto en la caja y pulsa Analizar Mercados.', 'warning');
+        showToast('Portapapeles vacío o restringido: pega en la caja y pulsa Analizar Mercados.', 'warning');
       } catch (e) {
         box.focus();
         showToast('Pega con Ctrl+V / Cmd+V en la caja y pulsa Analizar Mercados.', 'warning');
       }
     }
 
-    // Cargar ejemplo de Monza vs Fiorentina
     function loadExampleData(silent = false) {
       const raw = document.getElementById('example-raw-data').textContent.trim();
       document.getElementById('raw-stats-input').value = raw;
       runFullPipeline(!silent);
     }
 
-    // Limpiar caja y ocultar mercados
     function clearAll() {
       document.getElementById('raw-stats-input').value = '';
       document.getElementById('results-wrapper').classList.add('hidden');
@@ -1683,7 +1705,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
       showToast('Caja limpiada. Listo para nuevo partido.', 'info');
     }
 
-    // Ejecución automática al abrir la página (Monza vs Fiorentina precargado)
     window.addEventListener('DOMContentLoaded', () => {
       loadExampleData(true);
     });
@@ -1799,7 +1820,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         awayScoredStreak: 0
       };
 
-      // 1. Nombres de equipos
       for (let i = 0; i < Math.min(lines.length, 30); i++) {
         if (/^Latest results$/i.test(lines[i])) {
           let offset = /^\(/.test(lines[i + 1] || '') ? 2 : 1;
@@ -1815,7 +1835,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
       if (homeMatch) data.homeTeam = homeMatch[1].trim();
       if (awayMatch) data.awayTeam = awayMatch[1].trim();
 
-      // 2. PPI
       const ppiIdx = lines.findIndex(l => /^Points Performance Index \(PPI\)$/i.test(l));
       if (ppiIdx !== -1) {
         const nums = [];
@@ -1830,7 +1849,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         }
       }
 
-      // 3. PPG
       const ppgIdx = lines.findIndex(l => /^Points Per Game \(PPG\)$/i.test(l));
       if (ppgIdx !== -1) {
         const block = lines.slice(ppgIdx + 1, ppgIdx + 14).join(' ');
@@ -1851,7 +1869,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         }
       }
 
-      // 4. Tablas de Liga
       function extractLeagueTable(headerRegex) {
         const idx = lines.findIndex(l => headerRegex.test(l));
         if (idx === -1) return null;
@@ -1920,7 +1937,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         data.awayCtxGA = tblDefenceAway[aKey].val / tblDefenceAway[aKey].gp;
       }
 
-      // 5. Contextual averages
       const ctxIdx = lines.findIndex(l => /^Contextual averages$/i.test(l));
       if (ctxIdx !== -1) {
         for (let k = ctxIdx + 1; k < Math.min(ctxIdx + 55, lines.length); k++) {
@@ -1972,7 +1988,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         }
       }
 
-      // 6. Comparison with league average (Game State)
       const cmpHomeIdx = lines.findIndex(l => new RegExp(`^${escapeRegExp(data.homeTeam)}.*vs league average AT HOME`, 'i').test(l));
       if (cmpHomeIdx !== -1) {
         for (let k = cmpHomeIdx + 1; k < Math.min(cmpHomeIdx + 32, lines.length); k++) {
@@ -1999,7 +2014,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         }
       }
 
-      // 7. Goal times (segmentos 0-15 a 76-90 y 1T/2T)
       const gtIdx = lines.findIndex(l => /^Goal times$/i.test(l));
       if (gtIdx !== -1) {
         const gtSlice = lines.slice(gtIdx + 1, gtIdx + 150);
@@ -2056,7 +2070,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         }
       }
 
-      // 8. Corner statistics
       const cornerIdx = lines.findIndex(l => /^Corner statistics$/i.test(l));
       if (cornerIdx !== -1) {
         for (let k = cornerIdx + 1; k < Math.min(cornerIdx + 20, lines.length); k++) {
@@ -2070,7 +2083,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         }
       }
 
-      // 9. Scoring rates
       const srIdx = lines.findIndex(l => /^Scoring rates$/i.test(l));
       if (srIdx !== -1) {
         for (let k = srIdx + 1; k < Math.min(srIdx + 18, lines.length); k++) {
@@ -2085,7 +2097,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         }
       }
 
-      // 10. Clean sheets / Failed to score
       const ngIdx = lines.findIndex(l => /^No goal scored \/ conceded$/i.test(l));
       if (ngIdx !== -1) {
         for (let k = ngIdx + 1; k < Math.min(ngIdx + 10, lines.length); k++) {
@@ -2104,7 +2115,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         }
       }
 
-      // 11. H2H y Rachas
       const h2hIdx = lines.findIndex(l => /^Stats on above matches$/i.test(l));
       if (h2hIdx !== -1) {
         const sub = lines.slice(h2hIdx, h2hIdx + 20).join(' ');
@@ -2192,7 +2202,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
 
       const lambdaTotal = lambdaHome + lambdaAway;
 
-      // Sobredispersión Geométrica (theta)
       const avgCS = (d.homeCSTotal + d.awayCSTotal + d.homeCSCtx + d.awayCSCtx) / 4;
       const bothHalvesIndex = (d.homeScoredBothHalvesCtx + d.awayScoredBothHalvesCtx + d.homeConcededBothHalvesCtx + d.awayConcededBothHalvesCtx) / 4;
       const volatilityScore = ((100 - avgCS) * 0.45) + (bothHalvesIndex * 0.35) + (((d.homeOver25Ctx + d.awayOver25Ctx) / 2) * 0.20);
@@ -2211,7 +2220,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         theta = 0.14;
       }
 
-      // Matriz Bivariada (0..8)
       const maxGoals = 8;
       const matrix = Array.from({ length: maxGoals + 1 }, () => Array(maxGoals + 1).fill(0));
 
@@ -2230,7 +2238,6 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         }
       }
 
-      // Corrección Dixon-Coles
       const ftsFactor = ((d.homeFTSTotal + d.awayFTSTotal) / 2) / 22;
       const eqFactor = ((d.homeEqualizing + d.awayEqualizing) / 2) / 40;
       const effectiveRho = Math.max(-0.22, Math.min(0.08, rho * (0.7 + 0.3 * eqFactor) - (ftsFactor - 1) * 0.03));
@@ -2334,30 +2341,27 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
     }
 
     // =========================================================================
-    // MÓDULO 3: RENDERIZADO EXCLUSIVO DE MERCADOS Y CAJONES OCULTOS
+    // MÓDULO 3: RENDERIZADO LIMPIO DE MERCADOS Y CAJONES OCULTOS
     // =========================================================================
     function renderAllSections(d, m) {
       document.getElementById('results-wrapper').classList.remove('hidden');
       document.getElementById('btn-copy-report').disabled = false;
-      document.getElementById('parse-status-badge').textContent = `${d.homeTeam} vs ${d.awayTeam} • Listo`;
+      document.getElementById('parse-status-badge').textContent = `${d.homeTeam} vs ${d.awayTeam}`;
 
-      // Encabezado del Partido
       document.getElementById('match-header-title').textContent = `${d.homeTeam} vs ${d.awayTeam}`;
-      document.getElementById('match-header-ppi').textContent = `PPI: ${d.homePPI.toFixed(2)} vs ${d.awayPPI.toFixed(2)}`;
+      document.getElementById('match-header-ppi').textContent = `PPI ${d.homePPI.toFixed(2)} — ${d.awayPPI.toFixed(2)}`;
 
-      // Tabla 1: 1X2, Doble Oportunidad (1X, X2, 12) y DNB
       const group1X2 = [
-        { id: 'home', cat: '1X2', name: `1 — Local (${d.homeTeam})`, prob: m.probs.home },
-        { id: 'draw', cat: '1X2', name: 'X — Empate', prob: m.probs.draw },
-        { id: 'away', cat: '1X2', name: `2 — Visitante (${d.awayTeam})`, prob: m.probs.away },
-        { id: 'dc1X', cat: 'DC', name: `1X (${d.homeTeam} o Empate)`, prob: m.probs.dc1X },
-        { id: 'dcX2', cat: 'DC', name: `X2 (${d.awayTeam} o Empate)`, prob: m.probs.dcX2 },
-        { id: 'dc12', cat: 'DC', name: '12 (Local o Visitante)', prob: m.probs.dc12 },
-        { id: 'dnbHome', cat: 'DNB', name: `1 DNB (${d.homeTeam} Sin Empate)`, prob: m.probs.dnbHome },
-        { id: 'dnbAway', cat: 'DNB', name: `2 DNB (${d.awayTeam} Sin Empate)`, prob: m.probs.dnbAway }
+        { id: 'home', cat: '1X2', name: `1 · ${d.homeTeam}`, prob: m.probs.home },
+        { id: 'draw', cat: '1X2', name: 'X · Empate', prob: m.probs.draw },
+        { id: 'away', cat: '1X2', name: `2 · ${d.awayTeam}`, prob: m.probs.away },
+        { id: 'dc1X', cat: 'DC', name: `1X · ${d.homeTeam} o Empate`, prob: m.probs.dc1X },
+        { id: 'dcX2', cat: 'DC', name: `X2 · ${d.awayTeam} o Empate`, prob: m.probs.dcX2 },
+        { id: 'dc12', cat: 'DC', name: '12 · Local o Visitante', prob: m.probs.dc12 },
+        { id: 'dnbHome', cat: 'DNB', name: `1 DNB · ${d.homeTeam}`, prob: m.probs.dnbHome },
+        { id: 'dnbAway', cat: 'DNB', name: `2 DNB · ${d.awayTeam}`, prob: m.probs.dnbAway }
       ];
 
-      // Tabla 2: Goles Totales (O/U 1.5, 2.5, 3.5) y BTTS Sí/No
       const groupGoals = [
         { id: 'over15', cat: 'GOLES', name: 'Over 1.5 Goles', prob: m.probs.over15 },
         { id: 'under15', cat: 'GOLES', name: 'Under 1.5 Goles', prob: m.probs.under15 },
@@ -2365,26 +2369,31 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         { id: 'under25', cat: 'GOLES', name: 'Under 2.5 Goles', prob: m.probs.under25 },
         { id: 'over35', cat: 'GOLES', name: 'Over 3.5 Goles', prob: m.probs.over35 },
         { id: 'under35', cat: 'GOLES', name: 'Under 3.5 Goles', prob: m.probs.under35 },
-        { id: 'bttsYes', cat: 'BTTS', name: 'Ambos Anotan (BTTS) — Sí', prob: m.probs.bttsYes },
-        { id: 'bttsNo', cat: 'BTTS', name: 'Ambos Anotan (BTTS) — No', prob: m.probs.bttsNo }
+        { id: 'bttsYes', cat: 'BTTS', name: 'Ambos Anotan · Sí', prob: m.probs.bttsYes },
+        { id: 'bttsNo', cat: 'BTTS', name: 'Ambos Anotan · No', prob: m.probs.bttsNo }
       ];
 
       function buildMarketRows(list) {
         return list.map(item => {
-          const pct = (item.prob * 100).toFixed(1);
+          const pctNum = (item.prob * 100);
+          const pct = pctNum.toFixed(1);
           const fairOdd = (1 / item.prob).toFixed(2);
+          const barWidth = Math.min(100, Math.max(4, pctNum)).toFixed(1);
           return `
-            <tr class="hover:bg-slate-900/60 transition">
-              <td class="py-1.5 px-2.5 font-medium text-gray-200">${item.name}</td>
-              <td class="py-1.5 px-1.5 text-right font-mono font-bold text-cyan-300">${pct}%</td>
-              <td class="py-1.5 px-1.5 text-right font-mono font-bold text-white">@${fairOdd}</td>
-              <td class="py-1.5 px-1.5 text-center">
+            <tr class="prob-track hover:bg-slate-800/35 transition">
+              <td class="py-2.5 px-3.5 font-medium text-slate-200 relative">
+                <div class="prob-fill" style="width:${barWidth}%"></div>
+                <span class="relative z-10">${item.name}</span>
+              </td>
+              <td class="py-2.5 px-2 text-right font-mono font-semibold text-cyan-300 mono-num">${pct}%</td>
+              <td class="py-2.5 px-2 text-right font-mono font-bold text-white mono-num">@${fairOdd}</td>
+              <td class="py-2.5 px-2 text-center">
                 <input type="number" step="0.01" min="1.01" placeholder="${(parseFloat(fairOdd) + 0.10).toFixed(2)}"
                   data-prob="${item.prob}" oninput="updateRowEV(this)"
-                  class="w-16 bg-quant-panel border border-gray-700 focus:border-cyan-500 rounded px-1.5 py-0.5 text-center font-mono text-[11px] text-amber-300 outline-none" />
+                  class="w-16 surface-inset focus:border-cyan-400 rounded-lg px-1.5 py-1 text-center font-mono text-[11px] text-amber-300 placeholder-slate-600 outline-none mono-num" />
               </td>
-              <td class="py-1.5 px-2.5 text-right font-mono text-[11px] badge-cell">
-                <span class="px-1.5 py-0.5 rounded bg-slate-900 text-gray-500 border border-gray-800">--</span>
+              <td class="py-2.5 px-3.5 text-right font-mono text-[11px] badge-cell mono-num">
+                <span class="px-2 py-0.5 rounded-md surface-inset text-slate-500">&mdash;</span>
               </td>
             </tr>
           `;
@@ -2394,19 +2403,19 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
       document.getElementById('table-1x2-body').innerHTML = buildMarketRows(group1X2);
       document.getElementById('table-goals-body').innerHTML = buildMarketRows(groupGoals);
 
-      // Top 4 Marcadores Exactos
       const top4 = m.scorelines.slice(0, 4);
       document.getElementById('top-scorelines-chips').innerHTML = top4.map(sc => {
         const pct = (sc.prob * 100).toFixed(1);
         const odd = (1 / sc.prob).toFixed(2);
         return `
-          <span class="px-2 py-1 rounded-lg bg-quant-panel border border-gray-700 font-mono text-[11px] text-gray-200">
-            <strong class="text-white">${sc.score}</strong> <span class="text-emerald-400">${pct}%</span> <span class="text-gray-400">@${odd}</span>
+          <span class="px-2.5 py-1 rounded-lg surface-inset font-mono text-[11px] text-slate-200 flex items-center gap-1.5 mono-num">
+            <strong class="text-white font-bold">${sc.score}</strong>
+            <span class="text-emerald-300">${pct}%</span>
+            <span class="text-slate-400">@${odd}</span>
           </span>
         `;
       }).join('');
 
-      // Mercados Derivados (Línea Óptima de Córners y Mercado de Mitades con Cuota Justa)
       const ctxCornersExp = ((d.homeCornersForCtx + d.awayCornersAgainstCtx) / 2) + ((d.awayCornersForCtx + d.homeCornersAgainstCtx) / 2);
       let cornerLabel = 'Under 9.5 Córners';
       let cornerProb = 0.72;
@@ -2430,28 +2439,21 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
       const halvesFairOdd = (1 / halvesProb).toFixed(2);
 
       document.getElementById('derived-markets-box').innerHTML = `
-        <div class="flex items-center gap-1.5 font-mono text-[11px]">
-          <span class="px-2 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">
-            <i class="fa-solid fa-flag mr-1"></i>${cornerLabel}: <strong>@${cornerFairOdd}</strong> (${(cornerProb * 100).toFixed(0)}%)
-          </span>
-        </div>
-        <div class="flex items-center gap-1.5 font-mono text-[11px]">
-          <span class="px-2 py-1 rounded-lg bg-purple-500/10 border border-purple-500/30 text-purple-300">
-            <i class="fa-solid fa-clock mr-1"></i>${halvesLabel}: <strong>@${halvesFairOdd}</strong> (${(halvesProb * 100).toFixed(0)}%)
-          </span>
-        </div>
+        <span class="px-2.5 py-1 rounded-lg bg-cyan-400/10 border border-cyan-400/20 text-cyan-200 font-mono text-[11px] mono-num">
+          <i class="fa-solid fa-flag mr-1.5 text-cyan-300"></i>${cornerLabel} <strong class="text-white">@${cornerFairOdd}</strong> <span class="text-cyan-300/80">(${(cornerProb * 100).toFixed(0)}%)</span>
+        </span>
+        <span class="px-2.5 py-1 rounded-lg bg-purple-400/10 border border-purple-400/20 text-purple-200 font-mono text-[11px] mono-num">
+          <i class="fa-solid fa-clock mr-1.5 text-purple-300"></i>${halvesLabel} <strong class="text-white">@${halvesFairOdd}</strong> <span class="text-purple-300/80">(${(halvesProb * 100).toFixed(0)}%)</span>
+        </span>
       `;
 
-      // Veredicto Top 3 Selecciones
       renderSyndicateTop3(d, m, [...group1X2, ...groupGoals]);
 
-      // Rellenar Cajones Colapsados
       renderTacticalEdge(d, m, ctxCornersExp);
       renderTimeSegmentsChart(d);
       renderScoreHeatmap(m.matrix);
     }
 
-    // Cálculo en vivo de +EV% y Quarter-Kelly en filas de mercado y tarjetas Top 3
     function updateRowEV(inputEl) {
       const row = inputEl.closest('tr');
       const card = inputEl.closest('.top3-card');
@@ -2461,7 +2463,7 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
       if (row) {
         const badgeCell = row.querySelector('.badge-cell');
         if (!bookieOdd || bookieOdd <= 1.0) {
-          badgeCell.innerHTML = `<span class="px-1.5 py-0.5 rounded bg-slate-900 text-gray-500 border border-gray-800">--</span>`;
+          badgeCell.innerHTML = `<span class="px-2 py-0.5 rounded-md surface-inset text-slate-500">&mdash;</span>`;
           return;
         }
         const ev = (prob * bookieOdd) - 1;
@@ -2469,9 +2471,9 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         if (ev > 0) {
           const fullKelly = ev / (bookieOdd - 1);
           const qKelly = Math.min(10, Math.max(0.1, fullKelly * 0.25 * 100)).toFixed(2);
-          badgeCell.innerHTML = `<span class="px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 font-bold">+${evPct}% | ${qKelly}%</span>`;
+          badgeCell.innerHTML = `<span class="px-2 py-0.5 rounded-md bg-emerald-400/15 text-emerald-300 border border-emerald-400/30 font-bold">+${evPct}% &middot; ${qKelly}%</span>`;
         } else {
-          badgeCell.innerHTML = `<span class="px-1.5 py-0.5 rounded bg-rose-500/15 text-rose-400 border border-rose-500/30">${evPct}%</span>`;
+          badgeCell.innerHTML = `<span class="px-2 py-0.5 rounded-md bg-rose-400/15 text-rose-300 border border-rose-400/25">${evPct}%</span>`;
         }
         return;
       }
@@ -2480,10 +2482,10 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         const evCell = card.querySelector('.ev-cell');
         const kellyCell = card.querySelector('.kelly-cell');
         if (!bookieOdd || bookieOdd <= 1.0) {
-          evCell.textContent = '--';
-          evCell.className = 'ev-cell text-gray-500';
-          kellyCell.textContent = '--';
-          kellyCell.className = 'kelly-cell text-gray-500';
+          evCell.textContent = '—';
+          evCell.className = 'ev-cell text-slate-500';
+          kellyCell.textContent = '—';
+          kellyCell.className = 'kelly-cell text-slate-500';
           return;
         }
         const ev = (prob * bookieOdd) - 1;
@@ -2492,19 +2494,18 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
           const fullKelly = ev / (bookieOdd - 1);
           const qKelly = Math.min(10, Math.max(0.1, fullKelly * 0.25 * 100)).toFixed(2);
           evCell.textContent = `+${evPct}%`;
-          evCell.className = 'ev-cell text-emerald-400 font-bold';
+          evCell.className = 'ev-cell text-emerald-300 font-bold';
           kellyCell.textContent = `${qKelly}%`;
           kellyCell.className = 'kelly-cell text-amber-300 font-bold';
         } else {
           evCell.textContent = `${evPct}%`;
-          evCell.className = 'ev-cell text-rose-400';
+          evCell.className = 'ev-cell text-rose-300';
           kellyCell.textContent = '0.00%';
-          kellyCell.className = 'kelly-cell text-gray-500';
+          kellyCell.className = 'kelly-cell text-slate-500';
         }
       }
     }
 
-    // Veredicto del Sindicato (Top 3 Selecciones)
     function renderSyndicateTop3(d, m, allMarkets) {
       const candidates = allMarkets.filter(item => item.id !== 'over15' && item.prob >= 0.54);
 
@@ -2515,23 +2516,23 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         if (c.id === 'bttsYes') {
           const empBTS = (d.homeBTSCtx + d.awayBTSCtx) / 200;
           structuralBonus = (empBTS - 0.55) * 0.25 + (d.awayCSTotal === 0 ? 0.04 : 0);
-          tag = `BTTS Ctx: ${d.homeBTSCtx}% / ${d.awayBTSCtx}% | CS Visit: ${d.awayCSTotal}%`;
+          tag = `BTTS Ctx ${d.homeBTSCtx}% / ${d.awayBTSCtx}%`;
         } else if (c.id === 'over25') {
           const empO25 = (d.homeOver25Ctx + d.awayOver25Ctx) / 200;
           structuralBonus = (empO25 - 0.60) * 0.25 + (m.lambdaTotal > 3.2 ? 0.03 : 0);
-          tag = `λ Total ${m.lambdaTotal.toFixed(2)} | Over 2.5 Ctx: ${d.homeOver25Ctx}% / ${d.awayOver25Ctx}%`;
+          tag = `Over 2.5 Ctx ${d.homeOver25Ctx}% / ${d.awayOver25Ctx}%`;
         } else if (c.id === 'under25') {
           const empU25 = 1 - ((d.homeOver25Ctx + d.awayOver25Ctx) / 200);
           structuralBonus = (empU25 - 0.40) * 0.25;
-          tag = `λ Total bajo (${m.lambdaTotal.toFixed(2)}) | Dispersión ${m.dispersionLevel}`;
+          tag = `Baja tendencia over`;
         } else if (c.id === 'dc1X' || c.id === 'dnbHome' || c.id === 'home') {
           structuralBonus = (d.homePPGHome - d.awayPPGAway) * 0.05 + (d.homeLeadDefending >= 80 ? 0.03 : 0);
-          tag = `Local ${d.homePPGHome.toFixed(2)} PPG | Visit. encaja 1ro ${d.awayConcededFirstCtx}%`;
+          tag = `Local ${d.homePPGHome.toFixed(2)} PPG`;
         } else if (c.id === 'dcX2' || c.id === 'dnbAway' || c.id === 'away') {
           structuralBonus = (d.awayPPI - d.homePPI) * 0.06;
-          tag = `PPI ${d.awayPPI.toFixed(2)} vs ${d.homePPI.toFixed(2)} | Rescate ${d.awayPPGCF.toFixed(2)} PPG`;
+          tag = `PPI ${d.awayPPI.toFixed(2)} vs ${d.homePPI.toFixed(2)}`;
         } else {
-          tag = `Consistencia matemática Poisson-Geométrica`;
+          tag = `Consistencia del modelo`;
         }
 
         return { ...c, score: c.prob + structuralBonus, tag };
@@ -2544,7 +2545,7 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         const rest = allMarkets.filter(x => !top3.some(t => t.id === x.id) && x.id !== 'over15')
           .sort((a, b) => b.prob - a.prob)
           .slice(0, 3 - top3.length)
-          .map(x => ({ ...x, tag: 'Distribución bivariada directa' }));
+          .map(x => ({ ...x, tag: 'Distribución bivariada' }));
         top3.push(...rest);
       }
 
@@ -2554,38 +2555,38 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         const probPct = (pick.prob * 100).toFixed(1);
         const minOdd = (1 / pick.prob).toFixed(2);
         return `
-          <div class="top3-card bg-quant-bg border border-emerald-500/30 rounded-xl p-3.5 flex flex-col justify-between gap-2.5">
-            <div>
-              <div class="flex items-center justify-between gap-2 mb-1">
-                <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 font-mono text-[10px] font-bold">
-                  #${idx + 1} &bull; ${pick.cat}
+          <div class="top3-card surface-inset rounded-xl p-4 flex flex-col justify-between gap-3.5 hover:border-emerald-400/35 transition">
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2 py-0.5 rounded-md bg-emerald-400/10 text-emerald-300 border border-emerald-400/20 font-mono text-[10px] font-bold">
+                  #${idx + 1} &middot; ${pick.cat}
                 </span>
-                <span class="text-[10px] font-mono text-gray-400 truncate">${pick.tag}</span>
+                <span class="text-[10px] font-mono text-slate-400 truncate">${pick.tag}</span>
               </div>
-              <div class="text-sm font-extrabold text-white">${pick.name}</div>
+              <div class="text-sm font-bold text-white tracking-tight">${pick.name}</div>
             </div>
 
-            <div class="pt-2 border-t border-gray-800/80 flex items-center justify-between gap-2 font-mono">
+            <div class="pt-3 border-t border-quant-border flex items-center justify-between gap-2 font-mono mono-num">
               <div>
-                <div class="text-[9px] text-gray-500 uppercase">Prob. Real</div>
-                <div class="text-sm font-extrabold text-cyan-400">${probPct}%</div>
+                <div class="text-[9px] text-slate-500 uppercase">Prob.</div>
+                <div class="text-sm font-extrabold text-cyan-300">${probPct}%</div>
               </div>
               <div>
-                <div class="text-[9px] text-gray-500 uppercase">Mín. +EV</div>
-                <div class="text-sm font-extrabold text-emerald-400">@${minOdd}</div>
+                <div class="text-[9px] text-slate-500 uppercase">Cuota Justa</div>
+                <div class="text-sm font-extrabold text-emerald-300">@${minOdd}</div>
               </div>
-              <div class="flex items-center gap-1.5">
+              <div class="flex items-center gap-2">
                 <div>
-                  <div class="text-[9px] text-gray-500 uppercase text-center">Bookie</div>
+                  <div class="text-[9px] text-slate-500 uppercase text-center">Bookie</div>
                   <input type="number" step="0.01" min="1.01" placeholder="${(parseFloat(minOdd) + 0.10).toFixed(2)}"
                     data-prob="${pick.prob}" oninput="updateRowEV(this)"
-                    class="w-16 bg-quant-panel border border-gray-700 focus:border-cyan-500 rounded px-1.5 py-0.5 text-center text-xs text-amber-300 outline-none" />
+                    class="w-16 bg-quant-card border border-quant-border focus:border-cyan-400 rounded-lg px-1.5 py-1 text-center text-xs text-amber-300 placeholder-slate-600 outline-none" />
                 </div>
                 <div class="text-right min-w-[44px]">
-                  <div class="text-[9px] text-gray-500 uppercase">EV / 1/4K</div>
+                  <div class="text-[9px] text-slate-500 uppercase">EV / 1/4K</div>
                   <div class="text-[11px] leading-tight">
-                    <span class="ev-cell text-gray-500">--</span><br>
-                    <span class="kelly-cell text-gray-500">--</span>
+                    <span class="ev-cell text-slate-500">&mdash;</span><br>
+                    <span class="kelly-cell text-slate-500">&mdash;</span>
                   </div>
                 </div>
               </div>
@@ -2595,34 +2596,32 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
       }).join('');
     }
 
-    // Radiografía Táctica (Cajón Oculto)
     function renderTacticalEdge(d, m, ctxCornersExp) {
       const earlyHomeGA = d.homeSegmentsGA[0];
       document.getElementById('edge-first-goal').innerHTML = `<strong>${d.awayTeam}</strong> encaja primero en el <strong>${d.awayConcededFirstCtx}%</strong> de salidas (min. <strong>${d.awayAvgMinConcededFirst}'</strong>) y <strong>${d.homeTeam}</strong> en el <strong>${d.homeConcededFirstCtx}%</strong> en casa (min. <strong>${d.homeAvgMinConcededFirst}'</strong>, ${earlyHomeGA} GA en 0-15'). En retención de ventaja, ${d.homeTeam} sostiene el <strong>${d.homeLeadDefending}%</strong> en casa (${d.homePPGSF.toFixed(2)} PPG al abrir vs ${d.homePPGCF.toFixed(2)} al encajar), mientras ${d.awayTeam} retiene el <strong>${d.awayLeadDefending}%</strong> fuera pero rescata <strong>${d.awayPPGCF.toFixed(2)} PPG</strong> tras ir perdiendo (${d.awayEqualizing}% igualada).`;
       document.getElementById('edge-first-goal-tags').innerHTML = `
-        <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-mono">Encaja 1ro: ${d.homeConcededFirstCtx}% / ${d.awayConcededFirstCtx}%</span>
-        <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-mono">Retención: ${d.homeLeadDefending}% vs ${d.awayLeadDefending}%</span>
+        <span class="px-2 py-0.5 rounded bg-cyan-400/10 text-cyan-300 border border-cyan-400/20 text-[10px] font-mono">Encaja 1ro: ${d.homeConcededFirstCtx}% / ${d.awayConcededFirstCtx}%</span>
+        <span class="px-2 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20 text-[10px] font-mono">Retención: ${d.homeLeadDefending}% vs ${d.awayLeadDefending}%</span>
       `;
 
       const totalCornersDiscrepancy = d.awayCornersTotalAll - d.awayCornersTotalCtx;
       let cornerText = totalCornersDiscrepancy > 1.5
-        ? `<strong>Discrepancia de Córners:</strong> ${d.awayTeam} promedia <strong>${d.awayCornersTotalAll.toFixed(2)}</strong> global pero cae a <strong>${d.awayCornersTotalCtx.toFixed(2)}</strong> fuera (${d.awayCornersOver85Ctx}% Over 8.5). Con <strong>${d.homeCornersTotalCtx.toFixed(2)}</strong> de ${d.homeTeam} en casa, la proyección es <strong>${ctxCornersExp.toFixed(1)}</strong> -> <strong>Under 9.5 Córners</strong>.`
+        ? `<strong>Discrepancia de Córners:</strong> ${d.awayTeam} promedia <strong>${d.awayCornersTotalAll.toFixed(2)}</strong> global pero cae a <strong>${d.awayCornersTotalCtx.toFixed(2)}</strong> fuera (${d.awayCornersOver85Ctx}% Over 8.5). Con <strong>${d.homeCornersTotalCtx.toFixed(2)}</strong> de ${d.homeTeam} en casa, la proyección es <strong>${ctxCornersExp.toFixed(1)}</strong> &rarr; <strong>Under 9.5 Córners</strong>.`
         : `<strong>Proyección Córners:</strong> Media contextual esperada de <strong>${ctxCornersExp.toFixed(1)}</strong> córners (${d.homeCornersTotalCtx.toFixed(2)} local / ${d.awayCornersTotalCtx.toFixed(2)} visitante).`;
       document.getElementById('edge-derivatives').innerHTML = cornerText + ` En <strong>Mitades</strong>, ${d.homeTeam} anota <strong>${d.home2ndHalfGFPct}%</strong> en 2T y ${d.awayTeam} <strong>${d.away2ndHalfGFPct}%</strong> en 2T.`;
       document.getElementById('edge-derivatives-tags').innerHTML = `
-        <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-[10px] font-mono">Córners Proy: ${ctxCornersExp.toFixed(1)}</span>
-        <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/30 text-[10px] font-mono">Goles 2T: ${d.home2ndHalfGFPct}% / ${d.away2ndHalfGFPct}%</span>
+        <span class="px-2 py-0.5 rounded bg-emerald-400/10 text-emerald-300 border border-emerald-400/20 text-[10px] font-mono">Córners Proy: ${ctxCornersExp.toFixed(1)}</span>
+        <span class="px-2 py-0.5 rounded bg-purple-400/10 text-purple-300 border border-purple-400/20 text-[10px] font-mono">Goles 2T: ${d.home2ndHalfGFPct}% / ${d.away2ndHalfGFPct}%</span>
       `;
 
       const ppiDiff = d.awayPPI - d.homePPI;
-      document.getElementById('edge-regression').innerHTML = `<strong>${d.awayTeam}</strong> registra PPI de <strong>${d.awayPPI.toFixed(2)}</strong> (${d.awayPts} pts, ${d.awayPPGL8.toFixed(2)} PPG en Last 8), superior a su posición en tabla. <strong>${d.homeTeam}</strong> tiene PPI de <strong>${d.homePPI.toFixed(2)}</strong> (${d.homePts} pts, ${d.homeConsecDefeats} derrotas seguidas), pero concentra su rendimiento en casa (${d.homePPGHome.toFixed(2)} PPG). Brecha Δ PPI: <strong>${ppiDiff > 0 ? '+' : ''}${ppiDiff.toFixed(2)}</strong>.`;
+      document.getElementById('edge-regression').innerHTML = `<strong>${d.awayTeam}</strong> registra PPI de <strong>${d.awayPPI.toFixed(2)}</strong> (${d.awayPts} pts, ${d.awayPPGL8.toFixed(2)} PPG en Last 8), superior a su posición en tabla. <strong>${d.homeTeam}</strong> tiene PPI de <strong>${d.homePPI.toFixed(2)}</strong> (${d.homePts} pts, ${d.homeConsecDefeats} derrotas seguidas), pero concentra su rendimiento en casa (${d.homePPGHome.toFixed(2)} PPG). Brecha &Delta; PPI: <strong>${ppiDiff > 0 ? '+' : ''}${ppiDiff.toFixed(2)}</strong>.`;
       document.getElementById('edge-regression-tags').innerHTML = `
-        <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-mono">Δ PPI: ${ppiDiff > 0 ? '+' : ''}${ppiDiff.toFixed(2)}</span>
-        <span class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-300 border border-rose-500/30 text-[10px] font-mono">CS: ${d.homeCSTotal}% vs ${d.awayCSTotal}%</span>
+        <span class="px-2 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20 text-[10px] font-mono">&Delta; PPI: ${ppiDiff > 0 ? '+' : ''}${ppiDiff.toFixed(2)}</span>
+        <span class="px-2 py-0.5 rounded bg-rose-400/10 text-rose-300 border border-rose-400/20 text-[10px] font-mono">CS: ${d.homeCSTotal}% vs ${d.awayCSTotal}%</span>
       `;
     }
 
-    // Gráfico Chart.js (Cajón Oculto)
     function renderTimeSegmentsChart(d) {
       const ctx = document.getElementById('time-segments-chart').getContext('2d');
       if (timeSegmentsChartInstance) {
@@ -2641,16 +2640,16 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
             {
               label: `${d.homeTeam} (GF+GA)`,
               data: homeActivity,
-              backgroundColor: 'rgba(6, 182, 212, 0.75)',
-              borderColor: '#06b6d4',
+              backgroundColor: 'rgba(34, 211, 238, 0.72)',
+              borderColor: '#22d3ee',
               borderWidth: 1,
               borderRadius: 5
             },
             {
               label: `${d.awayTeam} (GF+GA)`,
               data: awayActivity,
-              backgroundColor: 'rgba(16, 185, 129, 0.75)',
-              borderColor: '#10b981',
+              backgroundColor: 'rgba(52, 211, 153, 0.72)',
+              borderColor: '#34d399',
               borderWidth: 1,
               borderRadius: 5
             }
@@ -2660,24 +2659,23 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { labels: { color: '#9ca3af', font: { family: 'Inter', size: 11 } } }
+            legend: { labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 } } }
           },
           scales: {
             x: {
-              ticks: { color: '#9ca3af', font: { family: 'JetBrains Mono', size: 10 } },
-              grid: { color: 'rgba(30, 41, 59, 0.5)' }
+              ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } },
+              grid: { color: 'rgba(148, 163, 184, 0.08)' }
             },
             y: {
               beginAtZero: true,
-              ticks: { color: '#9ca3af', stepSize: 2, font: { family: 'JetBrains Mono', size: 10 } },
-              grid: { color: 'rgba(30, 41, 59, 0.5)' }
+              ticks: { color: '#94a3b8', stepSize: 2, font: { family: 'JetBrains Mono', size: 10 } },
+              grid: { color: 'rgba(148, 163, 184, 0.08)' }
             }
           }
         }
       });
     }
 
-    // Heatmap de Marcadores 0-4 (Cajón Oculto)
     function renderScoreHeatmap(matrix) {
       let maxP = 0;
       for (let i = 0; i <= 4; i++) {
@@ -2686,28 +2684,28 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         }
       }
 
-      let html = `<table class="w-full text-center font-mono text-[11px] border-collapse">
+      let html = `<table class="w-full text-center font-mono text-[11px] border-collapse mono-num">
         <thead>
           <tr>
-            <th class="p-1 text-gray-500">L\\V</th>
-            <th class="p-1 text-emerald-400">0</th>
-            <th class="p-1 text-emerald-400">1</th>
-            <th class="p-1 text-emerald-400">2</th>
-            <th class="p-1 text-emerald-400">3</th>
-            <th class="p-1 text-emerald-400">4</th>
+            <th class="p-1 text-slate-500">L\\V</th>
+            <th class="p-1 text-emerald-300">0</th>
+            <th class="p-1 text-emerald-300">1</th>
+            <th class="p-1 text-emerald-300">2</th>
+            <th class="p-1 text-emerald-300">3</th>
+            <th class="p-1 text-emerald-300">4</th>
           </tr>
         </thead>
         <tbody>`;
 
       for (let i = 0; i <= 4; i++) {
-        html += `<tr><td class="p-1 font-bold text-cyan-400">${i}</td>`;
+        html += `<tr><td class="p-1 font-bold text-cyan-300">${i}</td>`;
         for (let j = 0; j <= 4; j++) {
           const p = matrix[i][j];
           const pct = (p * 100).toFixed(1);
           const intensity = maxP > 0 ? p / maxP : 0;
-          const bgAlpha = (0.08 + intensity * 0.55).toFixed(2);
-          const textColor = intensity > 0.65 ? 'text-white font-bold' : 'text-gray-300';
-          html += `<td class="p-1.5 border border-gray-800/80 ${textColor}" style="background-color: rgba(6, 182, 212, ${bgAlpha});">${pct}%</td>`;
+          const bgAlpha = (0.06 + intensity * 0.50).toFixed(2);
+          const textColor = intensity > 0.65 ? 'text-white font-bold' : 'text-slate-300';
+          html += `<td class="p-1.5 border border-slate-800/70 rounded ${textColor}" style="background-color: rgba(34, 211, 238, ${bgAlpha});">${pct}%</td>`;
         }
         html += `</tr>`;
       }
@@ -2778,12 +2776,12 @@ League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.
         .join(' | ');
 
       const top3Txt = (m.top3 || [])
-        .map((t, idx) => `${idx + 1}. ${t.name} -> Prob: ${(t.prob * 100).toFixed(1)}% | Mín. +EV: @${(1 / t.prob).toFixed(2)}`)
+        .map((t, idx) => `${idx + 1}. ${t.name} -> Prob: ${(t.prob * 100).toFixed(1)}% | Cuota Justa: @${(1 / t.prob).toFixed(2)}`)
         .join('\n');
 
       const report = `BETAGS QUANT // MERCADOS (${d.homeTeam} vs ${d.awayTeam})
 
-VEREDICTO TOP 3 SELECCIONES:
+TOP 3 SELECCIONES:
 ${top3Txt}
 
 MERCADOS & CUOTAS JUSTAS:
