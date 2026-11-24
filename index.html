@@ -4,9 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BETAGS QUANT // POISSON GEOMÉTRICO</title>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -22,9 +26,14 @@
           },
           colors: {
             quant: {
-              bg: '#070b12', panel: '#0c1320', card: '#111a2c',
+              bg: '#070b12',
+              panel: '#0c1320',
+              card: '#111a2c',
               border: 'rgba(148, 163, 184, 0.13)',
-              cyan: '#22d3ee', emerald: '#34d399', amber: '#fbbf24', rose: '#fb7185'
+              cyan: '#22d3ee',
+              emerald: '#34d399',
+              amber: '#fbbf24',
+              rose: '#fb7185'
             }
           }
         }
@@ -40,26 +49,59 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
-    .mono-num { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
-    .surface-card { background-color: #0c1320; border: 1px solid rgba(148, 163, 184, 0.13); box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.55); }
-    .surface-inset { background-color: #070b12; border: 1px solid rgba(148, 163, 184, 0.11); }
-    .prob-track { position: relative; overflow: hidden; }
-    .prob-fill { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, rgba(34, 211, 238, 0.11), rgba(34, 211, 238, 0.02)); pointer-events: none; transition: width 0.3s ease; }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #070b12; }
-    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.22); border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: #22d3ee; }
-    input[type="range"] { accent-color: #22d3ee; }
+    .mono-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+    }
+    .surface-card {
+      background-color: #0c1320;
+      border: 1px solid rgba(148, 163, 184, 0.13);
+      box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.55);
+    }
+    .surface-inset {
+      background-color: #070b12;
+      border: 1px solid rgba(148, 163, 184, 0.11);
+    }
+    .prob-track {
+      position: relative;
+      overflow: hidden;
+    }
+    .prob-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.11), rgba(34, 211, 238, 0.02));
+      pointer-events: none;
+      transition: width 0.3s ease;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #070b12;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.22);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #22d3ee;
+    }
+    input[type="range"] {
+      accent-color: #22d3ee;
+    }
     input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button { opacity: 0.45; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .spinner { animation: spin 0.8s linear infinite; }
+    input[type="number"]::-webkit-outer-spin-button {
+      opacity: 0.45;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-cyan-400/20 selection:text-cyan-200">
 
+  <!-- Notificaciones Toast -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
 
+  <!-- CABECERA LIMPIA -->
   <header class="border-b border-quant-border bg-[#070b12]/85 backdrop-blur-xl sticky top-0 z-40">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
       <div class="flex items-center gap-3 min-w-0">
@@ -67,15 +109,20 @@
           <i class="fa-solid fa-bolt text-xs"></i>
         </div>
         <div class="flex items-center gap-2.5 truncate">
-          <span class="text-sm sm:text-[15px] font-extrabold tracking-tight text-white">BETAGS QUANT</span>
+          <span class="text-sm sm:text-[15px] font-extrabold tracking-tight text-white">
+            BETAGS QUANT
+          </span>
           <span class="text-slate-600 font-light">/</span>
-          <span class="text-xs font-semibold tracking-wide uppercase text-cyan-300/90 truncate">Mercados</span>
+          <span class="text-xs font-semibold tracking-wide uppercase text-cyan-300/90 truncate">
+            Mercados
+          </span>
           <span class="hidden lg:inline-flex items-center gap-1.5 ml-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium bg-emerald-400/10 text-emerald-300 border border-emerald-400/20">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
             POISSON GEOMÉTRICO &bull; DIXON-COLES
           </span>
         </div>
       </div>
+
       <button id="btn-copy-report" onclick="copyFullReport()" disabled
         class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-quant-card hover:bg-slate-800 disabled:opacity-35 disabled:pointer-events-none text-slate-100 border border-quant-border transition flex items-center gap-2 shrink-0">
         <i class="fa-regular fa-copy text-emerald-300"></i>
@@ -84,7 +131,10 @@
     </div>
   </header>
 
+  <!-- WORKSPACE PRINCIPAL -->
   <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
+
+    <!-- CAJA DE INGESTA DE ESTADÍSTICA -->
     <section class="surface-card rounded-2xl p-4 sm:p-5 space-y-3">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
         <div class="flex items-center gap-2.5">
@@ -96,46 +146,73 @@
             Esperando datos...
           </span>
         </div>
+
         <div class="flex flex-wrap items-center gap-1.5">
-          <button onclick="pasteFromClipboardDirect()" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-quant-card hover:bg-slate-800 text-cyan-300 border border-quant-border transition flex items-center gap-1.5">
-            <i class="fa-solid fa-paste text-[11px]"></i><span>Pegar</span>
+          <button onclick="pasteFromClipboardDirect()"
+            class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-quant-card hover:bg-slate-800 text-cyan-300 border border-quant-border transition flex items-center gap-1.5">
+            <i class="fa-solid fa-paste text-[11px]"></i>
+            <span>Pegar</span>
           </button>
-          <button onclick="loadExampleData()" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-emerald-400/10 hover:bg-emerald-400/20 text-emerald-300 border border-emerald-400/25 transition flex items-center gap-1.5">
-            <i class="fa-solid fa-flask text-[11px]"></i><span>Ejemplo</span>
+          <button onclick="loadExampleData()"
+            class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-emerald-400/10 hover:bg-emerald-400/20 text-emerald-300 border border-emerald-400/25 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-flask text-[11px]"></i>
+            <span>Ejemplo</span>
           </button>
-          <button onclick="clearAll()" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-quant-card hover:bg-rose-950/50 text-slate-400 hover:text-rose-300 border border-quant-border transition flex items-center gap-1.5">
-            <i class="fa-solid fa-eraser text-[11px]"></i><span>Limpiar</span>
+          <button onclick="clearAll()"
+            class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-quant-card hover:bg-rose-950/50 text-slate-400 hover:text-rose-300 border border-quant-border transition flex items-center gap-1.5">
+            <i class="fa-solid fa-eraser text-[11px]"></i>
+            <span>Limpiar</span>
           </button>
-          <button id="btn-analyze" onclick="runFullPipeline()" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 hover:brightness-105 text-slate-950 transition flex items-center gap-1.5 shadow-sm disabled:opacity-70 disabled:cursor-wait">
-            <i class="fa-solid fa-bolt text-[11px]"></i><span>Analizar Mercados</span>
+          <button onclick="runFullPipeline()"
+            class="px-4 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 hover:brightness-105 text-slate-950 transition flex items-center gap-1.5 shadow-sm">
+            <i class="fa-solid fa-bolt text-[11px]"></i>
+            <span>Analizar Mercados</span>
           </button>
         </div>
       </div>
-      <textarea id="raw-stats-input" rows="4" placeholder="Pega aquí las estadísticas crudas del partido y pulsa Analizar Mercados (Ctrl/Cmd + Enter)..."
+
+      <textarea id="raw-stats-input" rows="4"
+        placeholder="Pega aquí las estadísticas crudas del partido y pulsa Analizar Mercados..."
         class="w-full rounded-xl surface-inset focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/10 text-xs font-mono text-slate-200 p-3.5 placeholder-slate-600 transition outline-none resize-y leading-relaxed"></textarea>
     </section>
 
+    <!-- RESULTADOS: ÚNICAMENTE LOS MERCADOS QUE SURGIERON DEL ANÁLISIS -->
     <div id="results-wrapper" class="hidden space-y-6">
+
+      <!-- CABECERA DEL PARTIDO -->
       <div class="flex flex-wrap items-center justify-between gap-2 px-1">
         <div class="flex items-center gap-3">
           <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-          <h2 id="match-header-title" class="text-lg sm:text-xl font-extrabold tracking-tight text-white">-- vs --</h2>
-          <span id="match-header-ppi" class="px-2.5 py-0.5 rounded-md surface-card font-mono text-xs text-slate-300">PPI --</span>
+          <h2 id="match-header-title" class="text-lg sm:text-xl font-extrabold tracking-tight text-white">
+            -- vs --
+          </h2>
+          <span id="match-header-ppi" class="px-2.5 py-0.5 rounded-md surface-card font-mono text-xs text-slate-300">
+            PPI --
+          </span>
         </div>
-        <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400">Mercados del Análisis</span>
+        <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400">
+          Mercados del Análisis
+        </span>
       </div>
 
+      <!-- 1. VEREDICTO TOP 3 SELECCIONES (+EV / QUARTER-KELLY) -->
       <section class="surface-card rounded-2xl p-4 sm:p-5 space-y-4">
         <div class="flex items-center justify-between gap-2">
           <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-300 flex items-center gap-2">
-            <i class="fa-solid fa-trophy"></i><span>Top 3 Selecciones Destacadas</span>
+            <i class="fa-solid fa-trophy"></i>
+            <span>Top 3 Selecciones Destacadas</span>
           </h3>
           <span class="text-[11px] font-mono text-slate-400 hidden sm:inline">Cuota bookie &rarr; Edge +EV% &amp; 1/4 Kelly</span>
         </div>
-        <div id="syndicate-top3-grid" class="grid grid-cols-1 md:grid-cols-3 gap-3.5"></div>
+        <div id="syndicate-top3-grid" class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+          <!-- Generado dinámicamente -->
+        </div>
       </section>
 
+      <!-- 2. TABLAS DE MERCADOS PRINCIPALES -->
       <section class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+        <!-- Tabla 1: Resultado, Doble Oportunidad y DNB -->
         <div class="surface-card rounded-2xl overflow-hidden flex flex-col">
           <div class="px-4 py-3 border-b border-quant-border bg-quant-card/50 flex items-center justify-between">
             <span class="text-xs font-bold uppercase tracking-wider text-cyan-300">Resultado &bull; Doble Oportunidad &bull; DNB</span>
@@ -152,10 +229,14 @@
                   <th class="py-2.5 px-3.5 text-right">+EV / 1/4K</th>
                 </tr>
               </thead>
-              <tbody id="table-1x2-body" class="divide-y divide-slate-800/50"></tbody>
+              <tbody id="table-1x2-body" class="divide-y divide-slate-800/50">
+                <!-- Generado dinámicamente -->
+              </tbody>
             </table>
           </div>
         </div>
+
+        <!-- Tabla 2: Goles Totales y Ambos Anotan (BTTS) -->
         <div class="surface-card rounded-2xl overflow-hidden flex flex-col">
           <div class="px-4 py-3 border-b border-quant-border bg-quant-card/50 flex items-center justify-between">
             <span class="text-xs font-bold uppercase tracking-wider text-emerald-300">Goles Totales &bull; Ambos Anotan</span>
@@ -172,54 +253,81 @@
                   <th class="py-2.5 px-3.5 text-right">+EV / 1/4K</th>
                 </tr>
               </thead>
-              <tbody id="table-goals-body" class="divide-y divide-slate-800/50"></tbody>
+              <tbody id="table-goals-body" class="divide-y divide-slate-800/50">
+                <!-- Generado dinámicamente -->
+              </tbody>
             </table>
           </div>
         </div>
+
       </section>
 
+      <!-- 3. MARCADORES EXACTOS Y MERCADOS DERIVADOS -->
       <section class="grid grid-cols-1 lg:grid-cols-12 gap-4">
         <div class="lg:col-span-7 surface-card rounded-2xl p-3.5 sm:px-4 flex flex-wrap items-center justify-between gap-2.5">
           <span class="text-[11px] font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-            <i class="fa-solid fa-crosshairs text-cyan-300"></i><span>Top 4 Marcadores</span>
+            <i class="fa-solid fa-crosshairs text-cyan-300"></i>
+            <span>Top 4 Marcadores</span>
           </span>
-          <div id="top-scorelines-chips" class="flex flex-wrap items-center gap-2"></div>
+          <div id="top-scorelines-chips" class="flex flex-wrap items-center gap-2">
+            <!-- Generado dinámicamente -->
+          </div>
         </div>
-        <div id="derived-markets-box" class="lg:col-span-5 surface-card rounded-2xl p-3.5 sm:px-4 flex flex-wrap items-center justify-between gap-2"></div>
+
+        <div id="derived-markets-box" class="lg:col-span-5 surface-card rounded-2xl p-3.5 sm:px-4 flex flex-wrap items-center justify-between gap-2">
+          <!-- Generado dinámicamente -->
+        </div>
       </section>
 
+      <!-- ===================================================================== -->
+      <!-- 3 CAJONES COLAPSADOS AL PIE (CERRADOS POR DEFECTO)                    -->
+      <!-- ===================================================================== -->
       <section class="pt-1 space-y-3">
         <div class="flex flex-wrap items-center gap-2">
-          <button id="btn-tab-tactical" onclick="toggleBottomDrawer('drawer-tactical', 'btn-tab-tactical')" class="px-3.5 py-2 rounded-xl text-xs font-semibold surface-card hover:bg-quant-card text-slate-300 transition flex items-center gap-2">
-            <i class="fa-solid fa-plus text-amber-300 text-[11px]"></i><span>Radiografía Táctica</span>
+          <button id="btn-tab-tactical" onclick="toggleBottomDrawer('drawer-tactical', 'btn-tab-tactical')"
+            class="px-3.5 py-2 rounded-xl text-xs font-semibold surface-card hover:bg-quant-card text-slate-300 transition flex items-center gap-2">
+            <i class="fa-solid fa-plus text-amber-300 text-[11px]"></i>
+            <span>Radiografía Táctica</span>
           </button>
-          <button id="btn-tab-charts" onclick="toggleBottomDrawer('drawer-charts', 'btn-tab-charts')" class="px-3.5 py-2 rounded-xl text-xs font-semibold surface-card hover:bg-quant-card text-slate-300 transition flex items-center gap-2">
-            <i class="fa-solid fa-plus text-cyan-300 text-[11px]"></i><span>Matriz 0-4 y Gráficos</span>
+
+          <button id="btn-tab-charts" onclick="toggleBottomDrawer('drawer-charts', 'btn-tab-charts')"
+            class="px-3.5 py-2 rounded-xl text-xs font-semibold surface-card hover:bg-quant-card text-slate-300 transition flex items-center gap-2">
+            <i class="fa-solid fa-plus text-cyan-300 text-[11px]"></i>
+            <span>Matriz 0-4 y Gráficos</span>
           </button>
-          <button id="btn-tab-calibration" onclick="toggleBottomDrawer('drawer-calibration', 'btn-tab-calibration')" class="px-3.5 py-2 rounded-xl text-xs font-semibold surface-card hover:bg-quant-card text-slate-300 transition flex items-center gap-2">
-            <i class="fa-solid fa-plus text-emerald-300 text-[11px]"></i><span>Calibración del Modelo</span>
+
+          <button id="btn-tab-calibration" onclick="toggleBottomDrawer('drawer-calibration', 'btn-tab-calibration')"
+            class="px-3.5 py-2 rounded-xl text-xs font-semibold surface-card hover:bg-quant-card text-slate-300 transition flex items-center gap-2">
+            <i class="fa-solid fa-plus text-emerald-300 text-[11px]"></i>
+            <span>Calibración del Modelo</span>
           </button>
         </div>
 
+        <!-- CAJÓN 1: RADIOGRAFÍA TÁCTICA -->
         <div id="drawer-tactical" class="hidden surface-card rounded-2xl p-4 sm:p-5">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="surface-inset rounded-xl p-4">
               <div class="text-[11px] font-bold uppercase tracking-wider text-cyan-300 mb-2 flex items-center gap-1.5">
-                <i class="fa-solid fa-stopwatch"></i><span>1. Asimetría Temporal &amp; Game State</span>
+                <i class="fa-solid fa-stopwatch"></i>
+                <span>1. Asimetría Temporal &amp; Game State</span>
               </div>
               <p id="edge-first-goal" class="text-xs text-slate-300 leading-relaxed"></p>
               <div id="edge-first-goal-tags" class="mt-3 flex flex-wrap gap-1.5"></div>
             </div>
+
             <div class="surface-inset rounded-xl p-4">
               <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-300 mb-2 flex items-center gap-1.5">
-                <i class="fa-solid fa-flag"></i><span>2. Filtro de Córners &amp; Mitades</span>
+                <i class="fa-solid fa-flag"></i>
+                <span>2. Filtro de Córners &amp; Mitades</span>
               </div>
               <p id="edge-derivatives" class="text-xs text-slate-300 leading-relaxed"></p>
               <div id="edge-derivatives-tags" class="mt-3 flex flex-wrap gap-1.5"></div>
             </div>
+
             <div class="surface-inset rounded-xl p-4">
               <div class="text-[11px] font-bold uppercase tracking-wider text-amber-300 mb-2 flex items-center gap-1.5">
-                <i class="fa-solid fa-scale-unbalanced"></i><span>3. Regresión PPI vs Puntos Reales</span>
+                <i class="fa-solid fa-scale-unbalanced"></i>
+                <span>3. Regresión PPI vs Puntos Reales</span>
               </div>
               <p id="edge-regression" class="text-xs text-slate-300 leading-relaxed"></p>
               <div id="edge-regression-tags" class="mt-3 flex flex-wrap gap-1.5"></div>
@@ -227,22 +335,28 @@
           </div>
         </div>
 
+        <!-- CAJÓN 2: MATRIZ 0-4 Y GRÁFICOS -->
         <div id="drawer-charts" class="hidden surface-card rounded-2xl p-4 sm:p-5">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
             <div class="lg:col-span-7 surface-inset rounded-xl p-4">
               <div class="text-xs font-bold text-slate-200 mb-3">Actividad de Goles por Segmento Temporal (GF + GA)</div>
-              <div class="relative h-52 w-full"><canvas id="time-segments-chart"></canvas></div>
+              <div class="relative h-52 w-full">
+                <canvas id="time-segments-chart"></canvas>
+              </div>
             </div>
             <div class="lg:col-span-5 surface-inset rounded-xl p-4 flex flex-col justify-between">
               <div class="flex items-center justify-between mb-3">
                 <span class="text-xs font-bold text-slate-200">Mapa de Calor Bivariado (0-4 Goles)</span>
                 <span class="text-[10px] font-mono text-slate-500">Filas: Local | Cols: Visit.</span>
               </div>
-              <div id="score-heatmap-container" class="overflow-x-auto"></div>
+              <div id="score-heatmap-container" class="overflow-x-auto">
+                <!-- Generado dinámicamente -->
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- CAJÓN 3: CALIBRACIÓN MANUAL DEL MODELO -->
         <div id="drawer-calibration" class="hidden surface-card rounded-2xl p-4 sm:p-5 space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-3.5 rounded-xl surface-inset text-xs">
             <div>
@@ -255,6 +369,7 @@
                 class="w-full cursor-pointer" />
               <div class="text-[10px] text-slate-400 mt-1">Contexto Casa/Fuera: <strong id="lbl-weight-ctx" class="text-slate-200">65%</strong></div>
             </div>
+
             <div>
               <div class="flex justify-between mb-1.5">
                 <span class="text-slate-300 font-medium">Dispersión Geométrica (θ)</span>
@@ -267,6 +382,7 @@
                 <option value="high">Forzar Alta Dispersión</option>
               </select>
             </div>
+
             <div>
               <div class="flex justify-between mb-1.5">
                 <span class="text-slate-300 font-medium">Corrección Dixon-Coles (ρ)</span>
@@ -280,34 +396,75 @@
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2.5 text-xs">
-            <div class="surface-inset p-2.5 rounded-xl"><label class="block text-[10px] text-slate-400 mb-1">Local</label><input id="cal-home-name" type="text" value="Local" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-white font-semibold outline-none focus:border-cyan-400" /></div>
-            <div class="surface-inset p-2.5 rounded-xl"><label class="block text-[10px] text-slate-400 mb-1">Visitante</label><input id="cal-away-name" type="text" value="Visitante" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-white font-semibold outline-none focus:border-cyan-400" /></div>
-            <div class="surface-inset p-2.5 rounded-xl"><label class="block text-[10px] text-slate-400 mb-1">GF Local (Casa)</label><input id="cal-home-gf" type="number" step="0.01" value="1.66" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-cyan-300 font-mono outline-none focus:border-cyan-400" /></div>
-            <div class="surface-inset p-2.5 rounded-xl"><label class="block text-[10px] text-slate-400 mb-1">GC Local (Casa)</label><input id="cal-home-ga" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-rose-300 font-mono outline-none focus:border-cyan-400" /></div>
-            <div class="surface-inset p-2.5 rounded-xl"><label class="block text-[10px] text-slate-400 mb-1">GF Visit. (Fuera)</label><input id="cal-away-gf" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-cyan-300 font-mono outline-none focus:border-cyan-400" /></div>
-            <div class="surface-inset p-2.5 rounded-xl"><label class="block text-[10px] text-slate-400 mb-1">GC Visit. (Fuera)</label><input id="cal-away-ga" type="number" step="0.01" value="1.66" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-rose-300 font-mono outline-none focus:border-cyan-400" /></div>
-            <div class="surface-inset p-2.5 rounded-xl"><label class="block text-[10px] text-slate-400 mb-1">GF Local (Last 8)</label><input id="cal-home-l8-gf" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-slate-200 font-mono outline-none focus:border-cyan-400" /></div>
-            <div class="surface-inset p-2.5 rounded-xl"><label class="block text-[10px] text-slate-400 mb-1">GC Local (Last 8)</label><input id="cal-home-l8-ga" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-slate-200 font-mono outline-none focus:border-cyan-400" /></div>
-            <div class="surface-inset p-2.5 rounded-xl"><label class="block text-[10px] text-slate-400 mb-1">GF Visit. (Last 8)</label><input id="cal-away-l8-gf" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-slate-200 font-mono outline-none focus:border-cyan-400" /></div>
-            <div class="surface-inset p-2.5 rounded-xl"><label class="block text-[10px] text-slate-400 mb-1">GC Visit. (Last 8)</label><input id="cal-away-l8-ga" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-slate-200 font-mono outline-none focus:border-cyan-400" /></div>
-            <div class="surface-inset p-2.5 rounded-xl"><label class="block text-[10px] text-slate-400 mb-1">Media Liga Local</label><input id="cal-league-home" type="number" step="0.01" value="1.66" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-amber-300 font-mono outline-none focus:border-cyan-400" /></div>
-            <div class="surface-inset p-2.5 rounded-xl"><label class="block text-[10px] text-slate-400 mb-1">Media Liga Visit.</label><input id="cal-league-away" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-amber-300 font-mono outline-none focus:border-cyan-400" /></div>
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">Local</label>
+              <input id="cal-home-name" type="text" value="Local" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-white font-semibold outline-none focus:border-cyan-400" />
+            </div>
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">Visitante</label>
+              <input id="cal-away-name" type="text" value="Visitante" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-white font-semibold outline-none focus:border-cyan-400" />
+            </div>
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GF Local (Casa)</label>
+              <input id="cal-home-gf" type="number" step="0.01" value="1.66" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-cyan-300 font-mono outline-none focus:border-cyan-400" />
+            </div>
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GC Local (Casa)</label>
+              <input id="cal-home-ga" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-rose-300 font-mono outline-none focus:border-cyan-400" />
+            </div>
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GF Visit. (Fuera)</label>
+              <input id="cal-away-gf" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-cyan-300 font-mono outline-none focus:border-cyan-400" />
+            </div>
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GC Visit. (Fuera)</label>
+              <input id="cal-away-ga" type="number" step="0.01" value="1.66" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-rose-300 font-mono outline-none focus:border-cyan-400" />
+            </div>
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GF Local (Last 8)</label>
+              <input id="cal-home-l8-gf" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-slate-200 font-mono outline-none focus:border-cyan-400" />
+            </div>
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GC Local (Last 8)</label>
+              <input id="cal-home-l8-ga" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-slate-200 font-mono outline-none focus:border-cyan-400" />
+            </div>
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GF Visit. (Last 8)</label>
+              <input id="cal-away-l8-gf" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-slate-200 font-mono outline-none focus:border-cyan-400" />
+            </div>
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">GC Visit. (Last 8)</label>
+              <input id="cal-away-l8-ga" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-slate-200 font-mono outline-none focus:border-cyan-400" />
+            </div>
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">Media Liga Local</label>
+              <input id="cal-league-home" type="number" step="0.01" value="1.66" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-amber-300 font-mono outline-none focus:border-cyan-400" />
+            </div>
+            <div class="surface-inset p-2.5 rounded-xl">
+              <label class="block text-[10px] text-slate-400 mb-1">Media Liga Visit.</label>
+              <input id="cal-league-away" type="number" step="0.01" value="1.50" class="w-full bg-quant-card border border-quant-border rounded-lg px-2 py-1 text-amber-300 font-mono outline-none focus:border-cyan-400" />
+            </div>
           </div>
 
           <div class="flex justify-end">
-            <button onclick="recalculateFromCalibration()" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 transition flex items-center gap-1.5">
-              <i class="fa-solid fa-rotate"></i><span>Recalcular Mercados</span>
+            <button onclick="recalculateFromCalibration()"
+              class="px-4 py-1.5 rounded-lg text-xs font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 transition flex items-center gap-1.5">
+              <i class="fa-solid fa-rotate"></i>
+              <span>Recalcular Mercados</span>
             </button>
           </div>
         </div>
       </section>
+
     </div>
   </main>
 
+  <!-- FOOTER -->
   <footer class="border-t border-quant-border py-3 px-4 text-center text-[11px] text-slate-500 font-mono">
     BETAGS QUANT // POISSON GEOMÉTRICO &bull; Ejecución 100% Local
   </footer>
 
+  <!-- BLOQUE DE EJEMPLO PRECARGADO (MONZA VS FIORENTINA) -->
   <script id="example-raw-data" type="text/plain">Latest results
 (most recent first)
 Monza
@@ -341,21 +498,1116 @@ PPI	0.78
 GP	W	D	L
 Home	5	2	0	3
 Total	11	2	1	8
-</script>
+Home		
+Total		
+W	D	L	GP	
+2	0	3	5	Away
+2	3	6	11	Total
+Away
+Total
+Monza
+Latest AT HOME
+Fiorentina
+Latest AWAY
+MON - Atalanta	0:1
+MON - Napoli	1:4
+MON - Cagliari	4:0
+MON - Sassuolo	2:1
+2:4	Sassuolo - FIO
+2:1	Inter - FIO
+2:1	Genoa - FIO
+2:4	Venezia - FIO
+Points
+GP	Pts
+Lazio	12	32
+Roma	12	30
+Inter	12	29
+AC Milan	12	27
+Como	12	26
+Juventus	12	21
+Frosinone	12	20
+Napoli	12	18
+Bologna	12	18
+Genoa	12	16
+Cagliari	12	16
+Atalanta	12	15
+Torino	12	14
+Lecce	12	10
+Fiorentina	11	9
+Parma	12	8
+Sassuolo	12	8
+Monza	11	7
+Udinese	12	6
+Venezia	12	6
+Form (Last 8)
+GP	Pts
+Lazio	8	22
+AC Milan	8	19
+Roma	8	18
+Inter	8	17
+Bologna	8	17
+Como	8	16
+Genoa	8	15
+Juventus	8	14
+Frosinone	8	13
+Napoli	8	12
+Torino	8	11
+Fiorentina	8	9
+Atalanta	8	9
+Parma	8	7
+Cagliari	8	7
+Monza	8	6
+Venezia	8	6
+Lecce	8	4
+Udinese	8	2
+Sassuolo	8	1
+Team Stats vs League Average
 
+Monza (AT HOME)
+vs league average
+Scored per game
+1.80
+1.66
+% Defeats
+60%
+35%
+% Scored first
+40%
+55%
+Fiorentina (AWAY)
+vs league average
+Scored per game
+2.00
+1.50
+% Failed To Score
+20%
+25%
+% Clean sheets
+0%
+19%
+% Scored first
+20%
+44%
+Monza (TOTAL)
+vs league average
+% Failed To Score
+9%
+22%
+Scoring Rate
+91%
+78%
+% Defeats
+73%
+41%
+% Clean sheets
+9%
+22%
+Fiorentina (TOTAL)
+vs league average
+% Failed To Score
+18%
+22%
+Scoring Rate
+82%
+78%
+% Clean sheets
+0%
+22%
+% Wins
+18%
+41%
+Contextual averages
+
+Monza	AVG	Fiorentina
+(home matches)		(away matches)
+Played	5		5	Played
+Avg Scored	1.80	2.10	2.40	Avg Conceded
+Avg Conceded	1.80	1.90	2.00	Avg Scored
+Avg Total Goals (GF+GA)	3.60	4.00	4.40	Avg Total Goals (GF+GA)
+Scoring Rate	80%	90%	100%	Conceding Rate
+Conceding Rate	80%	80%	80%	Scoring Rate
+Clean sheets	20%	20%	20%	Failed to score
+Failed to score	20%	10%	0%	Clean sheets
+Scored in both halves	40%	50%	60%	Conceded in both halves
+Conceded in both halves	20%	30%	40%	Scored in both halves
+Scored first	40%	60%	80%	Conceded first
+Conceded first	60%	40%	20%	Scored first
+Leading at HT	20%	30%	40%	Losing at HT
+Losing at HT	20%	20%	20%	Leading at HT
+AVG minute GF	54'	53'	52'	AVG minute GA
+AVG minute GA	50'	56'	61'	AVG minute GF
+GF+GA > 0.5	100%	100%	100%	GF+GA > 0.5
+GF+GA > 1.5	80%	90%	100%	GF+GA > 1.5
+GF+GA > 2.5	80%	90%	100%	GF+GA > 2.5
+GF+GA > 3.5	60%	60%	60%	GF+GA > 3.5
+GF+GA > 4.5	40%	40%	40%	GF+GA > 4.5
+GF+GA > .55	0%	20%	40%	GF+GA > .55
+Both teams scored	60%	70%	80%	Both teams scored
+GF+GA > 0.5 at HT	60%	70%	80%	GF+GA > 0.5 at HT
+GF+GA > 1.5 at HT	40%	50%	60%	GF+GA > 1.5 at HT
+GF+GA > 2.5 at HT	20%	20%	20%	GF+GA > 2.5 at HT
+Avg Corners For	4.20	3.90	3.60	Avg Corners Against
+Avg Corners Against	3.80	3.40	3.00	Avg Corners For
+Avg Total Corners (F+A)	8.00	7.30	6.60	Avg Total Corners (F+A)
+Over 7.5 total corners	60%	40%	20%	Over 7.5 total corners
+Over 8.5 total corners	60%	30%	0%	Over 8.5 total corners
+Over 9.5 total corners	20%	10%	0%	Over 9.5 total corners
+Over 10.5 total corners	20%	10%	0%	Over 10.5 total corners
+Over 11.5 total corners	20%	10%	0%	Over 11.5 total corners
+Over 12.5 total corners	0%	0%	0%	Over 12.5 total corners
+Over 13.5 total corners	0%	0%	0%	Over 13.5 total corners
+Results progression and current form
+
+Monza
+progression (home & away)
+Line graph variation:
+win:+2 draw:0 defeat:-1
+Fiorentina
+progression (home & away)
+Line graph variation:
+win:+2 draw:0 defeat:-1
+Monza
+progression (home matches)
+Line graph variation:
+win:+2 draw:0 defeat:-1
+Fiorentina
+progression (away matches)
+Line graph variation:
+win:+2 draw:0 defeat:-1
+Comparison with league average
+
+Monza (5 home matches) vs league average AT HOME
+(home matches)	League
+points per game	1.20	1.59
+% Wins	40%	47%
+% Draws	0%	18%
+% Defeats	60%	35%
+Goals scored per game	1.80	1.66
+Goals conceded per game	1.80	1.50
+% Clean sheets	20%	25%
+% Failed To Score	20%	19%
+% Won To Nil	20%	24%
+% Lost To Nil	20%	18%
+% Team scored first	40%	55%
+% Opponent scored first	60%	44%
+Average minute scored first	45	31
+Average minute conceded first	30	32
+Lead-defending rate	100%	62%
+Equalizing rate	40%	40%
+% Time leading	20%	32%
+% Time level in goals	43%	44%
+% Time trailing	37%	24%
+PPG when scored first	3.00	2.40
+PPG when conceded first	0.00	0.60
+Total goals per game	3.60	3.16
+% over 1.5 goals	80%	86%
+% over 2.5 goals	80%	60%
+% over 3.5 goals	60%	33%
+% both teams scored	60%	57%
+Fiorentina (5 away matches) vs league average AWAY
+(away matches)	League
+points per game	1.20	1.24
+% Wins	40%	35%
+% Draws	0%	18%
+% Defeats	60%	47%
+Goals scored per game	2.00	1.50
+Goals conceded per game	2.40	1.66
+% Clean sheets	0%	19%
+% Failed To Score	20%	25%
+% Won To Nil	0%	18%
+% Lost To Nil	20%	24%
+% Team scored first	20%	44%
+% Opponent scored first	80%	55%
+Average minute scored first	65	32
+Average minute conceded first	20	31
+Lead-defending rate	50%	60%
+Equalizing rate	40%	38%
+% Time leading	25%	24%
+% Time level in goals	37%	44%
+% Time trailing	38%	32%
+PPG when scored first	0.00	2.21
+PPG when conceded first	1.50	0.46
+Total goals per game	4.40	3.16
+% over 1.5 goals	100%	86%
+% over 2.5 goals	100%	60%
+% over 3.5 goals	60%	33%
+% both teams scored	80%	57%
+Goal times
+
+Monza
+Total
+GOALS PER TIME SEGMENT (TOTAL)
+0-15	GF	1	
+GA	5	
+16-30	GF	2	
+GA	2	
+31-45	GF	4	
+GA	5	
+46-60	GF	4	
+GA	6	
+61-75	GF	3	
+GA	5	
+76-90	GF	3	
+GA	2	
+1st Half	GF	7	
+41%
+GA	12	
+48%
+2nd Half	GF	10	
+59%
+GA	13	
+52%
+AVERAGE MINUTES (TOTAL)
+Avg. minute goals scored	50
+Avg. minute goals conceded	44
+Fiorentina
+Total
+GOALS PER TIME SEGMENT (TOTAL)
+0-15	GF	1	
+GA	2	
+16-30	GF	2	
+GA	5	
+31-45	GF	2	
+GA	5	
+46-60	GF	5	
+GA	3	
+61-75	GF	4	
+GA	5	
+76-90	GF	3	
+GA	5	
+1st Half	GF	5	
+29%
+GA	12	
+48%
+2nd Half	GF	12	
+71%
+GA	13	
+52%
+AVERAGE MINUTES (TOTAL)
+Avg. minute goals scored	54
+Avg. minute goals conceded	51
+Monza
+Home
+GOALS PER TIME SEGMENT (HOME)
+0-15	GF	0	
+GA	1	
+16-30	GF	0	
+GA	0	
+31-45	GF	3	
+GA	3	
+46-60	GF	2	
+GA	2	
+61-75	GF	3	
+GA	2	
+76-90	GF	1	
+GA	1	
+1st Half	GF	3	
+33%
+GA	4	
+44%
+2nd Half	GF	6	
+67%
+GA	5	
+56%
+AVERAGE MINUTES (HOME)
+Avg. minute goals scored	54
+Avg. minute goals conceded	50
+Fiorentina
+Away
+GOALS PER TIME SEGMENT (AWAY)
+0-15	GF	0	
+GA	2	
+16-30	GF	2	
+GA	3	
+31-45	GF	1	
+GA	0	
+46-60	GF	1	
+GA	2	
+61-75	GF	3	
+GA	1	
+76-90	GF	3	
+GA	4	
+1st Half	GF	3	
+30%
+GA	5	
+42%
+2nd Half	GF	7	
+70%
+GA	7	
+58%
+AVERAGE MINUTES (AWAY)
+Avg. minute goals scored	61
+Avg. minute goals conceded	52
+Goal Differences by time segment
+
+Goal Differences by time segment (TOTAL)
+
+Monza Goal Difference (TOTAL)
+Fiorentina Goal Difference (TOTAL)
++50-5
+-4 -1
+-3
+-1 -3
+-2 +2
+-2 -1
++1 -2
+0-15
+16-30
+31-45
+46-60
+61-75
+76-90
+Goal Differences by time segment (HOME vs AWAY)
+
+Monza Goal Difference (AT HOME)
+Fiorentina Goal Difference (AWAY)
++40-4
+-1 -2
+-1
++1
+-1
++1 +2
+-1
+0-15
+16-30
+31-45
+46-60
+61-75
+76-90
+Leading and Trailing
+
+Monza
+Home
+OPENING GOALS (Home)	Matches
+Team scored first	2 / 5	40%
+No goal scored	0 / 5	0%
+Opponent scored first	3 / 5	60%
+HALF-TIME LEAD (Home)	Matches
+Team was leading at HT	1 / 5	20%
+Team and Opponent level at HT	3 / 5	60%
+Opponent was leading at HT	1 / 5	20%
+AVERAGE DURATIONS (Home)	per match
+Average minutes leading	18.0 min.	20%
+Average minutes level in goals	38.8 min.	43%
+Average minutes trailing	33.2 min.	37%
+DEFENDING THE LEAD (Home)
+Goals giving the lead	2
+Equalizer goals conceded	0
+Lead-defending rate	100%
+EQUALIZING (Home)
+Goals giving lead to opponent	5
+Equalizer goals scored	2
+Equalizing rate	40%
+Fiorentina
+Away
+OPENING GOALS (Away)	Matches
+Team scored first	1 / 5	20%
+No goal scored	0 / 5	0%
+Opponent scored first	4 / 5	80%
+HALF-TIME LEAD (Away)	Matches
+Team was leading at HT	1 / 5	20%
+Team and Opponent level at HT	2 / 5	40%
+Opponent was leading at HT	2 / 5	40%
+AVERAGE DURATIONS (Away)	per match
+Average minutes leading	22.2 min.	25%
+Average minutes level in goals	33.2 min.	37%
+Average minutes trailing	34.6 min.	38%
+DEFENDING THE LEAD (Away)
+Goals giving the lead	4
+Equalizer goals conceded	2
+Lead-defending rate	50%
+EQUALIZING (Away)
+Goals giving lead to opponent	5
+Equalizer goals scored	2
+Equalizing rate	40%
+Results table
+
+Monza
+Fiorentina
+Home	Away	Opponent	Home	Away
+3:1	Lazio		
+Roma		4:0
+4:1	Inter		2:1
+AC Milan		
+Como	1:3	
+Juventus	2:2	
+Frosinone	0:3	
+1:4		Napoli	1:1	
+2:1	Bologna		
+Genoa		2:1
+4:0		Cagliari		
+0:1		Atalanta	2:2	
+3:2	Torino	1:2	
+3:2	Lecce		
+Fiorentina	
+1:1	Parma		
+2:1		Sassuolo		2:4
+Monza		
+2:3		Udinese		
+Venezia		2:4
+Goal statistics
+
+Monza
+Fiorentina
+Home	Total		Total	Away
+9	17	Scored (GF)	17	10
+1.80	1.55	Avg GF	1.55	2.00
+9	25	Conceded (GA)	25	12
+1.80	2.27	Avg GA	2.27	2.40
+3.60	3.82	Avg GF+GA	3.82	4.40
+100%	100%	GF+GA > 0.5	100%	100%
+80%	91%	GF+GA > 1.5	100%	100%
+80%	82%	GF+GA > 2.5	91%	100%
+60%	64%	GF+GA > 3.5	55%	60%
+40%	45%	GF+GA > 4.5	18%	40%
+0%	0%	GF+GA > .55	18%	40%
+60%	82%	GF+GA > 0.5 at HT	82%	80%
+40%	55%	GF+GA > 1.5 at HT	55%	60%
+20%	18%	GF+GA > 2.5 at HT	18%	20%
+Previous encounters in this Division
+
+2024/2025
+13 Jan 2025	Monza vs Fiorentina	2-1
+1 Sep 2024	Fiorentina vs Monza	2-2
+2023/2024
+13 May 2024	Fiorentina vs Monza	2-1
+22 Dec 2023	Monza vs Fiorentina	0-1
+2022/2023
+23 Apr 2023	Monza vs Fiorentina	3-2
+4 Jan 2023	Fiorentina vs Monza	1-1
+Stats on above matches
+
+Monza wins:
+2
+Draws:
+2
+Fiorentina wins:
+2
+Monza goals:
+9
+Fiorentina goals:
+9
+Matches over 0.5 goals:	6	100%
+Matches over 1.5 goals:	5	83%
+Matches over 2.5 goals:	4	67%
+Matches over 3.5 goals:	2	33%
+Matches where both teams scored:	5	83%
+Teams scoring vs league average
+
+Home scoring averages (per match)
+(A) Monza scored at home
+1.80
+(B) Fiorentina conceded away
+2.40
+(A) (B) average
+League Avg home scoring
+2.10
+1.66
+Away scoring averages (per match)
+(A) Monza conceded at home
+1.80
+(B) Fiorentina scored away
+2.00
+(A) (B) average
+League Avg away scoring
+1.90
+1.50
+Goals scored + conceded per match
+(A) Monza at home
+3.60
+(B) Fiorentina away
+4.40
+(A) (B) average
+stats.league_avg_goals_match
+4.00
+3.16
+Home scoring rate averages
+(A) Monza scoring rate at home
+80%
+(B) Fiorentina conceding rate away
+100%
+(A) (B) average
+stats.league_home_scoring_rate
+90%
+81%
+Away scoring rate averages
+(A) Monza conceding rate at home
+80%
+(B) Fiorentina scoring rate away
+80%
+(A) (B) average
+stats.league_away_scoring_rate
+80%
+75%
+Over 1.5 goals (scored + conceded)
+(A) Monza over 1.5 at home
+80%
+(B) Fiorentina over 1.5 away
+100%
+(A) (B) average
+League Avg over 1.5
+90%
+86%
+Over 2.5 goals (scored + conceded)
+(A) Monza over 2.5 at home
+80%
+(B) Fiorentina over 2.5 away
+100%
+(A) (B) average
+League Avg over 2.5
+90%
+60%
+Over 3.5 goals (scored + conceded)
+(A) Monza over 3.5 at home
+60%
+(B) Fiorentina over 3.5 away
+60%
+(A) (B) average
+League Avg over 3.5
+60%
+33%
+Both-Teams-Scored (BTS) matches
+(A) Monza BTS matches at home
+60%
+(B) Fiorentina BTS matches away
+80%
+(A) (B) average
+stats.league_avg_bts
+70%
+57%
+Home vs Away Stats
+
+Monza
+Fiorentina
+(home matches)
+(away matches)
+5
+Played
+5
+Goals For per match
+1.80
+2.00
+Clean sheets
+20%
+0%
+Won-to-nil
+20%
+0%
+Scoring Rate
+80%
+80%
+Scored in both halves
+40%
+40%
+Scored first
+40%
+20%
+Leading at HT
+20%
+20%
+Avg Corners For
+4.20
+3.00
+Goals Against per match
+1.80
+2.40
+Failed to score
+20%
+20%
+Lost-to-nil
+20%
+20%
+Conceding Rate
+80%
+100%
+Conceded in both halves
+20%
+60%
+Conceded first
+60%
+80%
+Losing at HT
+20%
+40%
+Avg Corners Against
+3.80
+3.60
+Scorelines
+
+Monza
+Fiorentina
+FT home
+4:0	1	
+20%
+0:1	1	
+20%
+2:1	1	
+20%
+2:3	1	
+20%
+1:4	1	
+20%
+FT away
+2:1	2	
+40%
+2:4	2	
+40%
+4:0	1	
+20%
+HT home
+0:0	2	
+40%
+1:0	1	
+20%
+1:1	1	
+20%
+1:3	1	
+20%
+HT away
+0:0	1	
+20%
+1:0	1	
+20%
+2:0	1	
+20%
+1:1	1	
+20%
+1:2	1	
+20%
+Home vs Away distribution
+
+Monza
+Fiorentina
+Home	Away		Home	Away
+86%	14%	% Points	33%	67%
+53%	47%	stats.pct_scored	41%	59%
+36%	64%	stats.pct_conceded	52%	48%
+Current Streaks & Sequences
+
+Monza
+Fiorentina
+Home	Total		Total	Away
+-	-	Consecutive wins	-	1
+-	-	Consecutive draws	1	-
+2	4	Consecutive defeats	-	-
+2	4	No win	1	-
+5	8	No draw	-	5
+-	-	No defeat	3	1
+-	-	Scored in match	9	4
+2	4	Conceded in match	11	5
+1	1	No goal scored	-	-
+-	-	No goal conceded	-	-
+-	-	GF + GA > 2.5	6	5
+1	1	GF+GA under 2.5	-	-
+Scoring rates
+
+Monza
+Fiorentina
+Home	Total		Total	Away
+80%	91%	Scoring Rate	82%	80%
+60%	64%	Scoring Rate 1st-H.	36%	40%
+60%	55%	Scoring Rate 2nd-H.	73%	80%
+40%	27%	Scored in both halves	27%	40%
+60%	82%	Both teams scored	82%	80%
+80%	91%	Conceding Rate	100%	100%
+40%	64%	Conceding Rate 1st-H.	82%	80%
+60%	73%	Conceding Rate 2nd-H.	82%	80%
+20%	45%	Conceded in both halves	64%	60%
+Scored + Conceded per match
+
+Monza
+Fiorentina
+Home	Total		Total	Away
+0%	0%	Total = 0	0%	0%
+20%	9%	Total = 1	0%	0%
+0%	9%	Total = 2	9%	0%
+20%	18%	Total = 3	36%	40%
+20%	18%	Total = 4	36%	20%
+40%	45%	Total = 5+	18%	40%
+20%	9%	Total = 0 or 1	0%	0%
+20%	27%	Total = 2 or 3	45%	40%
+60%	64%	Total = 4+	55%	60%
+Goals scored / Goals conceded
+
+Monza
+Fiorentina
+Home	Total		Total	Away
+80%	91%	GF over 0.5	82%	80%
+60%	45%	GF over 1.5	36%	40%
+20%	9%	GF over 2.5	18%	40%
+20%	9%	GF over 3.5	18%	40%
+0%	0%	GF over 4.5	0%	0%
+80%	91%	GA over 0.5	100%	100%
+40%	64%	GA over 1.5	91%	100%
+40%	55%	GA over 2.5	27%	20%
+20%	18%	GA over 3.5	9%	20%
+0%	0%	GA over 4.5	0%	0%
+No goal scored / conceded
+
+Monza
+Fiorentina
+Home	Total		Total	Away
+20%	9%	Clean sheets	0%	0%
+20%	9%	Won-to-nil	0%	0%
+20%	9%	Failed to score	18%	20%
+20%	9%	Lost-to-nil	18%	20%
+Goal margins
+
+Monza
+Fiorentina
+Margins (at home)
+1	2	3	4+
+W	1	0	0	1
+L	2	0	1	0
+Margins (away)
+1	2	3	4+
+W	0	2	0	0
+L	2	0	0	1
+Margins (total)
+1	2	3	4+
+W	1	0	0	1
+L	5	1	2	0
+Margins (total)
+1	2	3	4+
+W	0	2	0	0
+L	3	1	1	1
+Corner statistics
+
+Monza
+Fiorentina
+Home	Total		Total	Away
+4.20	4.09	Avg Corners For	4.91	3.00
+3.80	4.27	Avg Corners Against	4.73	3.60
+8.00	8.36	AVG Total (F+A)	9.64	6.60
+60%	55%	Total Over 7.5	64%	20%
+60%	55%	Total Over 8.5	45%	0%
+20%	27%	Total Over 9.5	36%	0%
+20%	18%	Total Over 10.5	27%	0%
+20%	18%	Total Over 11.5	27%	0%
+0%	9%	Total Over 12.5	27%	0%
+0%	0%	Total Over 13.5	18%	0%
+Trends
+
+Monza
+Monza have lost 73% of their 11 matches.
+Monza have lost their last 4 matches.
+Monza have lost their last 2 home matches.
+Monza have conceded the opening goal in 60% of their 5 home matches.
+Monza's Points Per Game when conceding first is at 0, which is 100% worse than the league average of 0.52.
+Monza's clean sheet rate is at 9%, which is 59% worse than the league average of 22%.
+Monza's average goals conceded in the first 15 minutes is at 0.45, which is 140% worse than the league average of 0.19.
+86% of Monza's points have been earned at home.
+Fiorentina
+71% of Fiorentina's goals have been scored in the second half.
+9 consecutive match where Fiorentina have scored.
+Fiorentina's Points Per Game when conceding first is at 1, which is 92% better than the league average of 0.52.
+Fiorentina's equalizing rate is at 40%, which is 3% better than the league average of 39%.
+Fiorentina failed to keep a clean sheet in each of their 11 matches.
+Fiorentina have conceded the opening goal in 80% of their 5 away matches.
+Fiorentina failed to keep a clean sheet in all of their 11 matches.
+Fiorentina's clean sheet rate is at 0%, which is 100% worse than the league average of 22%.
+Fiorentina's Points Per Game when scoring first is at 0.33, which is 86% worse than the league average of 2.32.
+Fiorentina's average goals conceded in the first half is at 1.09, which is 57% worse than the league average of 0.69.
+Fiorentina have scored 59% of their goals away.
+Points
+GP	Pts
+Lazio	12	32
+Roma	12	30
+Inter	12	29
+AC Milan	12	27
+Como	12	26
+Juventus	12	21
+Frosinone	12	20
+Napoli	12	18
+Bologna	12	18
+Genoa	12	16
+Cagliari	12	16
+Atalanta	12	15
+Torino	12	14
+Lecce	12	10
+Fiorentina	11	9
+Parma	12	8
+Sassuolo	12	8
+Monza	11	7
+Udinese	12	6
+Venezia	12	6
+Form (Last 8)
+GP	Pts
+Lazio	8	22
+AC Milan	8	19
+Roma	8	18
+Inter	8	17
+Bologna	8	17
+Como	8	16
+Genoa	8	15
+Juventus	8	14
+Frosinone	8	13
+Napoli	8	12
+Torino	8	11
+Fiorentina	8	9
+Atalanta	8	9
+Parma	8	7
+Cagliari	8	7
+Monza	8	6
+Venezia	8	6
+Lecce	8	4
+Udinese	8	2
+Sassuolo	8	1
+at Home
+GP	Pts
+Inter	6	18
+Roma	6	16
+Lazio	6	16
+AC Milan	6	15
+Frosinone	6	15
+Juventus	6	13
+Como	5	13
+Napoli	6	11
+Atalanta	7	11
+Genoa	7	10
+Cagliari	5	7
+Torino	6	7
+Sassuolo	6	7
+Monza	5	6
+Bologna	6	6
+Venezia	6	6
+Parma	7	5
+Fiorentina	6	3
+Lecce	5	3
+Udinese	6	1
+Away
+GP	Pts
+Lazio	6	16
+Roma	6	14
+Como	7	13
+AC Milan	6	12
+Bologna	6	12
+Inter	6	11
+Cagliari	7	9
+Juventus	6	8
+Napoli	6	7
+Torino	6	7
+Lecce	7	7
+Genoa	5	6
+Fiorentina	5	6
+Udinese	6	5
+Frosinone	6	5
+Atalanta	5	4
+Parma	5	3
+Monza	6	1
+Sassuolo	6	1
+Venezia	6	0
+Offence
+GP	GF
+Roma	12	36
+Inter	12	32
+AC Milan	12	28
+Lazio	12	28
+Frosinone	12	25
+Atalanta	12	21
+Como	12	20
+Juventus	12	19
+Napoli	12	19
+Bologna	12	17
+Fiorentina	11	17
+Monza	11	17
+Sassuolo	12	16
+Torino	12	15
+Genoa	12	13
+Udinese	12	13
+Lecce	12	12
+Cagliari	12	10
+Parma	12	10
+Venezia	12	8
+Defence
+GP	GA
+Lazio	12	9
+Como	12	10
+Roma	12	11
+Juventus	12	12
+AC Milan	12	14
+Napoli	12	14
+Bologna	12	15
+Genoa	12	16
+Cagliari	12	17
+Inter	12	17
+Torino	12	18
+Frosinone	12	20
+Parma	12	22
+Atalanta	12	24
+Fiorentina	11	25
+Lecce	12	25
+Monza	11	25
+Venezia	12	25
+Udinese	12	26
+Sassuolo	12	31
+Offence (Last 8)
+GP	GF
+Roma	8	24
+Lazio	8	22
+AC Milan	8	21
+Inter	8	19
+Frosinone	8	18
+Atalanta	8	16
+Fiorentina	8	16
+Bologna	8	15
+Juventus	8	13
+Monza	8	13
+Napoli	8	13
+Como	8	11
+Genoa	8	11
+Torino	8	11
+Parma	8	8
+Sassuolo	8	8
+Lecce	8	7
+Cagliari	8	6
+Udinese	8	5
+Venezia	8	4
+Defence (Last 8)
+GP	GA
+Como	8	6
+Lazio	8	6
+Genoa	8	8
+Juventus	8	8
+Napoli	8	9
+AC Milan	8	10
+Bologna	8	10
+Roma	8	10
+Inter	8	11
+Torino	8	11
+Venezia	8	14
+Cagliari	8	15
+Fiorentina	8	16
+Frosinone	8	16
+Parma	8	16
+Udinese	8	16
+Monza	8	17
+Lecce	8	18
+Atalanta	8	19
+Sassuolo	8	24
+Offence at Home
+GP	GF
+Inter	6	19
+AC Milan	6	18
+Roma	6	17
+Frosinone	6	16
+Atalanta	7	15
+Lazio	6	13
+Juventus	6	11
+Napoli	6	10
+Sassuolo	6	10
+Monza	5	9
+Genoa	7	8
+Torino	6	8
+Bologna	6	7
+Como	5	7
+Fiorentina	6	7
+Lecce	5	5
+Parma	7	5
+Venezia	6	5
+Udinese	6	4
+Cagliari	5	3
+Defence at Home
+GP	GA
+Como	5	1
+Cagliari	5	4
+Juventus	6	4
+Lazio	6	5
+Roma	6	5
+Frosinone	6	6
+Napoli	6	6
+Inter	6	7
+AC Milan	6	8
+Bologna	6	9
+Monza	5	9
+Genoa	7	10
+Torino	6	11
+Venezia	6	11
+Lecce	5	12
+Fiorentina	6	13
+Parma	7	13
+Udinese	6	14
+Atalanta	7	15
+Sassuolo	6	16
+Offence Away
+GP	GF
+Roma	6	19
+Lazio	6	15
+Como	7	13
+Inter	6	13
+AC Milan	6	10
+Bologna	6	10
+Fiorentina	5	10
+Frosinone	6	9
+Napoli	6	9
+Udinese	6	9
+Juventus	6	8
+Monza	6	8
+Cagliari	7	7
+Lecce	7	7
+Torino	6	7
+Atalanta	5	6
+Sassuolo	6	6
+Genoa	5	5
+Parma	5	5
+Venezia	6	3
+Defence Away
+GP	GA
+Lazio	6	4
+AC Milan	6	6
+Bologna	6	6
+Genoa	5	6
+Roma	6	6
+Torino	6	7
+Juventus	6	8
+Napoli	6	8
+Atalanta	5	9
+Como	7	9
+Parma	5	9
+Inter	6	10
+Fiorentina	5	12
+Udinese	6	12
+Cagliari	7	13
+Lecce	7	13
+Frosinone	6	14
+Venezia	6	14
+Sassuolo	6	15
+Monza	6	16
+Goals Scored + Conceded
+
+Total
+Last 8
+Home
+Away
+Teams (Total) ↕	GP ↕	Avg ↕	0.5+ ↕	1.5+ ↕	2.5+ ↕	3.5+ ↕	4.5+ ↕	5.5+ ↕	BTS ↕	CS ↕	FTS ↕	WTN ↕	LTN ↕
+Inter	12	4.08	100%	92%	75%	58%	33%	17%	67%	33%	0%	33%	0%
+Roma	12	3.92	92%	92%	75%	58%	33%	33%	50%	50%	8%	42%	0%
+Sassuolo	12	3.92	100%	100%	75%	42%	33%	25%	75%	0%	25%	0%	25%
+Fiorentina	11	3.82	100%	100%	91%	55%	18%	18%	82%	0%	18%	0%	18%
+Monza	11	3.82	100%	91%	82%	64%	45%	0%	82%	9%	9%	9%	9%
+Atalanta	12	3.75	100%	83%	75%	42%	25%	17%	67%	17%	17%	17%	17%
+Frosinone	12	3.75	100%	83%	58%	42%	42%	33%	50%	25%	25%	25%	25%
+AC Milan	12	3.50	100%	100%	67%	42%	25%	17%	75%	25%	0%	25%	0%
+Udinese	12	3.25	92%	83%	58%	25%	25%	17%	67%	8%	33%	0%	25%
+Lazio	12	3.08	100%	83%	67%	25%	8%	8%	58%	42%	0%	42%	0%
+Lecce	12	3.08	100%	92%	67%	25%	17%	8%	42%	17%	42%	17%	42%
+Napoli	12	2.75	100%	75%	42%	25%	25%	8%	50%	33%	17%	33%	17%
+Torino	12	2.75	100%	92%	58%	17%	8%	0%	67%	8%	25%	8%	25%
+Venezia	12	2.75	100%	75%	42%	33%	17%	8%	33%	8%	58%	8%	58%
+Bologna	12	2.67	100%	75%	50%	25%	8%	8%	67%	8%	25%	8%	25%
+Parma	12	2.67	92%	83%	67%	8%	8%	8%	50%	17%	42%	8%	33%
+Juventus	12	2.58	100%	92%	33%	25%	8%	0%	33%	50%	17%	50%	17%
+Como	12	2.50	92%	83%	42%	25%	8%	0%	50%	33%	25%	25%	17%
+Genoa	12	2.42	100%	83%	42%	8%	8%	0%	50%	25%	25%	25%	25%
+Cagliari	12	2.25	100%	58%	33%	17%	8%	8%	33%	33%	33%	33%	33%
+League average			98.3%	85.7%	59.7%	32.8%	20.2%	11.8%	57.1%	22.3%	22.3%	20.6%	20.6%</script>
+
+  <!-- MOTOR DE PARSEO, ECONOMETRÍA POISSON GEOMÉTRICO Y UI -->
   <script>
-    // =========================================================================
-    // ESTADO GLOBAL
-    // =========================================================================
     let currentParsedData = null;
     let currentModelOutput = null;
     let timeSegmentsChartInstance = null;
-    let lastRenderData = null;
-    let saveOddsTimeout = null;
 
-    // =========================================================================
-    // UI HELPERS
-    // =========================================================================
     function showToast(message, type = 'info') {
       const container = document.getElementById('toast-container');
       const colors = {
@@ -370,10 +1622,12 @@ Total	11	2	1	8
         warning: 'fa-circle-exclamation text-amber-300',
         info: 'fa-circle-info text-cyan-300'
       };
+
       const toast = document.createElement('div');
       toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-2.5 rounded-xl border text-xs font-medium shadow-xl backdrop-blur-md transition-all duration-300 ${colors[type] || colors.info}`;
       toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}"></i><span>${message}</span>`;
       container.appendChild(toast);
+
       setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(8px)';
@@ -409,16 +1663,12 @@ Total	11	2	1	8
           icon.classList.remove('fa-plus');
           icon.classList.add('fa-minus');
         }
-        // Render diferido del chart para evitar tamaño 0 en canvas oculto
-        if (drawerId === 'drawer-charts' && lastRenderData) {
-          renderTimeSegmentsChart(lastRenderData);
+        if (drawerId === 'drawer-charts' && timeSegmentsChartInstance) {
+          timeSegmentsChartInstance.resize();
         }
       }
     }
 
-    // =========================================================================
-    // ENTRADA DE DATOS
-    // =========================================================================
     async function pasteFromClipboardDirect() {
       const box = document.getElementById('raw-stats-input');
       try {
@@ -431,10 +1681,10 @@ Total	11	2	1	8
           }
         }
         box.focus();
-        showToast('Portapapeles vacío o restringido: pega en la caja y pulsa Analizar.', 'warning');
+        showToast('Portapapeles vacío o restringido: pega en la caja y pulsa Analizar Mercados.', 'warning');
       } catch (e) {
         box.focus();
-        showToast('Pega con Ctrl+V / Cmd+V y pulsa Analizar.', 'warning');
+        showToast('Pega con Ctrl+V / Cmd+V en la caja y pulsa Analizar Mercados.', 'warning');
       }
     }
 
@@ -445,10 +1695,6 @@ Total	11	2	1	8
     }
 
     function clearAll() {
-      if (currentParsedData) {
-        const key = `${currentParsedData.homeTeam}|${currentParsedData.awayTeam}`;
-        try { localStorage.removeItem('betags_odds_' + key); } catch (e) {}
-      }
       document.getElementById('raw-stats-input').value = '';
       document.getElementById('results-wrapper').classList.add('hidden');
       document.getElementById('btn-copy-report').disabled = true;
@@ -456,140 +1702,23 @@ Total	11	2	1	8
       document.getElementById('raw-stats-input').focus();
       currentParsedData = null;
       currentModelOutput = null;
-      lastRenderData = null;
       if (timeSegmentsChartInstance) {
         timeSegmentsChartInstance.destroy();
         timeSegmentsChartInstance = null;
       }
+      ['drawer-tactical', 'drawer-charts', 'drawer-calibration'].forEach(id => {
+        const drawer = document.getElementById(id);
+        if (drawer) drawer.classList.add('hidden');
+      });
       showToast('Caja limpiada. Listo para nuevo partido.', 'info');
     }
 
-    // =========================================================================
-    // PERSISTENCIA DE CUOTAS
-    // =========================================================================
-    function scheduleSaveOdds() {
-      if (!currentParsedData) return;
-      clearTimeout(saveOddsTimeout);
-      saveOddsTimeout = setTimeout(() => {
-        if (currentParsedData) saveBookieOdds(currentParsedData);
-      }, 500);
-    }
-
-    function saveBookieOdds(d) {
-      const key = `${d.homeTeam}|${d.awayTeam}`;
-      const odds = {};
-      document.querySelectorAll('[data-market-key]').forEach(el => {
-        const inp = el.querySelector('input[data-prob]');
-        if (inp) odds[el.dataset.marketKey] = inp.value || '';
-      });
-      try { localStorage.setItem('betags_odds_' + key, JSON.stringify(odds)); } catch (e) {}
-    }
-
-    function restoreBookieOdds(d) {
-      const key = `${d.homeTeam}|${d.awayTeam}`;
-      try {
-        const stored = JSON.parse(localStorage.getItem('betags_odds_' + key) || '{}');
-        Object.entries(stored).forEach(([k, v]) => {
-          const el = document.querySelector(`[data-market-key="${k}"]`);
-          if (el) {
-            const inp = el.querySelector('input[data-prob]');
-            if (inp) {
-              inp.value = v || '';
-              if (v) updateRowEV(inp);
-            }
-          }
-        });
-      } catch (e) {}
-    }
+    window.addEventListener('DOMContentLoaded', () => {
+      loadExampleData(true);
+    });
 
     // =========================================================================
-    // PIPELINE PRINCIPAL
-    // =========================================================================
-    function runFullPipeline(showToasts = true) {
-      const raw = document.getElementById('raw-stats-input').value.trim();
-      if (raw.length < 40) {
-        if (showToasts) showToast('Pega estadísticas válidas antes de analizar (mínimo 40 caracteres).', 'warning');
-        return;
-      }
-
-      const btn = document.getElementById('btn-analyze');
-      const originalHTML = btn ? btn.innerHTML : '';
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner spinner text-[11px]"></i><span>Analizando...</span>';
-      }
-
-      // Defer para permitir pintado del spinner
-      setTimeout(() => {
-        try {
-          const d = parseSoccerStatsRaw(raw);
-          currentParsedData = d;
-          syncDataToCalibrationInputs(d);
-          const m = runGeometricPoissonModel(d);
-          currentModelOutput = m;
-          renderAllSections(d, m);
-          restoreBookieOdds(d);
-          if (showToasts) showToast(`Análisis completado: ${d.homeTeam} vs ${d.awayTeam}`, 'success');
-        } catch (err) {
-          console.error(err);
-          if (showToasts) showToast('Error al procesar los datos. Revisa el formato.', 'error');
-        } finally {
-          if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = originalHTML;
-          }
-        }
-      }, 30);
-    }
-
-    function recalculateFromCalibration() {
-      if (!currentParsedData) {
-        showToast('Analiza primero un partido para poder recalibrar.', 'warning');
-        return;
-      }
-      const d = currentParsedData;
-
-      // Preservar cuotas actuales ANTES de re-renderizar
-      const savedOdds = {};
-      document.querySelectorAll('[data-market-key]').forEach(el => {
-        const inp = el.querySelector('input[data-prob]');
-        if (inp && inp.value && parseFloat(inp.value) > 1) {
-          savedOdds[el.dataset.marketKey] = inp.value;
-        }
-      });
-
-      // Actualizar datos desde inputs de calibración
-      d.homeTeam = document.getElementById('cal-home-name').value.trim() || d.homeTeam;
-      d.awayTeam = document.getElementById('cal-away-name').value.trim() || d.awayTeam;
-      d.homeCtxGF = parseFloat(document.getElementById('cal-home-gf').value) || d.homeCtxGF;
-      d.homeCtxGA = parseFloat(document.getElementById('cal-home-ga').value) || d.homeCtxGA;
-      d.awayCtxGF = parseFloat(document.getElementById('cal-away-gf').value) || d.awayCtxGF;
-      d.awayCtxGA = parseFloat(document.getElementById('cal-away-ga').value) || d.awayCtxGA;
-      d.homeL8GF = parseFloat(document.getElementById('cal-home-l8-gf').value) || d.homeL8GF;
-      d.homeL8GA = parseFloat(document.getElementById('cal-home-l8-ga').value) || d.homeL8GA;
-      d.awayL8GF = parseFloat(document.getElementById('cal-away-l8-gf').value) || d.awayL8GF;
-      d.awayL8GA = parseFloat(document.getElementById('cal-away-l8-ga').value) || d.awayL8GA;
-      d.leagueHomeGF = parseFloat(document.getElementById('cal-league-home').value) || d.leagueHomeGF;
-      d.leagueAwayGF = parseFloat(document.getElementById('cal-league-away').value) || d.leagueAwayGF;
-
-      const m = runGeometricPoissonModel(d);
-      currentModelOutput = m;
-      renderAllSections(d, m);
-
-      // Restaurar cuotas
-      Object.entries(savedOdds).forEach(([k, v]) => {
-        const el = document.querySelector(`[data-market-key="${k}"]`);
-        if (el) {
-          const inp = el.querySelector('input[data-prob]');
-          if (inp) { inp.value = v; updateRowEV(inp); }
-        }
-      });
-
-      showToast('Mercados recalculados con calibración manual.', 'success');
-    }
-
-    // =========================================================================
-    // PARSEO
+    // MÓDULO 1: PARSEO INTELIGENTE POR BLOQUES Y EXPRESIONES REGULARES
     // =========================================================================
     function escapeRegExp(string) {
       return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -598,48 +1727,107 @@ Total	11	2	1	8
     function parseSoccerStatsRaw(raw) {
       const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
       const data = {
-        homeTeam: 'Local', awayTeam: 'Visitante',
-        homeCtxGP: 5, awayCtxGP: 5,
-        homeCtxGF: 1.66, homeCtxGA: 1.50, awayCtxGF: 1.50, awayCtxGA: 1.66,
-        homeTotalGP: 11, awayTotalGP: 11,
-        homeTotalGF: 1.55, homeTotalGA: 2.27, awayTotalGF: 1.55, awayTotalGA: 2.27,
-        homeL8GF: 1.50, homeL8GA: 1.50, awayL8GF: 1.50, awayL8GA: 1.50,
-        homeL8Pts: 8, awayL8Pts: 8,
-        leagueHomeGF: 1.66, leagueAwayGF: 1.50,
-        leagueAvgTotalGoals: 3.16, leagueAvgBTS: 57, leagueAvgOver25: 60,
-        homePPI: 1.00, awayPPI: 1.00, homePts: 0, awayPts: 0,
-        homePPGHome: 1.20, awayPPGAway: 1.20, homePPGTotal: 1.00, awayPPGTotal: 1.00,
-        homePPGL8: 1.00, awayPPGL8: 1.00,
-        homeCSCtx: 20, awayCSCtx: 0, homeCSTotal: 15, awayCSTotal: 15,
-        homeFTSCtx: 20, awayFTSCtx: 20, homeFTSTotal: 20, awayFTSTotal: 20,
-        homeScoredBothHalvesCtx: 40, awayScoredBothHalvesCtx: 40,
-        homeConcededBothHalvesCtx: 20, awayConcededBothHalvesCtx: 40,
-        homeBTSCtx: 60, awayBTSCtx: 80, homeOver25Ctx: 80, awayOver25Ctx: 80,
-        homeScoredFirstCtx: 40, homeConcededFirstCtx: 60,
-        awayScoredFirstCtx: 20, awayConcededFirstCtx: 80,
-        homeAvgMinScoredFirst: 40, homeAvgMinConcededFirst: 32,
-        awayAvgMinScoredFirst: 45, awayAvgMinConcededFirst: 30,
-        homeLeadDefending: 60, awayLeadDefending: 60,
-        homeEqualizing: 40, awayEqualizing: 40,
-        homePPGSF: 2.20, homePPGCF: 0.50, awayPPGSF: 2.00, awayPPGCF: 0.50,
-        homeSegmentsGF: [1,1,2,2,2,2], homeSegmentsGA: [1,1,2,2,2,2],
-        awaySegmentsGF: [1,1,2,2,2,2], awaySegmentsGA: [1,1,2,2,2,2],
-        home1stHalfGFPct: 40, home2ndHalfGFPct: 60,
-        away1stHalfGFPct: 35, away2ndHalfGFPct: 65,
-        home2ndHalfScoringCtx: 60, away2ndHalfScoringCtx: 70,
-        home2ndHalfConcedingCtx: 60, away2ndHalfConcedingCtx: 70,
-        homeCornersForCtx: 4.5, homeCornersAgainstCtx: 4.0, homeCornersTotalCtx: 8.5,
-        awayCornersForCtx: 4.0, awayCornersAgainstCtx: 4.5, awayCornersTotalCtx: 8.5,
-        homeCornersTotalAll: 8.5, awayCornersTotalAll: 9.0,
-        homeCornersOver75Ctx: 50, awayCornersOver75Ctx: 50,
-        homeCornersOver85Ctx: 40, awayCornersOver85Ctx: 40,
-        homeCornersOver95Ctx: 30, awayCornersOver95Ctx: 30,
-        h2hOver25Pct: 60, h2hBTSPct: 60,
-        homeConsecDefeats: 0, awayConsecDefeats: 0,
-        homeScoredStreak: 0, awayScoredStreak: 0
+        homeTeam: 'Local',
+        awayTeam: 'Visitante',
+        homeCtxGP: 5,
+        awayCtxGP: 5,
+        homeCtxGF: 1.66,
+        homeCtxGA: 1.50,
+        awayCtxGF: 1.50,
+        awayCtxGA: 1.66,
+        homeTotalGP: 11,
+        awayTotalGP: 11,
+        homeTotalGF: 1.55,
+        homeTotalGA: 2.27,
+        awayTotalGF: 1.55,
+        awayTotalGA: 2.27,
+        homeL8GF: 1.50,
+        homeL8GA: 1.50,
+        awayL8GF: 1.50,
+        awayL8GA: 1.50,
+        homeL8Pts: 8,
+        awayL8Pts: 8,
+        leagueHomeGF: 1.66,
+        leagueAwayGF: 1.50,
+        leagueAvgTotalGoals: 3.16,
+        leagueAvgBTS: 57,
+        leagueAvgOver25: 60,
+        homePPI: 1.00,
+        awayPPI: 1.00,
+        homePts: 0,
+        awayPts: 0,
+        homePPGHome: 1.20,
+        awayPPGAway: 1.20,
+        homePPGTotal: 1.00,
+        awayPPGTotal: 1.00,
+        homePPGL8: 1.00,
+        awayPPGL8: 1.00,
+        homeCSCtx: 20,
+        awayCSCtx: 0,
+        homeCSTotal: 15,
+        awayCSTotal: 15,
+        homeFTSCtx: 20,
+        awayFTSCtx: 20,
+        homeFTSTotal: 20,
+        awayFTSTotal: 20,
+        homeScoredBothHalvesCtx: 40,
+        awayScoredBothHalvesCtx: 40,
+        homeConcededBothHalvesCtx: 20,
+        awayConcededBothHalvesCtx: 40,
+        homeBTSCtx: 60,
+        awayBTSCtx: 80,
+        homeOver25Ctx: 80,
+        awayOver25Ctx: 80,
+        homeScoredFirstCtx: 40,
+        homeConcededFirstCtx: 60,
+        awayScoredFirstCtx: 20,
+        awayConcededFirstCtx: 80,
+        homeAvgMinScoredFirst: 40,
+        homeAvgMinConcededFirst: 32,
+        awayAvgMinScoredFirst: 45,
+        awayAvgMinConcededFirst: 30,
+        homeLeadDefending: 60,
+        awayLeadDefending: 60,
+        homeEqualizing: 40,
+        awayEqualizing: 40,
+        homePPGSF: 2.20,
+        homePPGCF: 0.50,
+        awayPPGSF: 2.00,
+        awayPPGCF: 0.50,
+        homeSegmentsGF: [1, 1, 2, 2, 2, 2],
+        homeSegmentsGA: [1, 1, 2, 2, 2, 2],
+        awaySegmentsGF: [1, 1, 2, 2, 2, 2],
+        awaySegmentsGA: [1, 1, 2, 2, 2, 2],
+        home1stHalfGFPct: 40,
+        home2ndHalfGFPct: 60,
+        away1stHalfGFPct: 35,
+        away2ndHalfGFPct: 65,
+        home2ndHalfScoringCtx: 60,
+        away2ndHalfScoringCtx: 70,
+        home2ndHalfConcedingCtx: 60,
+        away2ndHalfConcedingCtx: 70,
+        homeCornersForCtx: 4.5,
+        homeCornersAgainstCtx: 4.0,
+        homeCornersTotalCtx: 8.5,
+        awayCornersForCtx: 4.0,
+        awayCornersAgainstCtx: 4.5,
+        awayCornersTotalCtx: 8.5,
+        homeCornersTotalAll: 8.5,
+        awayCornersTotalAll: 9.0,
+        homeCornersOver75Ctx: 50,
+        awayCornersOver75Ctx: 50,
+        homeCornersOver85Ctx: 40,
+        awayCornersOver85Ctx: 40,
+        homeCornersOver95Ctx: 30,
+        awayCornersOver95Ctx: 30,
+        h2hOver25Pct: 60,
+        h2hBTSPct: 60,
+        homeConsecDefeats: 0,
+        awayConsecDefeats: 0,
+        homeScoredStreak: 0,
+        awayScoredStreak: 0
       };
 
-      // Detección de equipos
       for (let i = 0; i < Math.min(lines.length, 30); i++) {
         if (/^Latest results$/i.test(lines[i])) {
           let offset = /^\(/.test(lines[i + 1] || '') ? 2 : 1;
@@ -650,12 +1838,11 @@ Total	11	2	1	8
           }
         }
       }
-      const homeMatch = raw.match(/^([A-Za-zÀ-ÿ0-9\s\.\-']+?)\s*\(AT HOME\)/m);
-      const awayMatch = raw.match(/^([A-Za-zÀ-ÿ0-9\s\.\-']+?)\s*\(AWAY\)/m);
+      const homeMatch = raw.match(/^([A-Za-zÀ-ÿ0-9 \t\.\-']+?)[ \t]*\(AT HOME\)/mi);
+      const awayMatch = raw.match(/^([A-Za-zÀ-ÿ0-9 \t\.\-']+?)[ \t]*\(AWAY\)/mi);
       if (homeMatch) data.homeTeam = homeMatch[1].trim();
       if (awayMatch) data.awayTeam = awayMatch[1].trim();
 
-      // PPI
       const ppiIdx = lines.findIndex(l => /^Points Performance Index \(PPI\)$/i.test(l));
       if (ppiIdx !== -1) {
         const nums = [];
@@ -664,30 +1851,43 @@ Total	11	2	1	8
           if (m) nums.push(parseFloat(m[1]));
           if (nums.length === 2) break;
         }
-        if (nums.length === 2) { data.homePPI = nums[0]; data.awayPPI = nums[1]; }
+        if (nums.length === 2) {
+          data.homePPI = nums[0];
+          data.awayPPI = nums[1];
+        }
       }
 
-      // PPG
       const ppgIdx = lines.findIndex(l => /^Points Per Game \(PPG\)$/i.test(l));
       if (ppgIdx !== -1) {
         const block = lines.slice(ppgIdx + 1, ppgIdx + 14).join(' ');
         const homeAwayM = block.match(/Home\s+(\d+\.\d+)\s+(\d+\.\d+)\s+Away/i);
-        if (homeAwayM) { data.homePPGHome = parseFloat(homeAwayM[1]); data.awayPPGAway = parseFloat(homeAwayM[2]); }
+        if (homeAwayM) {
+          data.homePPGHome = parseFloat(homeAwayM[1]);
+          data.awayPPGAway = parseFloat(homeAwayM[2]);
+        }
         const totM = block.match(/Total\s+(\d+\.\d+)\s+(\d+\.\d+)\s+Total/i);
-        if (totM) { data.homePPGTotal = parseFloat(totM[1]); data.awayPPGTotal = parseFloat(totM[2]); }
+        if (totM) {
+          data.homePPGTotal = parseFloat(totM[1]);
+          data.awayPPGTotal = parseFloat(totM[2]);
+        }
         const l8M = block.match(/Last 8\s+(\d+\.\d+)\s+(\d+\.\d+)\s+Last 8/i);
-        if (l8M) { data.homePPGL8 = parseFloat(l8M[1]); data.awayPPGL8 = parseFloat(l8M[2]); }
+        if (l8M) {
+          data.homePPGL8 = parseFloat(l8M[1]);
+          data.awayPPGL8 = parseFloat(l8M[2]);
+        }
       }
 
-      // Tablas de liga
       function extractLeagueTable(headerRegex) {
         const idx = lines.findIndex(l => headerRegex.test(l));
         if (idx === -1) return null;
         const map = {};
         for (let k = idx + 1; k < Math.min(idx + 35, lines.length); k++) {
           const m = lines[k].match(/^([A-Za-zÀ-ÿ\s\.\-']+?)\s+(\d+)\s+(\d+)$/);
-          if (m) map[m[1].trim().toLowerCase()] = { gp: parseInt(m[2], 10), val: parseInt(m[3], 10) };
-          else if (Object.keys(map).length > 5 && !/^GP\s+/i.test(lines[k])) break;
+          if (m) {
+            map[m[1].trim().toLowerCase()] = { gp: parseInt(m[2], 10), val: parseInt(m[3], 10) };
+          } else if (Object.keys(map).length > 5 && !/^GP\s+/i.test(lines[k])) {
+            break;
+          }
         }
         return map;
       }
@@ -724,41 +1924,78 @@ Total	11	2	1	8
         let sumGF = 0, sumGP = 0;
         Object.values(tblOffenceHome).forEach(v => { sumGF += v.val; sumGP += v.gp; });
         if (sumGP > 0) data.leagueHomeGF = sumGF / sumGP;
-        if (tblOffenceHome[hKey]) { data.homeCtxGP = tblOffenceHome[hKey].gp; data.homeCtxGF = tblOffenceHome[hKey].val / tblOffenceHome[hKey].gp; }
+        if (tblOffenceHome[hKey]) {
+          data.homeCtxGP = tblOffenceHome[hKey].gp;
+          data.homeCtxGF = tblOffenceHome[hKey].val / tblOffenceHome[hKey].gp;
+        }
       }
-      if (tblDefenceHome && tblDefenceHome[hKey]) data.homeCtxGA = tblDefenceHome[hKey].val / tblDefenceHome[hKey].gp;
+      if (tblDefenceHome && tblDefenceHome[hKey]) {
+        data.homeCtxGA = tblDefenceHome[hKey].val / tblDefenceHome[hKey].gp;
+      }
       if (tblOffenceAway && Object.keys(tblOffenceAway).length >= 6) {
         let sumGF = 0, sumGP = 0;
         Object.values(tblOffenceAway).forEach(v => { sumGF += v.val; sumGP += v.gp; });
         if (sumGP > 0) data.leagueAwayGF = sumGF / sumGP;
-        if (tblOffenceAway[aKey]) { data.awayCtxGP = tblOffenceAway[aKey].gp; data.awayCtxGF = tblOffenceAway[aKey].val / tblOffenceAway[aKey].gp; }
+        if (tblOffenceAway[aKey]) {
+          data.awayCtxGP = tblOffenceAway[aKey].gp;
+          data.awayCtxGF = tblOffenceAway[aKey].val / tblOffenceAway[aKey].gp;
+        }
       }
-      if (tblDefenceAway && tblDefenceAway[aKey]) data.awayCtxGA = tblDefenceAway[aKey].val / tblDefenceAway[aKey].gp;
+      if (tblDefenceAway && tblDefenceAway[aKey]) {
+        data.awayCtxGA = tblDefenceAway[aKey].val / tblDefenceAway[aKey].gp;
+      }
 
-      // Contextual averages
       const ctxIdx = lines.findIndex(l => /^Contextual averages$/i.test(l));
       if (ctxIdx !== -1) {
         for (let k = ctxIdx + 1; k < Math.min(ctxIdx + 55, lines.length); k++) {
           const line = lines[k];
           let m;
-          if ((m = line.match(/^Avg Scored\s+(\d+\.\d+)\s+\d+\.\d+\s+(\d+\.\d+)\s+Avg Conceded/i))) { data.homeCtxGF = parseFloat(m[1]); data.awayCtxGA = parseFloat(m[2]); }
-          else if ((m = line.match(/^Avg Conceded\s+(\d+\.\d+)\s+\d+\.\d+\s+(\d+\.\d+)\s+Avg Scored/i))) { data.homeCtxGA = parseFloat(m[1]); data.awayCtxGF = parseFloat(m[2]); }
-          else if ((m = line.match(/^Clean sheets\s+(\d+)%\s+\d+%\s+(\d+)%\s+Failed to score/i))) { data.homeCSCtx = parseInt(m[1], 10); data.awayFTSCtx = parseInt(m[2], 10); }
-          else if ((m = line.match(/^Failed to score\s+(\d+)%\s+\d+%\s+(\d+)%\s+Clean sheets/i))) { data.homeFTSCtx = parseInt(m[1], 10); data.awayCSCtx = parseInt(m[2], 10); }
-          else if ((m = line.match(/^Scored in both halves\s+(\d+)%\s+\d+%\s+(\d+)%\s+Conceded in both halves/i))) { data.homeScoredBothHalvesCtx = parseInt(m[1], 10); data.awayConcededBothHalvesCtx = parseInt(m[2], 10); }
-          else if ((m = line.match(/^Conceded in both halves\s+(\d+)%\s+\d+%\s+(\d+)%\s+Scored in both halves/i))) { data.homeConcededBothHalvesCtx = parseInt(m[1], 10); data.awayScoredBothHalvesCtx = parseInt(m[2], 10); }
-          else if ((m = line.match(/^Scored first\s+(\d+)%\s+\d+%\s+(\d+)%\s+Conceded first/i))) { data.homeScoredFirstCtx = parseInt(m[1], 10); data.awayConcededFirstCtx = parseInt(m[2], 10); }
-          else if ((m = line.match(/^Conceded first\s+(\d+)%\s+\d+%\s+(\d+)%\s+Scored first/i))) { data.homeConcededFirstCtx = parseInt(m[1], 10); data.awayScoredFirstCtx = parseInt(m[2], 10); }
-          else if ((m = line.match(/^Both teams scored\s+(\d+)%\s+\d+%\s+(\d+)%/i))) { data.homeBTSCtx = parseInt(m[1], 10); data.awayBTSCtx = parseInt(m[2], 10); }
-          else if ((m = line.match(/^GF\+GA > 2\.5\s+(\d+)%\s+\d+%\s+(\d+)%/i))) { data.homeOver25Ctx = parseInt(m[1], 10); data.awayOver25Ctx = parseInt(m[2], 10); }
-          else if ((m = line.match(/^Avg Corners For\s+(\d+\.\d+)\s+\d+\.\d+\s+(\d+\.\d+)\s+Avg Corners Against/i))) { data.homeCornersForCtx = parseFloat(m[1]); data.awayCornersAgainstCtx = parseFloat(m[2]); }
-          else if ((m = line.match(/^Avg Corners Against\s+(\d+\.\d+)\s+\d+\.\d+\s+(\d+\.\d+)\s+Avg Corners For/i))) { data.homeCornersAgainstCtx = parseFloat(m[1]); data.awayCornersForCtx = parseFloat(m[2]); }
-          else if ((m = line.match(/^Avg Total Corners \(F\+A\)\s+(\d+\.\d+)\s+\d+\.\d+\s+(\d+\.\d+)/i))) { data.homeCornersTotalCtx = parseFloat(m[1]); data.awayCornersTotalCtx = parseFloat(m[2]); }
-          else if ((m = line.match(/^Over 8\.5 total corners\s+(\d+)%\s+\d+%\s+(\d+)%/i))) { data.homeCornersOver85Ctx = parseInt(m[1], 10); data.awayCornersOver85Ctx = parseInt(m[2], 10); }
+          if ((m = line.match(/^Avg Scored\s+(\d+\.\d+)\s+\d+\.\d+\s+(\d+\.\d+)\s+Avg Conceded/i))) {
+            data.homeCtxGF = parseFloat(m[1]);
+            data.awayCtxGA = parseFloat(m[2]);
+          } else if ((m = line.match(/^Avg Conceded\s+(\d+\.\d+)\s+\d+\.\d+\s+(\d+\.\d+)\s+Avg Scored/i))) {
+            data.homeCtxGA = parseFloat(m[1]);
+            data.awayCtxGF = parseFloat(m[2]);
+          } else if ((m = line.match(/^Clean sheets\s+(\d+)%\s+\d+%\s+(\d+)%\s+Failed to score/i))) {
+            data.homeCSCtx = parseInt(m[1], 10);
+            data.awayFTSCtx = parseInt(m[2], 10);
+          } else if ((m = line.match(/^Failed to score\s+(\d+)%\s+\d+%\s+(\d+)%\s+Clean sheets/i))) {
+            data.homeFTSCtx = parseInt(m[1], 10);
+            data.awayCSCtx = parseInt(m[2], 10);
+          } else if ((m = line.match(/^Scored in both halves\s+(\d+)%\s+\d+%\s+(\d+)%\s+Conceded in both halves/i))) {
+            data.homeScoredBothHalvesCtx = parseInt(m[1], 10);
+            data.awayConcededBothHalvesCtx = parseInt(m[2], 10);
+          } else if ((m = line.match(/^Conceded in both halves\s+(\d+)%\s+\d+%\s+(\d+)%\s+Scored in both halves/i))) {
+            data.homeConcededBothHalvesCtx = parseInt(m[1], 10);
+            data.awayScoredBothHalvesCtx = parseInt(m[2], 10);
+          } else if ((m = line.match(/^Scored first\s+(\d+)%\s+\d+%\s+(\d+)%\s+Conceded first/i))) {
+            data.homeScoredFirstCtx = parseInt(m[1], 10);
+            data.awayConcededFirstCtx = parseInt(m[2], 10);
+          } else if ((m = line.match(/^Conceded first\s+(\d+)%\s+\d+%\s+(\d+)%\s+Scored first/i))) {
+            data.homeConcededFirstCtx = parseInt(m[1], 10);
+            data.awayScoredFirstCtx = parseInt(m[2], 10);
+          } else if ((m = line.match(/^Both teams scored\s+(\d+)%\s+\d+%\s+(\d+)%/i))) {
+            data.homeBTSCtx = parseInt(m[1], 10);
+            data.awayBTSCtx = parseInt(m[2], 10);
+          } else if ((m = line.match(/^GF\+GA > 2\.5\s+(\d+)%\s+\d+%\s+(\d+)%/i))) {
+            data.homeOver25Ctx = parseInt(m[1], 10);
+            data.awayOver25Ctx = parseInt(m[2], 10);
+          } else if ((m = line.match(/^Avg Corners For\s+(\d+\.\d+)\s+\d+\.\d+\s+(\d+\.\d+)\s+Avg Corners Against/i))) {
+            data.homeCornersForCtx = parseFloat(m[1]);
+            data.awayCornersAgainstCtx = parseFloat(m[2]);
+          } else if ((m = line.match(/^Avg Corners Against\s+(\d+\.\d+)\s+\d+\.\d+\s+(\d+\.\d+)\s+Avg Corners For/i))) {
+            data.homeCornersAgainstCtx = parseFloat(m[1]);
+            data.awayCornersForCtx = parseFloat(m[2]);
+          } else if ((m = line.match(/^Avg Total Corners \(F\+A\)\s+(\d+\.\d+)\s+\d+\.\d+\s+(\d+\.\d+)/i))) {
+            data.homeCornersTotalCtx = parseFloat(m[1]);
+            data.awayCornersTotalCtx = parseFloat(m[2]);
+          } else if ((m = line.match(/^Over 8\.5 total corners\s+(\d+)%\s+\d+%\s+(\d+)%/i))) {
+            data.homeCornersOver85Ctx = parseInt(m[1], 10);
+            data.awayCornersOver85Ctx = parseInt(m[2], 10);
+          }
         }
       }
 
-      // Comparativa local
       const cmpHomeIdx = lines.findIndex(l => new RegExp(`^${escapeRegExp(data.homeTeam)}.*vs league average AT HOME`, 'i').test(l));
       if (cmpHomeIdx !== -1) {
         for (let k = cmpHomeIdx + 1; k < Math.min(cmpHomeIdx + 32, lines.length); k++) {
@@ -772,7 +2009,6 @@ Total	11	2	1	8
         }
       }
 
-      // Comparativa visitante
       const cmpAwayIdx = lines.findIndex(l => new RegExp(`^${escapeRegExp(data.awayTeam)}.*vs league average AWAY`, 'i').test(l));
       if (cmpAwayIdx !== -1) {
         for (let k = cmpAwayIdx + 1; k < Math.min(cmpAwayIdx + 32, lines.length); k++) {
@@ -786,10 +2022,10 @@ Total	11	2	1	8
         }
       }
 
-      // Goal times
       const gtIdx = lines.findIndex(l => /^Goal times$/i.test(l));
       if (gtIdx !== -1) {
         const gtSlice = lines.slice(gtIdx + 1, gtIdx + 150);
+
         function extractTeamGoalTimes(teamName, scopeLabel) {
           const tIdx = gtSlice.findIndex((l, idx) =>
             l.toLowerCase() === teamName.toLowerCase() &&
@@ -807,19 +2043,41 @@ Total	11	2	1	8
           });
           const h1m = sub.match(/1st Half\s+GF\s+\d+\s+(\d+)%/i);
           const h2m = sub.match(/2nd Half\s+GF\s+\d+\s+(\d+)%/i);
-          return { gf, ga, h1Pct: h1m ? parseInt(h1m[1], 10) : null, h2Pct: h2m ? parseInt(h2m[1], 10) : null };
+          return {
+            gf,
+            ga,
+            h1Pct: h1m ? parseInt(h1m[1], 10) : null,
+            h2Pct: h2m ? parseInt(h2m[1], 10) : null
+          };
         }
+
         const homeTotalGT = extractTeamGoalTimes(data.homeTeam, 'Total');
         const awayTotalGT = extractTeamGoalTimes(data.awayTeam, 'Total');
         const homeCtxGT = extractTeamGoalTimes(data.homeTeam, 'Home');
         const awayCtxGT = extractTeamGoalTimes(data.awayTeam, 'Away');
-        if (homeTotalGT) { data.homeSegmentsGF = homeTotalGT.gf; data.homeSegmentsGA = homeTotalGT.ga; if (homeTotalGT.h1Pct !== null) data.home1stHalfGFPct = homeTotalGT.h1Pct; if (homeTotalGT.h2Pct !== null) data.home2ndHalfGFPct = homeTotalGT.h2Pct; }
-        if (awayTotalGT) { data.awaySegmentsGF = awayTotalGT.gf; data.awaySegmentsGA = awayTotalGT.ga; if (awayTotalGT.h1Pct !== null) data.away1stHalfGFPct = awayTotalGT.h1Pct; if (awayTotalGT.h2Pct !== null) data.away2ndHalfGFPct = awayTotalGT.h2Pct; }
-        if (homeCtxGT && homeCtxGT.h2Pct !== null) { data.home2ndHalfGFPct = homeCtxGT.h2Pct; data.home1stHalfGFPct = homeCtxGT.h1Pct; }
-        if (awayCtxGT && awayCtxGT.h2Pct !== null) { data.away2ndHalfGFPct = awayCtxGT.h2Pct; data.away1stHalfGFPct = awayCtxGT.h1Pct; }
+
+        if (homeTotalGT) {
+          data.homeSegmentsGF = homeTotalGT.gf;
+          data.homeSegmentsGA = homeTotalGT.ga;
+          if (homeTotalGT.h1Pct !== null) data.home1stHalfGFPct = homeTotalGT.h1Pct;
+          if (homeTotalGT.h2Pct !== null) data.home2ndHalfGFPct = homeTotalGT.h2Pct;
+        }
+        if (awayTotalGT) {
+          data.awaySegmentsGF = awayTotalGT.gf;
+          data.awaySegmentsGA = awayTotalGT.ga;
+          if (awayTotalGT.h1Pct !== null) data.away1stHalfGFPct = awayTotalGT.h1Pct;
+          if (awayTotalGT.h2Pct !== null) data.away2ndHalfGFPct = awayTotalGT.h2Pct;
+        }
+        if (homeCtxGT && homeCtxGT.h2Pct !== null) {
+          data.home2ndHalfGFPct = homeCtxGT.h2Pct;
+          data.home1stHalfGFPct = homeCtxGT.h1Pct;
+        }
+        if (awayCtxGT && awayCtxGT.h2Pct !== null) {
+          data.away2ndHalfGFPct = awayCtxGT.h2Pct;
+          data.away1stHalfGFPct = awayCtxGT.h1Pct;
+        }
       }
 
-      // Corner stats
       const cornerIdx = lines.findIndex(l => /^Corner statistics$/i.test(l));
       if (cornerIdx !== -1) {
         for (let k = cornerIdx + 1; k < Math.min(cornerIdx + 20, lines.length); k++) {
@@ -833,7 +2091,6 @@ Total	11	2	1	8
         }
       }
 
-      // Scoring rates
       const srIdx = lines.findIndex(l => /^Scoring rates$/i.test(l));
       if (srIdx !== -1) {
         for (let k = srIdx + 1; k < Math.min(srIdx + 18, lines.length); k++) {
@@ -848,22 +2105,24 @@ Total	11	2	1	8
         }
       }
 
-      // No goal scored / conceded
       const ngIdx = lines.findIndex(l => /^No goal scored \/ conceded$/i.test(l));
       if (ngIdx !== -1) {
         for (let k = ngIdx + 1; k < Math.min(ngIdx + 10, lines.length); k++) {
           let m;
           if ((m = lines[k].match(/^(\d+)%\s+(\d+)%\s+Clean sheets\s+(\d+)%\s+(\d+)%/i))) {
-            data.homeCSCtx = parseInt(m[1], 10); data.homeCSTotal = parseInt(m[2], 10);
-            data.awayCSTotal = parseInt(m[3], 10); data.awayCSCtx = parseInt(m[4], 10);
+            data.homeCSCtx = parseInt(m[1], 10);
+            data.homeCSTotal = parseInt(m[2], 10);
+            data.awayCSTotal = parseInt(m[3], 10);
+            data.awayCSCtx = parseInt(m[4], 10);
           } else if ((m = lines[k].match(/^(\d+)%\s+(\d+)%\s+Failed to score\s+(\d+)%\s+(\d+)%/i))) {
-            data.homeFTSCtx = parseInt(m[1], 10); data.homeFTSTotal = parseInt(m[2], 10);
-            data.awayFTSTotal = parseInt(m[3], 10); data.awayFTSCtx = parseInt(m[4], 10);
+            data.homeFTSCtx = parseInt(m[1], 10);
+            data.homeFTSTotal = parseInt(m[2], 10);
+            data.awayFTSTotal = parseInt(m[3], 10);
+            data.awayFTSCtx = parseInt(m[4], 10);
           }
         }
       }
 
-      // H2H
       const h2hIdx = lines.findIndex(l => /^Stats on above matches$/i.test(l));
       if (h2hIdx !== -1) {
         const sub = lines.slice(h2hIdx, h2hIdx + 20).join(' ');
@@ -873,7 +2132,6 @@ Total	11	2	1	8
         if (bts) data.h2hBTSPct = parseInt(bts[1], 10);
       }
 
-      // Streaks
       const streakIdx = lines.findIndex(l => /^Current Streaks & Sequences$/i.test(l));
       if (streakIdx !== -1) {
         for (let k = streakIdx + 1; k < Math.min(streakIdx + 20, lines.length); k++) {
@@ -907,7 +2165,7 @@ Total	11	2	1	8
     }
 
     // =========================================================================
-    // MOTOR MATEMÁTICO
+    // MÓDULO 2: MOTOR MATEMÁTICO POISSON GEOMÉTRICO + CORRECCIÓN DIXON-COLES
     // =========================================================================
     function factorial(n) {
       if (n <= 1) return 1;
@@ -915,27 +2173,43 @@ Total	11	2	1	8
       for (let i = 2; i <= n; i++) res *= i;
       return res;
     }
+
     function poissonPMF(k, lambda) {
+      if (!Number.isFinite(lambda) || lambda < 0 || !Number.isInteger(k) || k < 0) return 0;
+      if (lambda === 0) return k === 0 ? 1 : 0;
       return (Math.pow(lambda, k) * Math.exp(-lambda)) / factorial(k);
     }
 
+    // Evita que campos vacíos, no numéricos o extremos rompan el motor.
+    function finiteNumber(value, fallback, min = 0.01, max = 8) {
+      const n = Number.parseFloat(value);
+      return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;
+    }
+
     function runGeometricPoissonModel(d) {
-      const wL8 = parseInt(document.getElementById('inp-weight-l8').value, 10) / 100;
+      const wL8 = Math.min(0.70, Math.max(0, finiteNumber(document.getElementById('inp-weight-l8').value, 35, 0, 70) / 100));
       const wCtx = 1 - wL8;
-      const rho = parseFloat(document.getElementById('inp-rho').value);
+      const rho = Math.min(0.05, Math.max(-0.18, finiteNumber(document.getElementById('inp-rho').value, -0.08, -0.18, 0.05)));
       const thetaMode = document.getElementById('inp-theta-mode').value;
 
+      d.leagueHomeGF = finiteNumber(d.leagueHomeGF, 1.66, 0.1, 5);
+      d.leagueAwayGF = finiteNumber(d.leagueAwayGF, 1.50, 0.1, 5);
+      ['homeCtxGF','homeCtxGA','awayCtxGF','awayCtxGA','homeL8GF','homeL8GA','awayL8GF','awayL8GA'].forEach(key => {
+        d[key] = finiteNumber(d[key], 1.5, 0, 8);
+      });
       const avgLeagueGoalPerTeam = (d.leagueHomeGF + d.leagueAwayGF) / 2 || 1.58;
       const homeAdvRatio = d.leagueHomeGF / avgLeagueGoalPerTeam;
       const awayAdvRatio = d.leagueAwayGF / avgLeagueGoalPerTeam;
 
       const effHomeGF = (wCtx * d.homeCtxGF) + (wL8 * d.homeL8GF * homeAdvRatio);
       const effHomeGA = (wCtx * d.homeCtxGA) + (wL8 * d.homeL8GA * awayAdvRatio);
+
       const effAwayGF = (wCtx * d.awayCtxGF) + (wL8 * d.awayL8GF * awayAdvRatio);
       const effAwayGA = (wCtx * d.awayCtxGA) + (wL8 * d.awayL8GA * homeAdvRatio);
 
       const faHome = effHomeGF / d.leagueHomeGF;
       const ddAway = effAwayGA / d.leagueHomeGF;
+
       const faAway = effAwayGF / d.leagueAwayGF;
       const ddHome = effHomeGA / d.leagueAwayGF;
 
@@ -947,6 +2221,9 @@ Total	11	2	1	8
       lambdaHome = 0.65 * lambdaHome + 0.35 * directHomeAvg;
       lambdaAway = 0.65 * lambdaAway + 0.35 * directAwayAvg;
 
+      // Mantiene intensidades positivas y acotadas ante estadísticas anómalas.
+      lambdaHome = finiteNumber(lambdaHome, 1.35, 0.05, 6);
+      lambdaAway = finiteNumber(lambdaAway, 1.10, 0.05, 6);
       const lambdaTotal = lambdaHome + lambdaAway;
 
       const avgCS = (d.homeCSTotal + d.awayCSTotal + d.homeCSCtx + d.awayCSCtx) / 4;
@@ -955,8 +2232,17 @@ Total	11	2	1	8
 
       let dispersionLevel = 'MEDIO';
       let theta = 0.14;
-      if (thetaMode === 'low' || (thetaMode === 'auto' && volatilityScore < 48)) { dispersionLevel = 'BAJO'; theta = 0.06; }
-      else if (thetaMode === 'high' || (thetaMode === 'auto' && volatilityScore >= 62)) { dispersionLevel = 'ALTO'; theta = 0.24; }
+
+      if (thetaMode === 'low' || (thetaMode === 'auto' && volatilityScore < 48)) {
+        dispersionLevel = 'BAJO';
+        theta = 0.06;
+      } else if (thetaMode === 'high' || (thetaMode === 'auto' && volatilityScore >= 62)) {
+        dispersionLevel = 'ALTO';
+        theta = 0.24;
+      } else {
+        dispersionLevel = 'MEDIO';
+        theta = 0.14;
+      }
 
       const maxGoals = 8;
       const matrix = Array.from({ length: maxGoals + 1 }, () => Array(maxGoals + 1).fill(0));
@@ -971,7 +2257,8 @@ Total	11	2	1	8
       for (let i = 0; i <= maxGoals; i++) {
         const pH = geomPoissonMarginal(i, lambdaHome, theta);
         for (let j = 0; j <= maxGoals; j++) {
-          matrix[i][j] = pH * geomPoissonMarginal(j, lambdaAway, theta);
+          const pA = geomPoissonMarginal(j, lambdaAway, theta);
+          matrix[i][j] = pH * pA;
         }
       }
 
@@ -990,11 +2277,23 @@ Total	11	2	1	8
       matrix[1][1] *= Math.max(0.4, tau11);
 
       let totalProbSum = 0;
-      for (let i = 0; i <= maxGoals; i++) for (let j = 0; j <= maxGoals; j++) totalProbSum += matrix[i][j];
-      for (let i = 0; i <= maxGoals; i++) for (let j = 0; j <= maxGoals; j++) matrix[i][j] /= totalProbSum;
+      for (let i = 0; i <= maxGoals; i++) {
+        for (let j = 0; j <= maxGoals; j++) {
+          totalProbSum += matrix[i][j];
+        }
+      }
+      if (!Number.isFinite(totalProbSum) || totalProbSum <= 0) {
+        throw new Error('La matriz de probabilidades no pudo normalizarse.');
+      }
+      for (let i = 0; i <= maxGoals; i++) {
+        for (let j = 0; j <= maxGoals; j++) {
+          matrix[i][j] /= totalProbSum;
+        }
+      }
 
       let pHome = 0, pDraw = 0, pAway = 0;
-      let pOver15 = 0, pOver25 = 0, pOver35 = 0, pBTTSYes = 0;
+      let pOver15 = 0, pOver25 = 0, pOver35 = 0;
+      let pBTTSYes = 0;
       const scorelines = [];
 
       for (let i = 0; i <= maxGoals; i++) {
@@ -1003,45 +2302,79 @@ Total	11	2	1	8
           if (i > j) pHome += p;
           else if (i === j) pDraw += p;
           else pAway += p;
+
           const tot = i + j;
           if (tot > 1.5) pOver15 += p;
           if (tot > 2.5) pOver25 += p;
           if (tot > 3.5) pOver35 += p;
+
           if (i >= 1 && j >= 1) pBTTSYes += p;
+
           scorelines.push({ score: `${i}-${j}`, prob: p });
         }
       }
 
       scorelines.sort((a, b) => b.prob - a.prob);
 
+      const pUnder25 = 1 - pOver25;
+      const pUnder15 = 1 - pOver15;
+      const pUnder35 = 1 - pOver35;
+      const pBTTSNo = 1 - pBTTSYes;
+      const p1X = pHome + pDraw;
+      const pX2 = pAway + pDraw;
+      const p12 = pHome + pAway;
+      const pHomeDNB = pHome / (pHome + pAway);
+      const pAwayDNB = pAway / (pHome + pAway);
+
       const avg2ndHalfShare = (d.home2ndHalfGFPct + d.away2ndHalfGFPct) / 2;
       const timeBiasLabel = avg2ndHalfShare >= 56 ? '2.ª MITAD' : (avg2ndHalfShare <= 44 ? '1.ª MITAD' : 'EQUILIBRADO');
 
       return {
-        wCtx: Math.round(wCtx * 100), wL8: Math.round(wL8 * 100),
-        faHome, ddHome, faAway, ddAway,
-        lambdaHome, lambdaAway, lambdaTotal,
-        dispersionLevel, theta, effectiveRho,
-        timeBiasLabel, avg2ndHalfShare, matrix, scorelines,
+        wCtx: Math.round(wCtx * 100),
+        wL8: Math.round(wL8 * 100),
+        faHome,
+        ddHome,
+        faAway,
+        ddAway,
+        lambdaHome,
+        lambdaAway,
+        lambdaTotal,
+        dispersionLevel,
+        theta,
+        effectiveRho,
+        timeBiasLabel,
+        avg2ndHalfShare,
+        matrix,
+        scorelines,
         probs: {
-          home: pHome, draw: pDraw, away: pAway,
-          dc1X: pHome + pDraw, dcX2: pAway + pDraw, dc12: pHome + pAway,
-          dnbHome: pHome / (pHome + pAway), dnbAway: pAway / (pHome + pAway),
-          over15: pOver15, under15: 1 - pOver15,
-          over25: pOver25, under25: 1 - pOver25,
-          over35: pOver35, under35: 1 - pOver35,
-          bttsYes: pBTTSYes, bttsNo: 1 - pBTTSYes
+          home: pHome,
+          draw: pDraw,
+          away: pAway,
+          dc1X: p1X,
+          dcX2: pX2,
+          dc12: p12,
+          dnbHome: pHomeDNB,
+          dnbAway: pAwayDNB,
+          over15: pOver15,
+          under15: pUnder15,
+          over25: pOver25,
+          under25: pUnder25,
+          over35: pOver35,
+          under35: pUnder35,
+          bttsYes: pBTTSYes,
+          bttsNo: pBTTSNo
         }
       };
     }
 
     // =========================================================================
-    // RENDERIZADO
+    // MÓDULO 3: RENDERIZADO LIMPIO DE MERCADOS Y CAJONES OCULTOS
     // =========================================================================
     function renderAllSections(d, m) {
       document.getElementById('results-wrapper').classList.remove('hidden');
       document.getElementById('btn-copy-report').disabled = false;
       document.getElementById('parse-status-badge').textContent = `${d.homeTeam} vs ${d.awayTeam}`;
+
       document.getElementById('match-header-title').textContent = `${d.homeTeam} vs ${d.awayTeam}`;
       document.getElementById('match-header-ppi').textContent = `PPI ${d.homePPI.toFixed(2)} — ${d.awayPPI.toFixed(2)}`;
 
@@ -1067,14 +2400,14 @@ Total	11	2	1	8
         { id: 'bttsNo', cat: 'BTTS', name: 'Ambos Anotan · No', prob: m.probs.bttsNo }
       ];
 
-      function buildMarketRows(list, prefix) {
+      function buildMarketRows(list) {
         return list.map(item => {
-          const pctNum = item.prob * 100;
+          const pctNum = (item.prob * 100);
           const pct = pctNum.toFixed(1);
           const fairOdd = (1 / item.prob).toFixed(2);
           const barWidth = Math.min(100, Math.max(4, pctNum)).toFixed(1);
           return `
-            <tr data-market-key="${prefix}_${item.id}" class="prob-track hover:bg-slate-800/35 transition">
+            <tr class="prob-track hover:bg-slate-800/35 transition">
               <td class="py-2.5 px-3.5 font-medium text-slate-200 relative">
                 <div class="prob-fill" style="width:${barWidth}%"></div>
                 <span class="relative z-10">${item.name}</span>
@@ -1089,33 +2422,45 @@ Total	11	2	1	8
               <td class="py-2.5 px-3.5 text-right font-mono text-[11px] badge-cell mono-num">
                 <span class="px-2 py-0.5 rounded-md surface-inset text-slate-500">&mdash;</span>
               </td>
-            </tr>`;
+            </tr>
+          `;
         }).join('');
       }
 
-      document.getElementById('table-1x2-body').innerHTML = buildMarketRows(group1X2, 'tbl');
-      document.getElementById('table-goals-body').innerHTML = buildMarketRows(groupGoals, 'tbl');
+      document.getElementById('table-1x2-body').innerHTML = buildMarketRows(group1X2);
+      document.getElementById('table-goals-body').innerHTML = buildMarketRows(groupGoals);
 
-      // Top 4 marcadores
       const top4 = m.scorelines.slice(0, 4);
       document.getElementById('top-scorelines-chips').innerHTML = top4.map(sc => {
         const pct = (sc.prob * 100).toFixed(1);
         const odd = (1 / sc.prob).toFixed(2);
-        return `<span class="px-2.5 py-1 rounded-lg surface-inset font-mono text-[11px] text-slate-200 flex items-center gap-1.5 mono-num">
-          <strong class="text-white font-bold">${sc.score}</strong>
-          <span class="text-emerald-300">${pct}%</span>
-          <span class="text-slate-400">@${odd}</span>
-        </span>`;
+        return `
+          <span class="px-2.5 py-1 rounded-lg surface-inset font-mono text-[11px] text-slate-200 flex items-center gap-1.5 mono-num">
+            <strong class="text-white font-bold">${sc.score}</strong>
+            <span class="text-emerald-300">${pct}%</span>
+            <span class="text-slate-400">@${odd}</span>
+          </span>
+        `;
       }).join('');
 
-      // Mercados derivados
       const ctxCornersExp = ((d.homeCornersForCtx + d.awayCornersAgainstCtx) / 2) + ((d.awayCornersForCtx + d.homeCornersAgainstCtx) / 2);
-      let cornerLabel, cornerProb;
-      if (ctxCornersExp < 7.8) { cornerLabel = 'Under 9.5 Córners'; cornerProb = 0.78; }
-      else if (ctxCornersExp < 8.6) { cornerLabel = 'Under 9.5 Córners'; cornerProb = 0.70; }
-      else if (ctxCornersExp >= 9.6) { cornerLabel = 'Over 8.5 Córners'; cornerProb = 0.66; }
-      else { cornerLabel = 'Under 10.5 Córners'; cornerProb = 0.68; }
+      let cornerLabel = 'Under 9.5 Córners';
+      let cornerProb = 0.72;
+      if (ctxCornersExp < 7.8) {
+        cornerLabel = 'Under 9.5 Córners';
+        cornerProb = 0.78;
+      } else if (ctxCornersExp < 8.6) {
+        cornerLabel = 'Under 9.5 Córners';
+        cornerProb = 0.70;
+      } else if (ctxCornersExp >= 9.6) {
+        cornerLabel = 'Over 8.5 Córners';
+        cornerProb = 0.66;
+      } else {
+        cornerLabel = 'Under 10.5 Córners';
+        cornerProb = 0.68;
+      }
       const cornerFairOdd = (1 / cornerProb).toFixed(2);
+
       const halvesProb = Math.min(0.84, Math.max(0.54, (m.avg2ndHalfShare / 100) * 0.92));
       const halvesLabel = m.avg2ndHalfShare >= 56 ? 'Más Goles en 2T' : 'Gol en 2T';
       const halvesFairOdd = (1 / halvesProb).toFixed(2);
@@ -1126,16 +2471,14 @@ Total	11	2	1	8
         </span>
         <span class="px-2.5 py-1 rounded-lg bg-purple-400/10 border border-purple-400/20 text-purple-200 font-mono text-[11px] mono-num">
           <i class="fa-solid fa-clock mr-1.5 text-purple-300"></i>${halvesLabel} <strong class="text-white">@${halvesFairOdd}</strong> <span class="text-purple-300/80">(${(halvesProb * 100).toFixed(0)}%)</span>
-        </span>`;
+        </span>
+      `;
 
       renderSyndicateTop3(d, m, [...group1X2, ...groupGoals]);
-      renderTacticalEdge(d, m, ctxCornersExp);
-      renderScoreHeatmap(m.matrix);
 
-      lastRenderData = d;
-      if (!document.getElementById('drawer-charts').classList.contains('hidden')) {
-        renderTimeSegmentsChart(d);
-      }
+      renderTacticalEdge(d, m, ctxCornersExp);
+      renderTimeSegmentsChart(d);
+      renderScoreHeatmap(m.matrix);
     }
 
     function updateRowEV(inputEl) {
@@ -1148,42 +2491,55 @@ Total	11	2	1	8
         const badgeCell = row.querySelector('.badge-cell');
         if (!bookieOdd || bookieOdd <= 1.0) {
           badgeCell.innerHTML = `<span class="px-2 py-0.5 rounded-md surface-inset text-slate-500">&mdash;</span>`;
-        } else {
-          const ev = (prob * bookieOdd) - 1;
-          const evPct = (ev * 100).toFixed(1);
-          if (ev > 0) {
-            const qKelly = Math.min(10, Math.max(0.1, (ev / (bookieOdd - 1)) * 0.25 * 100)).toFixed(2);
-            badgeCell.innerHTML = `<span class="px-2 py-0.5 rounded-md bg-emerald-400/15 text-emerald-300 border border-emerald-400/30 font-bold">+${evPct}% &middot; ${qKelly}%</span>`;
-          } else {
-            badgeCell.innerHTML = `<span class="px-2 py-0.5 rounded-md bg-rose-400/15 text-rose-300 border border-rose-400/25">${evPct}%</span>`;
-          }
+          return;
         }
-      } else if (card) {
+        const ev = (prob * bookieOdd) - 1;
+        const evPct = (ev * 100).toFixed(1);
+        if (ev > 0) {
+          const fullKelly = ev / (bookieOdd - 1);
+          const qKelly = Math.min(10, Math.max(0.1, fullKelly * 0.25 * 100)).toFixed(2);
+          badgeCell.innerHTML = `<span class="px-2 py-0.5 rounded-md bg-emerald-400/15 text-emerald-300 border border-emerald-400/30 font-bold">+${evPct}% &middot; ${qKelly}%</span>`;
+        } else {
+          badgeCell.innerHTML = `<span class="px-2 py-0.5 rounded-md bg-rose-400/15 text-rose-300 border border-rose-400/25">${evPct}%</span>`;
+        }
+        return;
+      }
+
+      if (card) {
         const evCell = card.querySelector('.ev-cell');
         const kellyCell = card.querySelector('.kelly-cell');
         if (!bookieOdd || bookieOdd <= 1.0) {
-          evCell.textContent = '—'; evCell.className = 'ev-cell text-slate-500';
-          kellyCell.textContent = '—'; kellyCell.className = 'kelly-cell text-slate-500';
+          evCell.textContent = '—';
+          evCell.className = 'ev-cell text-slate-500';
+          kellyCell.textContent = '—';
+          kellyCell.className = 'kelly-cell text-slate-500';
+          return;
+        }
+        const ev = (prob * bookieOdd) - 1;
+        const evPct = (ev * 100).toFixed(1);
+        if (ev > 0) {
+          const fullKelly = ev / (bookieOdd - 1);
+          const qKelly = Math.min(10, Math.max(0.1, fullKelly * 0.25 * 100)).toFixed(2);
+          evCell.textContent = `+${evPct}%`;
+          evCell.className = 'ev-cell text-emerald-300 font-bold';
+          kellyCell.textContent = `${qKelly}%`;
+          kellyCell.className = 'kelly-cell text-amber-300 font-bold';
         } else {
-          const ev = (prob * bookieOdd) - 1;
-          const evPct = (ev * 100).toFixed(1);
-          if (ev > 0) {
-            const qKelly = Math.min(10, Math.max(0.1, (ev / (bookieOdd - 1)) * 0.25 * 100)).toFixed(2);
-            evCell.textContent = `+${evPct}%`; evCell.className = 'ev-cell text-emerald-300 font-bold';
-            kellyCell.textContent = `${qKelly}%`; kellyCell.className = 'kelly-cell text-amber-300 font-bold';
-          } else {
-            evCell.textContent = `${evPct}%`; evCell.className = 'ev-cell text-rose-300';
-            kellyCell.textContent = '0.00%'; kellyCell.className = 'kelly-cell text-slate-500';
-          }
+          evCell.textContent = `${evPct}%`;
+          evCell.className = 'ev-cell text-rose-300';
+          kellyCell.textContent = '0.00%';
+          kellyCell.className = 'kelly-cell text-slate-500';
         }
       }
-      scheduleSaveOdds();
     }
 
     function renderSyndicateTop3(d, m, allMarkets) {
       const candidates = allMarkets.filter(item => item.id !== 'over15' && item.prob >= 0.54);
+
       const scored = candidates.map(c => {
-        let structuralBonus = 0, tag = '';
+        let structuralBonus = 0;
+        let tag = '';
+
         if (c.id === 'bttsYes') {
           const empBTS = (d.homeBTSCtx + d.awayBTSCtx) / 200;
           structuralBonus = (empBTS - 0.55) * 0.25 + (d.awayCSTotal === 0 ? 0.04 : 0);
@@ -1202,35 +2558,50 @@ Total	11	2	1	8
         } else if (c.id === 'dcX2' || c.id === 'dnbAway' || c.id === 'away') {
           structuralBonus = (d.awayPPI - d.homePPI) * 0.06;
           tag = `PPI ${d.awayPPI.toFixed(2)} vs ${d.homePPI.toFixed(2)}`;
-        } else { tag = `Consistencia del modelo`; }
+        } else {
+          tag = `Consistencia del modelo`;
+        }
+
         return { ...c, score: c.prob + structuralBonus, tag };
       });
 
       scored.sort((a, b) => b.score - a.score);
       const top3 = scored.slice(0, 3);
+
       if (top3.length < 3) {
         const rest = allMarkets.filter(x => !top3.some(t => t.id === x.id) && x.id !== 'over15')
-          .sort((a, b) => b.prob - a.prob).slice(0, 3 - top3.length)
+          .sort((a, b) => b.prob - a.prob)
+          .slice(0, 3 - top3.length)
           .map(x => ({ ...x, tag: 'Distribución bivariada' }));
         top3.push(...rest);
       }
+
       currentModelOutput.top3 = top3;
 
       document.getElementById('syndicate-top3-grid').innerHTML = top3.map((pick, idx) => {
         const probPct = (pick.prob * 100).toFixed(1);
         const minOdd = (1 / pick.prob).toFixed(2);
         return `
-          <div data-market-key="top_${pick.id}" class="top3-card surface-inset rounded-xl p-4 flex flex-col justify-between gap-3.5 hover:border-emerald-400/35 transition">
+          <div class="top3-card surface-inset rounded-xl p-4 flex flex-col justify-between gap-3.5 hover:border-emerald-400/35 transition">
             <div class="space-y-1.5">
               <div class="flex items-center justify-between gap-2">
-                <span class="px-2 py-0.5 rounded-md bg-emerald-400/10 text-emerald-300 border border-emerald-400/20 font-mono text-[10px] font-bold">#${idx + 1} &middot; ${pick.cat}</span>
+                <span class="px-2 py-0.5 rounded-md bg-emerald-400/10 text-emerald-300 border border-emerald-400/20 font-mono text-[10px] font-bold">
+                  #${idx + 1} &middot; ${pick.cat}
+                </span>
                 <span class="text-[10px] font-mono text-slate-400 truncate">${pick.tag}</span>
               </div>
               <div class="text-sm font-bold text-white tracking-tight">${pick.name}</div>
             </div>
+
             <div class="pt-3 border-t border-quant-border flex items-center justify-between gap-2 font-mono mono-num">
-              <div><div class="text-[9px] text-slate-500 uppercase">Prob.</div><div class="text-sm font-extrabold text-cyan-300">${probPct}%</div></div>
-              <div><div class="text-[9px] text-slate-500 uppercase">Cuota Justa</div><div class="text-sm font-extrabold text-emerald-300">@${minOdd}</div></div>
+              <div>
+                <div class="text-[9px] text-slate-500 uppercase">Prob.</div>
+                <div class="text-sm font-extrabold text-cyan-300">${probPct}%</div>
+              </div>
+              <div>
+                <div class="text-[9px] text-slate-500 uppercase">Cuota Justa</div>
+                <div class="text-sm font-extrabold text-emerald-300">@${minOdd}</div>
+              </div>
               <div class="flex items-center gap-2">
                 <div>
                   <div class="text-[9px] text-slate-500 uppercase text-center">Bookie</div>
@@ -1247,7 +2618,8 @@ Total	11	2	1	8
                 </div>
               </div>
             </div>
-          </div>`;
+          </div>
+        `;
       }).join('');
     }
 
@@ -1256,7 +2628,8 @@ Total	11	2	1	8
       document.getElementById('edge-first-goal').innerHTML = `<strong>${d.awayTeam}</strong> encaja primero en el <strong>${d.awayConcededFirstCtx}%</strong> de salidas (min. <strong>${d.awayAvgMinConcededFirst}'</strong>) y <strong>${d.homeTeam}</strong> en el <strong>${d.homeConcededFirstCtx}%</strong> en casa (min. <strong>${d.homeAvgMinConcededFirst}'</strong>, ${earlyHomeGA} GA en 0-15'). En retención de ventaja, ${d.homeTeam} sostiene el <strong>${d.homeLeadDefending}%</strong> en casa (${d.homePPGSF.toFixed(2)} PPG al abrir vs ${d.homePPGCF.toFixed(2)} al encajar), mientras ${d.awayTeam} retiene el <strong>${d.awayLeadDefending}%</strong> fuera pero rescata <strong>${d.awayPPGCF.toFixed(2)} PPG</strong> tras ir perdiendo (${d.awayEqualizing}% igualada).`;
       document.getElementById('edge-first-goal-tags').innerHTML = `
         <span class="px-2 py-0.5 rounded bg-cyan-400/10 text-cyan-300 border border-cyan-400/20 text-[10px] font-mono">Encaja 1ro: ${d.homeConcededFirstCtx}% / ${d.awayConcededFirstCtx}%</span>
-        <span class="px-2 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20 text-[10px] font-mono">Retención: ${d.homeLeadDefending}% vs ${d.awayLeadDefending}%</span>`;
+        <span class="px-2 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20 text-[10px] font-mono">Retención: ${d.homeLeadDefending}% vs ${d.awayLeadDefending}%</span>
+      `;
 
       const totalCornersDiscrepancy = d.awayCornersTotalAll - d.awayCornersTotalCtx;
       let cornerText = totalCornersDiscrepancy > 1.5
@@ -1265,162 +2638,216 @@ Total	11	2	1	8
       document.getElementById('edge-derivatives').innerHTML = cornerText + ` En <strong>Mitades</strong>, ${d.homeTeam} anota <strong>${d.home2ndHalfGFPct}%</strong> en 2T y ${d.awayTeam} <strong>${d.away2ndHalfGFPct}%</strong> en 2T.`;
       document.getElementById('edge-derivatives-tags').innerHTML = `
         <span class="px-2 py-0.5 rounded bg-emerald-400/10 text-emerald-300 border border-emerald-400/20 text-[10px] font-mono">Córners Proy: ${ctxCornersExp.toFixed(1)}</span>
-        <span class="px-2 py-0.5 rounded bg-purple-400/10 text-purple-300 border border-purple-400/20 text-[10px] font-mono">Goles 2T: ${d.home2ndHalfGFPct}% / ${d.away2ndHalfGFPct}%</span>`;
+        <span class="px-2 py-0.5 rounded bg-purple-400/10 text-purple-300 border border-purple-400/20 text-[10px] font-mono">Goles 2T: ${d.home2ndHalfGFPct}% / ${d.away2ndHalfGFPct}%</span>
+      `;
 
       const ppiDiff = d.awayPPI - d.homePPI;
       document.getElementById('edge-regression').innerHTML = `<strong>${d.awayTeam}</strong> registra PPI de <strong>${d.awayPPI.toFixed(2)}</strong> (${d.awayPts} pts, ${d.awayPPGL8.toFixed(2)} PPG en Last 8), superior a su posición en tabla. <strong>${d.homeTeam}</strong> tiene PPI de <strong>${d.homePPI.toFixed(2)}</strong> (${d.homePts} pts, ${d.homeConsecDefeats} derrotas seguidas), pero concentra su rendimiento en casa (${d.homePPGHome.toFixed(2)} PPG). Brecha &Delta; PPI: <strong>${ppiDiff > 0 ? '+' : ''}${ppiDiff.toFixed(2)}</strong>.`;
       document.getElementById('edge-regression-tags').innerHTML = `
         <span class="px-2 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20 text-[10px] font-mono">&Delta; PPI: ${ppiDiff > 0 ? '+' : ''}${ppiDiff.toFixed(2)}</span>
-        <span class="px-2 py-0.5 rounded bg-rose-400/10 text-rose-300 border border-rose-400/20 text-[10px] font-mono">CS: ${d.homeCSTotal}% vs ${d.awayCSTotal}%</span>`;
+        <span class="px-2 py-0.5 rounded bg-rose-400/10 text-rose-300 border border-rose-400/20 text-[10px] font-mono">CS: ${d.homeCSTotal}% vs ${d.awayCSTotal}%</span>
+      `;
     }
 
     function renderTimeSegmentsChart(d) {
-      const canvas = document.getElementById('time-segments-chart');
-      if (!canvas) return;
+      const ctx = document.getElementById('time-segments-chart').getContext('2d');
       if (timeSegmentsChartInstance) {
         timeSegmentsChartInstance.destroy();
-        timeSegmentsChartInstance = null;
       }
-      const labels = ['0-15', '16-30', '31-45', '46-60', '61-75', '76-90'];
-      timeSegmentsChartInstance = new Chart(canvas.getContext('2d'), {
+
+      const labels = ["0-15'", "16-30'", "31-45'", "46-60'", "61-75'", "76-90'"];
+      const homeActivity = d.homeSegmentsGF.map((v, i) => v + d.homeSegmentsGA[i]);
+      const awayActivity = d.awaySegmentsGF.map((v, i) => v + d.awaySegmentsGA[i]);
+
+      timeSegmentsChartInstance = new Chart(ctx, {
         type: 'bar',
         data: {
           labels,
           datasets: [
-            { label: `${d.homeTeam} GF`, data: d.homeSegmentsGF, backgroundColor: 'rgba(34, 211, 238, 0.78)', borderRadius: 3 },
-            { label: `${d.homeTeam} GA`, data: d.homeSegmentsGA, backgroundColor: 'rgba(34, 211, 238, 0.28)', borderRadius: 3 },
-            { label: `${d.awayTeam} GF`, data: d.awaySegmentsGF, backgroundColor: 'rgba(52, 211, 153, 0.78)', borderRadius: 3 },
-            { label: `${d.awayTeam} GA`, data: d.awaySegmentsGA, backgroundColor: 'rgba(52, 211, 153, 0.28)', borderRadius: 3 }
+            {
+              label: `${d.homeTeam} (GF+GA)`,
+              data: homeActivity,
+              backgroundColor: 'rgba(34, 211, 238, 0.72)',
+              borderColor: '#22d3ee',
+              borderWidth: 1,
+              borderRadius: 5
+            },
+            {
+              label: `${d.awayTeam} (GF+GA)`,
+              data: awayActivity,
+              backgroundColor: 'rgba(52, 211, 153, 0.72)',
+              borderColor: '#34d399',
+              borderWidth: 1,
+              borderRadius: 5
+            }
           ]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          animation: { duration: 400 },
           plugins: {
-            legend: { labels: { color: '#cbd5e1', font: { size: 10, family: 'JetBrains Mono' }, boxWidth: 10, padding: 8 } },
-            tooltip: { backgroundColor: '#0c1320', borderColor: 'rgba(148,163,184,0.2)', borderWidth: 1, titleColor: '#e2e8f0', bodyColor: '#cbd5e1', padding: 10, cornerRadius: 8 }
+            legend: { labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 } } }
           },
           scales: {
-            x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { display: false }, border: { color: 'rgba(148,163,184,0.15)' } },
-            y: { beginAtZero: true, ticks: { color: '#94a3b8', font: { size: 10 }, precision: 0 }, grid: { color: 'rgba(148,163,184,0.08)' }, border: { display: false } }
+            x: {
+              ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } },
+              grid: { color: 'rgba(148, 163, 184, 0.08)' }
+            },
+            y: {
+              beginAtZero: true,
+              ticks: { color: '#94a3b8', stepSize: 2, font: { family: 'JetBrains Mono', size: 10 } },
+              grid: { color: 'rgba(148, 163, 184, 0.08)' }
+            }
           }
         }
       });
     }
 
     function renderScoreHeatmap(matrix) {
-      const container = document.getElementById('score-heatmap-container');
-      if (!container) return;
-      const size = 5;
       let maxP = 0;
-      for (let i = 0; i < size; i++) for (let j = 0; j < size; j++) if (matrix[i][j] > maxP) maxP = matrix[i][j];
-      let html = `<div class="inline-grid gap-1" style="grid-template-columns: auto repeat(${size}, minmax(0, 1fr));">`;
-      html += '<div></div>';
-      for (let j = 0; j < size; j++) html += `<div class="text-center text-[10px] font-mono text-slate-500">${j}</div>`;
-      for (let i = 0; i < size; i++) {
-        html += `<div class="text-[10px] font-mono text-slate-500 flex items-center justify-center pr-1">${i}</div>`;
-        for (let j = 0; j < size; j++) {
-          const p = matrix[i][j] || 0;
-          const intensity = maxP > 0 ? p / maxP : 0;
-          const bg = `rgba(34, 211, 238, ${0.05 + intensity * 0.55})`;
-          const pct = (p * 100).toFixed(1);
-          const textClass = intensity > 0.55 ? 'text-slate-950 font-extrabold' : (intensity > 0.25 ? 'text-cyan-100' : 'text-slate-400');
-          html += `<div class="rounded-md flex items-center justify-center aspect-square ${textClass} font-mono text-[10px] leading-tight transition-transform hover:scale-110 hover:z-10" style="background:${bg}; border:1px solid rgba(34,211,238,${0.10 + intensity * 0.35});" title="${i}-${j}: ${pct}%">${pct}%</div>`;
+      for (let i = 0; i <= 4; i++) {
+        for (let j = 0; j <= 4; j++) {
+          if (matrix[i][j] > maxP) maxP = matrix[i][j];
         }
       }
-      html += '</div>';
-      container.innerHTML = html;
+
+      let html = `<table class="w-full text-center font-mono text-[11px] border-collapse mono-num">
+        <thead>
+          <tr>
+            <th class="p-1 text-slate-500">L\\V</th>
+            <th class="p-1 text-emerald-300">0</th>
+            <th class="p-1 text-emerald-300">1</th>
+            <th class="p-1 text-emerald-300">2</th>
+            <th class="p-1 text-emerald-300">3</th>
+            <th class="p-1 text-emerald-300">4</th>
+          </tr>
+        </thead>
+        <tbody>`;
+
+      for (let i = 0; i <= 4; i++) {
+        html += `<tr><td class="p-1 font-bold text-cyan-300">${i}</td>`;
+        for (let j = 0; j <= 4; j++) {
+          const p = matrix[i][j];
+          const pct = (p * 100).toFixed(1);
+          const intensity = maxP > 0 ? p / maxP : 0;
+          const bgAlpha = (0.06 + intensity * 0.50).toFixed(2);
+          const textColor = intensity > 0.65 ? 'text-white font-bold' : 'text-slate-300';
+          html += `<td class="p-1.5 border border-slate-800/70 rounded ${textColor}" style="background-color: rgba(34, 211, 238, ${bgAlpha});">${pct}%</td>`;
+        }
+        html += `</tr>`;
+      }
+      html += `</tbody></table>`;
+      document.getElementById('score-heatmap-container').innerHTML = html;
     }
 
     // =========================================================================
-    // REPORTE
+    // EJECUCIÓN PRINCIPAL Y EXPORTACIÓN
     // =========================================================================
-    function copyFullReport() {
-      if (!currentParsedData || !currentModelOutput) {
-        showToast('No hay análisis para copiar. Ejecuta primero.', 'warning');
+    function runFullPipeline(notify = true) {
+      const raw = document.getElementById('raw-stats-input').value.trim();
+      if (!raw || raw.length < 25) {
+        showToast('Pega el bloque completo de estadísticas antes de analizar.', 'warning');
         return;
       }
-      const d = currentParsedData;
-      const m = currentModelOutput;
-      const now = new Date().toLocaleString('es-ES');
 
-      let r = `BETAGS QUANT // POISSON GEOMÉTRICO\n`;
-      r += `═══════════════════════════════════════\n`;
-      r += `Fecha: ${now}\n`;
-      r += `Partido: ${d.homeTeam} vs ${d.awayTeam}\n`;
-      r += `PPI: ${d.homePPI.toFixed(2)} — ${d.awayPPI.toFixed(2)}\n`;
-      r += `λ Local: ${m.lambdaHome.toFixed(2)} | λ Visitante: ${m.lambdaAway.toFixed(2)} | Total: ${m.lambdaTotal.toFixed(2)}\n`;
-      r += `Dispersión: ${m.dispersionLevel} (θ=${m.theta.toFixed(2)}) | ρ=${m.effectiveRho.toFixed(3)}\n`;
-      r += `═══════════════════════════════════════\n\n`;
+      try {
+        const parsed = parseSoccerStatsRaw(raw);
+        currentParsedData = parsed;
+        syncDataToCalibrationInputs(parsed);
 
-      r += `TOP 3 SELECCIONES:\n`;
-      (m.top3 || []).forEach((pick, i) => {
-        r += `${i + 1}. ${pick.name} | Prob: ${(pick.prob * 100).toFixed(1)}% | Justa: @${(1 / pick.prob).toFixed(2)}\n`;
-      });
-      r += `\nRESULTADO 1X2:\n`;
-      r += `1 (${d.homeTeam}): ${(m.probs.home * 100).toFixed(1)}% @${(1 / m.probs.home).toFixed(2)}\n`;
-      r += `X (Empate): ${(m.probs.draw * 100).toFixed(1)}% @${(1 / m.probs.draw).toFixed(2)}\n`;
-      r += `2 (${d.awayTeam}): ${(m.probs.away * 100).toFixed(1)}% @${(1 / m.probs.away).toFixed(2)}\n\n`;
-      r += `DOBLE OPORTUNIDAD:\n`;
-      r += `1X: ${(m.probs.dc1X * 100).toFixed(1)}% @${(1 / m.probs.dc1X).toFixed(2)}\n`;
-      r += `X2: ${(m.probs.dcX2 * 100).toFixed(1)}% @${(1 / m.probs.dcX2).toFixed(2)}\n`;
-      r += `12: ${(m.probs.dc12 * 100).toFixed(1)}% @${(1 / m.probs.dc12).toFixed(2)}\n\n`;
-      r += `DNB:\n`;
-      r += `1 DNB: ${(m.probs.dnbHome * 100).toFixed(1)}% @${(1 / m.probs.dnbHome).toFixed(2)}\n`;
-      r += `2 DNB: ${(m.probs.dnbAway * 100).toFixed(1)}% @${(1 / m.probs.dnbAway).toFixed(2)}\n\n`;
-      r += `GOLES:\n`;
-      r += `Over 1.5: ${(m.probs.over15 * 100).toFixed(1)}% @${(1 / m.probs.over15).toFixed(2)}\n`;
-      r += `Under 1.5: ${(m.probs.under15 * 100).toFixed(1)}% @${(1 / m.probs.under15).toFixed(2)}\n`;
-      r += `Over 2.5: ${(m.probs.over25 * 100).toFixed(1)}% @${(1 / m.probs.over25).toFixed(2)}\n`;
-      r += `Under 2.5: ${(m.probs.under25 * 100).toFixed(1)}% @${(1 / m.probs.under25).toFixed(2)}\n`;
-      r += `Over 3.5: ${(m.probs.over35 * 100).toFixed(1)}% @${(1 / m.probs.over35).toFixed(2)}\n`;
-      r += `Under 3.5: ${(m.probs.under35 * 100).toFixed(1)}% @${(1 / m.probs.under35).toFixed(2)}\n\n`;
-      r += `BTTS:\n`;
-      r += `Sí: ${(m.probs.bttsYes * 100).toFixed(1)}% @${(1 / m.probs.bttsYes).toFixed(2)}\n`;
-      r += `No: ${(m.probs.bttsNo * 100).toFixed(1)}% @${(1 / m.probs.bttsNo).toFixed(2)}\n\n`;
-      r += `TOP 4 MARCADORES:\n`;
-      m.scorelines.slice(0, 4).forEach(sc => {
-        r += `${sc.score}: ${(sc.prob * 100).toFixed(1)}% @${(1 / sc.prob).toFixed(2)}\n`;
-      });
+        const modelOut = runGeometricPoissonModel(parsed);
+        currentModelOutput = modelOut;
 
-      const doCopy = (navigator.clipboard && navigator.clipboard.writeText)
-        ? navigator.clipboard.writeText(r)
-        : Promise.reject(new Error('clipboard no disponible'));
-
-      doCopy.then(() => showToast('Reporte copiado al portapapeles.', 'success'))
-        .catch(() => {
-          // Fallback
-          const ta = document.createElement('textarea');
-          ta.value = r;
-          ta.style.position = 'fixed';
-          ta.style.opacity = '0';
-          document.body.appendChild(ta);
-          ta.select();
-          try {
-            document.execCommand('copy');
-            showToast('Reporte copiado al portapapeles.', 'success');
-          } catch (e) {
-            showToast('No se pudo copiar. Selecciona manualmente.', 'error');
-          }
-          document.body.removeChild(ta);
-        });
+        renderAllSections(parsed, modelOut);
+        if (notify) {
+          showToast(`Mercados generados: ${parsed.homeTeam} vs ${parsed.awayTeam}`, 'success');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Error al procesar el bloque. Revisa el formato o Calibración.', 'error');
+      }
     }
 
-    // =========================================================================
-    // INIT
-    // =========================================================================
-    window.addEventListener('DOMContentLoaded', () => {
-      // Atajo Ctrl/Cmd + Enter
-      document.getElementById('raw-stats-input').addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-          e.preventDefault();
-          runFullPipeline();
+    function recalculateFromCalibration() {
+      try {
+      if (!currentParsedData) {
+        const raw = document.getElementById('raw-stats-input').value.trim();
+        if (raw.length < 25) {
+          showToast('Primero carga y analiza las estadísticas del partido.', 'warning');
+          return;
         }
-      });
-      // Cargar ejemplo inicial sin toasts
-      loadExampleData(true);
-    });
+        currentParsedData = parseSoccerStatsRaw(raw);
+      }
+
+      currentParsedData.homeTeam = document.getElementById('cal-home-name').value.trim() || 'Local';
+      currentParsedData.awayTeam = document.getElementById('cal-away-name').value.trim() || 'Visitante';
+      currentParsedData.homeCtxGF = finiteNumber(document.getElementById('cal-home-gf').value, 1.50, 0, 8);
+      currentParsedData.homeCtxGA = finiteNumber(document.getElementById('cal-home-ga').value, 1.50, 0, 8);
+      currentParsedData.awayCtxGF = finiteNumber(document.getElementById('cal-away-gf').value, 1.50, 0, 8);
+      currentParsedData.awayCtxGA = finiteNumber(document.getElementById('cal-away-ga').value, 1.50, 0, 8);
+      currentParsedData.homeL8GF = finiteNumber(document.getElementById('cal-home-l8-gf').value, 1.50, 0, 8);
+      currentParsedData.homeL8GA = finiteNumber(document.getElementById('cal-home-l8-ga').value, 1.50, 0, 8);
+      currentParsedData.awayL8GF = finiteNumber(document.getElementById('cal-away-l8-gf').value, 1.50, 0, 8);
+      currentParsedData.awayL8GA = finiteNumber(document.getElementById('cal-away-l8-ga').value, 1.50, 0, 8);
+      currentParsedData.leagueHomeGF = finiteNumber(document.getElementById('cal-league-home').value, 1.66, 0.1, 5);
+      currentParsedData.leagueAwayGF = finiteNumber(document.getElementById('cal-league-away').value, 1.50, 0.1, 5);
+
+      const modelOut = runGeometricPoissonModel(currentParsedData);
+      currentModelOutput = modelOut;
+      renderAllSections(currentParsedData, modelOut);
+      showToast('Mercados recalculados con parámetros calibrados.', 'success');
+      } catch (err) {
+        console.error(err);
+        showToast('No se pudo recalcular. Revisa los valores de calibración.', 'error');
+      }
+    }
+
+    function copyFullReport() {
+      if (!currentParsedData || !currentModelOutput) return;
+      const d = currentParsedData;
+      const m = currentModelOutput;
+      const p = m.probs;
+
+      const top4Txt = m.scorelines.slice(0, 4)
+        .map((s, idx) => `${idx + 1}. ${s.score}: ${(s.prob * 100).toFixed(1)}% (@${(1 / s.prob).toFixed(2)})`)
+        .join(' | ');
+
+      const top3Txt = (m.top3 || [])
+        .map((t, idx) => `${idx + 1}. ${t.name} -> Prob: ${(t.prob * 100).toFixed(1)}% | Cuota Justa: @${(1 / t.prob).toFixed(2)}`)
+        .join('\n');
+
+      const report = `BETAGS QUANT // MERCADOS (${d.homeTeam} vs ${d.awayTeam})
+
+TOP 3 SELECCIONES:
+${top3Txt}
+
+MERCADOS & CUOTAS JUSTAS:
+- 1X2: Local ${(p.home * 100).toFixed(1)}% (@${(1 / p.home).toFixed(2)}) | Empate ${(p.draw * 100).toFixed(1)}% (@${(1 / p.draw).toFixed(2)}) | Visitante ${(p.away * 100).toFixed(1)}% (@${(1 / p.away).toFixed(2)})
+- Doble Oportunidad: 1X ${(p.dc1X * 100).toFixed(1)}% (@${(1 / p.dc1X).toFixed(2)}) | X2 ${(p.dcX2 * 100).toFixed(1)}% (@${(1 / p.dcX2).toFixed(2)}) | 12 ${(p.dc12 * 100).toFixed(1)}% (@${(1 / p.dc12).toFixed(2)})
+- DNB: Local ${(p.dnbHome * 100).toFixed(1)}% (@${(1 / p.dnbHome).toFixed(2)}) | Visitante ${(p.dnbAway * 100).toFixed(1)}% (@${(1 / p.dnbAway).toFixed(2)})
+- Goles: Over 1.5 ${(p.over15 * 100).toFixed(1)}% (@${(1 / p.over15).toFixed(2)}) | Over 2.5 ${(p.over25 * 100).toFixed(1)}% (@${(1 / p.over25).toFixed(2)}) | Over 3.5 ${(p.over35 * 100).toFixed(1)}% (@${(1 / p.over35).toFixed(2)}) | Under 2.5 ${(p.under25 * 100).toFixed(1)}% (@${(1 / p.under25).toFixed(2)})
+- BTTS: Sí ${(p.bttsYes * 100).toFixed(1)}% (@${(1 / p.bttsYes).toFixed(2)}) | No ${(p.bttsNo * 100).toFixed(1)}% (@${(1 / p.bttsNo).toFixed(2)})
+- Top 4 Marcadores: ${top4Txt}`;
+
+      const tempArea = document.createElement('textarea');
+      tempArea.value = report;
+      tempArea.style.position = 'fixed';
+      tempArea.style.left = '-9999px';
+      document.body.appendChild(tempArea);
+      tempArea.select();
+      try {
+        const copied = document.execCommand('copy');
+        if (copied) {
+          showToast('Reporte de mercados copiado al portapapeles.', 'success');
+        } else {
+          throw new Error('Copia no confirmada');
+        }
+      } catch (e) {
+        showToast('No se pudo copiar automáticamente. Selecciona y copia el reporte manualmente.', 'warning');
+      } finally {
+        tempArea.remove();
+      }
+    }
   </script>
 </body>
 </html>
